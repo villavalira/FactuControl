@@ -194,7 +194,7 @@ export default function App() {
     <div style={styles.app}>
 
       <div style={styles.sidebar}>
-        <h2>FactuControl</h2>
+        <h2 style={{ color: "#ffffff" }}>FactuControl</h2>
 
         <button style={styles.menu}>Emisor</button>
         <button style={styles.menu}>Clientes</button>
