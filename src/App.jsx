@@ -10,25 +10,26 @@ import {
   query,
   where,
   doc,
-  setDoc,
-  getDoc,
 } from "firebase/firestore";
 
 export default function App() {
   const [user, setUser] = useState(null);
 
-  /* ================= EMISOR ================= */
+  /* ================= EMISORES ================= */
+  const [emisores, setEmisores] = useState([]);
+  const [emisorSeleccionado, setEmisorSeleccionado] = useState(null);
+
   const [misDatos, setMisDatos] = useState({
     nombre: "",
     nif: "",
     direccion: "",
     email: "",
     telefono: "",
-    logo: null,
   });
 
   /* ================= CLIENTES ================= */
   const [clientes, setClientes] = useState([]);
+  const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
 
   const [nombre, setNombre] = useState("");
   const [dni, setDni] = useState("");
@@ -36,11 +37,9 @@ export default function App() {
   const [emailCliente, setEmailCliente] = useState("");
   const [telefonoCliente, setTelefonoCliente] = useState("");
 
-  const [editId, setEditId] = useState(null);
-
   /* ================= FACTURAS ================= */
   const [facturas, setFacturas] = useState([]);
-  const [clienteSeleccionado, setClienteSeleccionado] = useState("");
+
   const [concepto, setConcepto] = useState("");
   const [base, setBase] = useState(0);
 
@@ -55,9 +54,11 @@ export default function App() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
+
       if (u) {
-        loadData(u.uid);
-        loadEmisor(u.uid);
+        loadEmisores(u.uid);
+        loadClientes(u.uid);
+        loadFacturas(u.uid);
       }
     });
 
@@ -67,70 +68,67 @@ export default function App() {
   const login = () => signInWithPopup(auth, googleProvider);
   const logout = () => signOut(auth);
 
-  /* ================= LOAD DATA ================= */
-  const loadData = async (uid) => {
-    const qClientes = query(collection(db, "clientes"), where("uid", "==", uid));
-    const qFacturas = query(collection(db, "facturas"), where("uid", "==", uid));
+  /* ================= LOAD ================= */
+  const loadEmisores = async (uid) => {
+    const q = query(collection(db, "emisores"), where("uid", "==", uid));
+    const snap = await getDocs(q);
 
-    const snapClientes = await getDocs(qClientes);
-    const snapFacturas = await getDocs(qFacturas);
+    const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 
-    setClientes(snapClientes.docs.map((d) => ({ id: d.id, ...d.data() })));
-    setFacturas(snapFacturas.docs.map((d) => ({ id: d.id, ...d.data() })));
-  };
-
-  const loadEmisor = async (uid) => {
-    const ref = doc(db, "emisores", uid);
-    const snap = await getDoc(ref);
-
-    if (snap.exists()) {
-      setMisDatos(snap.data());
+    setEmisores(data);
+    if (data.length > 0 && !emisorSeleccionado) {
+      setEmisorSeleccionado(data[0]);
     }
   };
 
+  const loadClientes = async (uid) => {
+    const q = query(collection(db, "clientes"), where("uid", "==", uid));
+    const snap = await getDocs(q);
+
+    setClientes(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+  };
+
+  const loadFacturas = async (uid) => {
+    const q = query(collection(db, "facturas"), where("uid", "==", uid));
+    const snap = await getDocs(q);
+
+    setFacturas(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+  };
+
+  /* ================= EMISOR ================= */
   const saveEmisor = async () => {
     if (!user) return;
 
-    await setDoc(doc(db, "emisores", user.uid), misDatos);
-    alert("Emisor guardado ✔");
+    await addDoc(collection(db, "emisores"), {
+      uid: user.uid,
+      ...misDatos,
+    });
+
+    loadEmisores(user.uid);
+
+    setMisDatos({
+      nombre: "",
+      nif: "",
+      direccion: "",
+      email: "",
+      telefono: "",
+    });
   };
 
   /* ================= CLIENTES ================= */
-  const editCliente = (c) => {
-    setNombre(c.nombre || "");
-    setDni(c.dni || "");
-    setDireccion(c.direccion || "");
-    setEmailCliente(c.email || "");
-    setTelefonoCliente(c.telefono || "");
-    setEditId(c.id);
-  };
-
   const saveCliente = async () => {
-    if (!user) return;
-    if (!nombre) return;
+    if (!user || !nombre) return;
 
-    if (editId) {
-      await setDoc(doc(db, "clientes", editId), {
-        uid: user.uid,
-        nombre,
-        dni,
-        direccion,
-        email: emailCliente,
-        telefono: telefonoCliente,
-      });
-      setEditId(null);
-    } else {
-      await addDoc(collection(db, "clientes"), {
-        uid: user.uid,
-        nombre,
-        dni,
-        direccion,
-        email: emailCliente,
-        telefono: telefonoCliente,
-      });
-    }
+    await addDoc(collection(db, "clientes"), {
+      uid: user.uid,
+      nombre,
+      dni,
+      direccion,
+      email: emailCliente,
+      telefono: telefonoCliente,
+    });
 
-    loadData(user.uid);
+    loadClientes(user.uid);
 
     setNombre("");
     setDni("");
@@ -139,14 +137,14 @@ export default function App() {
     setTelefonoCliente("");
   };
 
-  /* ================= FACTURAS ================= */
+  /* ================= FACTURA ================= */
   const crearFactura = async () => {
-    if (!user) return;
-    if (!clienteSeleccionado || !concepto) return;
+    if (!user || !clienteSeleccionado || !emisorSeleccionado) return;
 
     await addDoc(collection(db, "facturas"), {
       uid: user.uid,
-      clienteId: clienteSeleccionado,
+      emisorId: emisorSeleccionado.id,
+      clienteId: clienteSeleccionado.id,
       concepto,
       base,
       iva: ivaValor,
@@ -155,38 +153,48 @@ export default function App() {
       fecha: new Date().toLocaleDateString(),
     });
 
-    loadData(user.uid);
+    loadFacturas(user.uid);
   };
 
-  const getCliente = (id) => {
-    return clientes.find((c) => c.id === id);
-  };
+  const getCliente = (id) => clientes.find((c) => c.id === id);
+  const getEmisor = (id) => emisores.find((e) => e.id === id);
 
   /* ================= PDF ================= */
   const descargarPDF = (f) => {
-    const doc = new jsPDF();
+    const pdf = new jsPDF();
+
     const cliente = getCliente(f.clienteId);
+    const emisor = getEmisor(f.emisorId);
 
-    doc.text("FACTURA", 20, 20);
+    pdf.text("FACTURA", 20, 20);
+    pdf.text(`Fecha: ${f.fecha}`, 20, 30);
 
-    doc.text(`Fecha: ${f.fecha}`, 20, 30);
+    /* EMISOR */
+    pdf.text(`Emisor: ${emisor?.nombre || ""}`, 20, 45);
+    pdf.text(`NIF: ${emisor?.nif || ""}`, 20, 55);
+    pdf.text(`Dirección: ${emisor?.direccion || ""}`, 20, 65);
+    pdf.text(`Email: ${emisor?.email || ""}`, 20, 75);
+    pdf.text(`Tel: ${emisor?.telefono || ""}`, 20, 85);
 
-    doc.text(`Emisor: ${misDatos.nombre}`, 20, 40);
-    doc.text(`Email: ${misDatos.email}`, 20, 50);
-    doc.text(`Tel: ${misDatos.telefono}`, 20, 60);
+    pdf.text("----------------------", 20, 95);
 
-    doc.text("----------------------", 20, 70);
+    /* CLIENTE */
+    pdf.text(`Cliente: ${cliente?.nombre || ""}`, 20, 105);
+    pdf.text(`DNI: ${cliente?.dni || ""}`, 20, 115);
+    pdf.text(`Dirección: ${cliente?.direccion || ""}`, 20, 125);
+    pdf.text(`Email: ${cliente?.email || ""}`, 20, 135);
+    pdf.text(`Tel: ${cliente?.telefono || ""}`, 20, 145);
 
-    doc.text(`Cliente: ${cliente?.nombre}`, 20, 80);
-    doc.text(`Email: ${cliente?.email}`, 20, 90);
-    doc.text(`Tel: ${cliente?.telefono}`, 20, 100);
+    pdf.text("----------------------", 20, 155);
 
-    doc.text(`Concepto: ${f.concepto}`, 20, 110);
-    doc.text(`Base: ${f.base}`, 20, 120);
-    doc.text(`IVA: ${f.iva}`, 20, 130);
-    doc.text(`TOTAL: ${f.total}`, 20, 140);
+    /* FACTURA */
+    pdf.text(`Concepto: ${f.concepto}`, 20, 165);
+    pdf.text(`Base: ${f.base}`, 20, 175);
+    pdf.text(`IVA: ${f.iva}`, 20, 185);
+    pdf.text(`IRPF: ${f.irpf}`, 20, 195);
+    pdf.text(`TOTAL: ${f.total}`, 20, 205);
 
-    doc.save("factura.pdf");
+    pdf.save("factura.pdf");
   };
 
   /* ================= LOGIN ================= */
@@ -210,23 +218,63 @@ export default function App() {
         Logout
       </button>
 
-      {/* EMISOR */}
+      {/* ================= EMISORES ================= */}
       <div style={styles.card}>
         <h2>🏢 Emisor</h2>
 
-        <input placeholder="Nombre"
+        <select
+          onChange={(e) =>
+            setEmisorSeleccionado(
+              emisores.find((e2) => e2.id === e.target.value)
+            )
+          }
+        >
+          <option value="">Selecciona emisor</option>
+          {emisores.map((e) => (
+            <option key={e.id} value={e.id}>
+              {e.nombre}
+            </option>
+          ))}
+        </select>
+
+        <input
+          placeholder="Nombre"
           value={misDatos.nombre}
-          onChange={(e) => setMisDatos({ ...misDatos, nombre: e.target.value })}
+          onChange={(e) =>
+            setMisDatos({ ...misDatos, nombre: e.target.value })
+          }
         />
 
-        <input placeholder="Email"
+        <input
+          placeholder="NIF"
+          value={misDatos.nif}
+          onChange={(e) =>
+            setMisDatos({ ...misDatos, nif: e.target.value })
+          }
+        />
+
+        <input
+          placeholder="Dirección"
+          value={misDatos.direccion}
+          onChange={(e) =>
+            setMisDatos({ ...misDatos, direccion: e.target.value })
+          }
+        />
+
+        <input
+          placeholder="Email"
           value={misDatos.email}
-          onChange={(e) => setMisDatos({ ...misDatos, email: e.target.value })}
+          onChange={(e) =>
+            setMisDatos({ ...misDatos, email: e.target.value })
+          }
         />
 
-        <input placeholder="Teléfono"
+        <input
+          placeholder="Teléfono"
           value={misDatos.telefono}
-          onChange={(e) => setMisDatos({ ...misDatos, telefono: e.target.value })}
+          onChange={(e) =>
+            setMisDatos({ ...misDatos, telefono: e.target.value })
+          }
         />
 
         <button onClick={saveEmisor} style={styles.button}>
@@ -234,9 +282,24 @@ export default function App() {
         </button>
       </div>
 
-      {/* CLIENTES */}
+      {/* ================= CLIENTES ================= */}
       <div style={styles.card}>
         <h2>👥 Clientes</h2>
+
+        <select
+          onChange={(e) =>
+            setClienteSeleccionado(
+              clientes.find((c) => c.id === e.target.value)
+            )
+          }
+        >
+          <option value="">Selecciona cliente</option>
+          {clientes.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.nombre}
+            </option>
+          ))}
+        </select>
 
         <input placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
         <input placeholder="DNI" value={dni} onChange={(e) => setDni(e.target.value)} />
@@ -245,47 +308,40 @@ export default function App() {
         <input placeholder="Teléfono" value={telefonoCliente} onChange={(e) => setTelefonoCliente(e.target.value)} />
 
         <button onClick={saveCliente} style={styles.button}>
-          {editId ? "Guardar cambios" : "Añadir cliente"}
+          Añadir cliente
         </button>
-
-        <ul>
-          {clientes.map((c) => (
-            <li key={c.id}>
-              {c.nombre}
-              <button onClick={() => editCliente(c)}>✏️</button>
-            </li>
-          ))}
-        </ul>
       </div>
 
-      {/* FACTURAS */}
+      {/* ================= FACTURA ================= */}
       <div style={styles.card}>
-        <h2>🧾 Facturas</h2>
+        <h2>🧾 Crear factura</h2>
 
-        <select onChange={(e) => setClienteSeleccionado(e.target.value)}>
-          <option value="">Cliente</option>
-          {clientes.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.nombre}
-            </option>
-          ))}
-        </select>
+        <input
+          placeholder="Concepto"
+          value={concepto}
+          onChange={(e) => setConcepto(e.target.value)}
+        />
 
-        <input placeholder="Concepto" value={concepto} onChange={(e) => setConcepto(e.target.value)} />
-        <input type="number" placeholder="Base" value={base} onChange={(e) => setBase(Number(e.target.value))} />
+        <input
+          type="number"
+          placeholder="Base"
+          value={base}
+          onChange={(e) => setBase(Number(e.target.value))}
+        />
 
         <button onClick={crearFactura} style={styles.button}>
           Crear factura
         </button>
       </div>
 
-      {/* LISTA */}
+      {/* ================= LISTA ================= */}
       <div style={styles.card}>
         <h2>📁 Facturas</h2>
 
         {facturas.map((f) => (
           <div key={f.id}>
-            {getCliente(f.clienteId)?.nombre} - {f.total} €
+            {f.total} €
+
             <button onClick={() => descargarPDF(f)} style={styles.button}>
               PDF
             </button>
