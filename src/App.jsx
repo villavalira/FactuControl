@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
+import emailjs from "@emailjs/browser";
 
 import { auth, googleProvider, db } from "./firebase";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
@@ -9,36 +12,39 @@ import {
   getDocs,
   query,
   where,
-  doc,
 } from "firebase/firestore";
 
 export default function App() {
   const [user, setUser] = useState(null);
 
-  /* ================= EMISORES ================= */
+  /* ================= DATA ================= */
   const [emisores, setEmisores] = useState([]);
-  const [emisorSeleccionado, setEmisorSeleccionado] = useState(null);
+  const [emisorSel, setEmisorSel] = useState(null);
 
-  const [misDatos, setMisDatos] = useState({
+  const [clientes, setClientes] = useState([]);
+  const [clienteSel, setClienteSel] = useState(null);
+
+  const [facturas, setFacturas] = useState([]);
+
+  /* ================= FORMS ================= */
+  const [emisorForm, setEmisorForm] = useState({
     nombre: "",
     nif: "",
     direccion: "",
     email: "",
     telefono: "",
+    logo: "",
   });
 
-  /* ================= CLIENTES ================= */
-  const [clientes, setClientes] = useState([]);
-  const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
+  const [logo, setLogo] = useState(null);
 
-  const [nombre, setNombre] = useState("");
-  const [dni, setDni] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [emailCliente, setEmailCliente] = useState("");
-  const [telefonoCliente, setTelefonoCliente] = useState("");
-
-  /* ================= FACTURAS ================= */
-  const [facturas, setFacturas] = useState([]);
+  const [clienteForm, setClienteForm] = useState({
+    nombre: "",
+    dni: "",
+    direccion: "",
+    email: "",
+    telefono: "",
+  });
 
   const [concepto, setConcepto] = useState("");
   const [base, setBase] = useState(0);
@@ -46,19 +52,16 @@ export default function App() {
   const IVA = 0.21;
   const IRPF = 0.07;
 
-  const ivaValor = base * IVA;
-  const irpfValor = base * IRPF;
-  const total = base + ivaValor - irpfValor;
+  const iva = base * IVA;
+  const irpf = base * IRPF;
+  const total = base + iva - irpf;
 
   /* ================= AUTH ================= */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
-
       if (u) {
-        loadEmisores(u.uid);
-        loadClientes(u.uid);
-        loadFacturas(u.uid);
+        loadAll(u.uid);
       }
     });
 
@@ -69,282 +72,240 @@ export default function App() {
   const logout = () => signOut(auth);
 
   /* ================= LOAD ================= */
-  const loadEmisores = async (uid) => {
-    const q = query(collection(db, "emisores"), where("uid", "==", uid));
-    const snap = await getDocs(q);
+  const loadAll = async (uid) => {
+    const qE = query(collection(db, "emisores"), where("uid", "==", uid));
+    const qC = query(collection(db, "clientes"), where("uid", "==", uid));
+    const qF = query(collection(db, "facturas"), where("uid", "==", uid));
 
-    const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    const e = await getDocs(qE);
+    const c = await getDocs(qC);
+    const f = await getDocs(qF);
 
-    setEmisores(data);
-    if (data.length > 0 && !emisorSeleccionado) {
-      setEmisorSeleccionado(data[0]);
-    }
+    setEmisores(e.docs.map(d => ({ id: d.id, ...d.data() })));
+    setClientes(c.docs.map(d => ({ id: d.id, ...d.data() })));
+    setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
   };
 
-  const loadClientes = async (uid) => {
-    const q = query(collection(db, "clientes"), where("uid", "==", uid));
-    const snap = await getDocs(q);
-
-    setClientes(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+  /* ================= LOGO ================= */
+  const handleLogo = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => setLogo(reader.result);
+    reader.readAsDataURL(file);
   };
 
-  const loadFacturas = async (uid) => {
-    const q = query(collection(db, "facturas"), where("uid", "==", uid));
-    const snap = await getDocs(q);
-
-    setFacturas(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-  };
-
-  /* ================= EMISOR ================= */
+  /* ================= SAVE ================= */
   const saveEmisor = async () => {
-    if (!user) return;
-
     await addDoc(collection(db, "emisores"), {
       uid: user.uid,
-      ...misDatos,
+      ...emisorForm,
+      logo,
     });
 
-    loadEmisores(user.uid);
-
-    setMisDatos({
-      nombre: "",
-      nif: "",
-      direccion: "",
-      email: "",
-      telefono: "",
-    });
+    loadAll(user.uid);
   };
 
-  /* ================= CLIENTES ================= */
   const saveCliente = async () => {
-    if (!user || !nombre) return;
-
     await addDoc(collection(db, "clientes"), {
       uid: user.uid,
-      nombre,
-      dni,
-      direccion,
-      email: emailCliente,
-      telefono: telefonoCliente,
+      ...clienteForm,
     });
 
-    loadClientes(user.uid);
+    loadAll(user.uid);
+  };
 
-    setNombre("");
-    setDni("");
-    setDireccion("");
-    setEmailCliente("");
-    setTelefonoCliente("");
+  /* ================= NUMERACIÓN ================= */
+  const getNumero = () => {
+    if (!facturas.length) return "FAC-000001";
+
+    const nums = facturas.map(f =>
+      parseInt((f.numero || "FAC-0").replace("FAC-", ""))
+    );
+
+    const next = Math.max(...nums) + 1;
+    return "FAC-" + String(next).padStart(6, "0");
   };
 
   /* ================= FACTURA ================= */
   const crearFactura = async () => {
-    if (!user || !clienteSeleccionado || !emisorSeleccionado) return;
+    const numero = getNumero();
 
     await addDoc(collection(db, "facturas"), {
       uid: user.uid,
-      emisorId: emisorSeleccionado.id,
-      clienteId: clienteSeleccionado.id,
+      emisorId: emisorSel?.id,
+      clienteId: clienteSel?.id,
+      numero,
       concepto,
       base,
-      iva: ivaValor,
-      irpf: irpfValor,
+      iva,
+      irpf,
       total,
       fecha: new Date().toLocaleDateString(),
     });
 
-    loadFacturas(user.uid);
+    loadAll(user.uid);
   };
 
-  const getCliente = (id) => clientes.find((c) => c.id === id);
-  const getEmisor = (id) => emisores.find((e) => e.id === id);
+  const getCliente = (id) => clientes.find(c => c.id === id);
+  const getEmisor = (id) => emisores.find(e => e.id === id);
 
-  /* ================= PDF ================= */
+  /* ================= PDF PRO ================= */
   const descargarPDF = (f) => {
     const pdf = new jsPDF();
+    const em = getEmisor(f.emisorId);
+    const cl = getCliente(f.clienteId);
 
-    const cliente = getCliente(f.clienteId);
-    const emisor = getEmisor(f.emisorId);
+    pdf.setFontSize(18);
+    pdf.text("FACTURA", 14, 18);
+    pdf.setFontSize(10);
 
-    pdf.text("FACTURA", 20, 20);
-    pdf.text(`Fecha: ${f.fecha}`, 20, 30);
+    pdf.text(f.numero, 14, 26);
+    pdf.text(f.fecha, 14, 32);
 
-    /* EMISOR */
-    pdf.text(`Emisor: ${emisor?.nombre || ""}`, 20, 45);
-    pdf.text(`NIF: ${emisor?.nif || ""}`, 20, 55);
-    pdf.text(`Dirección: ${emisor?.direccion || ""}`, 20, 65);
-    pdf.text(`Email: ${emisor?.email || ""}`, 20, 75);
-    pdf.text(`Tel: ${emisor?.telefono || ""}`, 20, 85);
+    if (em?.logo) {
+      pdf.addImage(em.logo, "PNG", 150, 10, 40, 40);
+    }
 
-    pdf.text("----------------------", 20, 95);
+    pdf.text("EMISOR", 14, 45);
+    pdf.text(em?.nombre || "", 14, 50);
+    pdf.text(em?.nif || "", 14, 55);
 
-    /* CLIENTE */
-    pdf.text(`Cliente: ${cliente?.nombre || ""}`, 20, 105);
-    pdf.text(`DNI: ${cliente?.dni || ""}`, 20, 115);
-    pdf.text(`Dirección: ${cliente?.direccion || ""}`, 20, 125);
-    pdf.text(`Email: ${cliente?.email || ""}`, 20, 135);
-    pdf.text(`Tel: ${cliente?.telefono || ""}`, 20, 145);
+    pdf.text("CLIENTE", 110, 45);
+    pdf.text(cl?.nombre || "", 110, 50);
 
-    pdf.text("----------------------", 20, 155);
+    autoTable(pdf, {
+      startY: 70,
+      head: [["Concepto", "Base", "IVA", "IRPF", "Total"]],
+      body: [[f.concepto, f.base, f.iva, f.irpf, f.total]],
+      theme: "grid",
+    });
 
-    /* FACTURA */
-    pdf.text(`Concepto: ${f.concepto}`, 20, 165);
-    pdf.text(`Base: ${f.base}`, 20, 175);
-    pdf.text(`IVA: ${f.iva}`, 20, 185);
-    pdf.text(`IRPF: ${f.irpf}`, 20, 195);
-    pdf.text(`TOTAL: ${f.total}`, 20, 205);
-
-    pdf.save("factura.pdf");
+    pdf.save(f.numero + ".pdf");
   };
 
-  /* ================= LOGIN ================= */
+  /* ================= EXCEL ================= */
+  const exportExcel = () => {
+    const data = facturas.map(f => ({
+      Numero: f.numero,
+      Fecha: f.fecha,
+      Concepto: f.concepto,
+      Base: f.base,
+      IVA: f.iva,
+      IRPF: f.irpf,
+      Total: f.total,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(wb, ws, "Facturas");
+    XLSX.writeFile(wb, "facturas.xlsx");
+  };
+
+  /* ================= EMAIL ================= */
+  const sendEmail = async (f) => {
+    const cl = getCliente(f.clienteId);
+    const em = getEmisor(f.emisorId);
+
+    await emailjs.send(
+      "TU_SERVICE",
+      "TU_TEMPLATE",
+      {
+        to_email: cl.email,
+        cliente: cl.nombre,
+        empresa: em.nombre,
+        numero: f.numero,
+        total: f.total,
+      },
+      "TU_KEY"
+    );
+
+    alert("Email enviado");
+  };
+
+  /* ================= UI ================= */
   if (!user) {
     return (
-      <div style={styles.login}>
-        <h1>📄 FactuControl</h1>
-        <button style={styles.button} onClick={login}>
-          Login con Google
+      <div style={styles.center}>
+        <button onClick={login} style={styles.btn}>
+          Login Google
         </button>
       </div>
     );
   }
 
-  /* ================= UI ================= */
   return (
     <div style={styles.container}>
-      <h1>📊 FactuControl</h1>
+      <button onClick={logout}>Logout</button>
 
-      <button onClick={logout} style={{ ...styles.button, background: "red" }}>
-        Logout
-      </button>
-
-      {/* ================= EMISORES ================= */}
+      {/* EMISOR */}
       <div style={styles.card}>
-        <h2>🏢 Emisor</h2>
+        <h3>Emisor</h3>
 
-        <select
-          onChange={(e) =>
-            setEmisorSeleccionado(
-              emisores.find((e2) => e2.id === e.target.value)
-            )
-          }
-        >
-          <option value="">Selecciona emisor</option>
-          {emisores.map((e) => (
-            <option key={e.id} value={e.id}>
-              {e.nombre}
-            </option>
+        <select onChange={(e) =>
+          setEmisorSel(emisores.find(x => x.id === e.target.value))
+        }>
+          <option>Selecciona</option>
+          {emisores.map(e => (
+            <option key={e.id} value={e.id}>{e.nombre}</option>
           ))}
         </select>
 
-        <input
-          placeholder="Nombre"
-          value={misDatos.nombre}
-          onChange={(e) =>
-            setMisDatos({ ...misDatos, nombre: e.target.value })
-          }
+        <input placeholder="Nombre"
+          onChange={e => setEmisorForm({...emisorForm, nombre: e.target.value})}
         />
 
-        <input
-          placeholder="NIF"
-          value={misDatos.nif}
-          onChange={(e) =>
-            setMisDatos({ ...misDatos, nif: e.target.value })
-          }
+        <input placeholder="NIF"
+          onChange={e => setEmisorForm({...emisorForm, nif: e.target.value})}
         />
 
-        <input
-          placeholder="Dirección"
-          value={misDatos.direccion}
-          onChange={(e) =>
-            setMisDatos({ ...misDatos, direccion: e.target.value })
-          }
-        />
+        <input type="file" onChange={handleLogo} />
 
-        <input
-          placeholder="Email"
-          value={misDatos.email}
-          onChange={(e) =>
-            setMisDatos({ ...misDatos, email: e.target.value })
-          }
-        />
-
-        <input
-          placeholder="Teléfono"
-          value={misDatos.telefono}
-          onChange={(e) =>
-            setMisDatos({ ...misDatos, telefono: e.target.value })
-          }
-        />
-
-        <button onClick={saveEmisor} style={styles.button}>
-          Guardar emisor
-        </button>
+        <button onClick={saveEmisor}>Guardar</button>
       </div>
 
-      {/* ================= CLIENTES ================= */}
+      {/* CLIENTE */}
       <div style={styles.card}>
-        <h2>👥 Clientes</h2>
+        <h3>Cliente</h3>
 
-        <select
-          onChange={(e) =>
-            setClienteSeleccionado(
-              clientes.find((c) => c.id === e.target.value)
-            )
-          }
-        >
-          <option value="">Selecciona cliente</option>
-          {clientes.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.nombre}
-            </option>
+        <select onChange={(e) =>
+          setClienteSel(clientes.find(x => x.id === e.target.value))
+        }>
+          <option>Selecciona</option>
+          {clientes.map(c => (
+            <option key={c.id} value={c.id}>{c.nombre}</option>
           ))}
         </select>
 
-        <input placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-        <input placeholder="DNI" value={dni} onChange={(e) => setDni(e.target.value)} />
-        <input placeholder="Dirección" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
-        <input placeholder="Email" value={emailCliente} onChange={(e) => setEmailCliente(e.target.value)} />
-        <input placeholder="Teléfono" value={telefonoCliente} onChange={(e) => setTelefonoCliente(e.target.value)} />
-
-        <button onClick={saveCliente} style={styles.button}>
-          Añadir cliente
-        </button>
-      </div>
-
-      {/* ================= FACTURA ================= */}
-      <div style={styles.card}>
-        <h2>🧾 Crear factura</h2>
-
-        <input
-          placeholder="Concepto"
-          value={concepto}
-          onChange={(e) => setConcepto(e.target.value)}
+        <input placeholder="Nombre"
+          onChange={e => setClienteForm({...clienteForm, nombre: e.target.value})}
         />
 
-        <input
-          type="number"
-          placeholder="Base"
-          value={base}
-          onChange={(e) => setBase(Number(e.target.value))}
-        />
-
-        <button onClick={crearFactura} style={styles.button}>
-          Crear factura
-        </button>
+        <button onClick={saveCliente}>Guardar</button>
       </div>
 
-      {/* ================= LISTA ================= */}
+      {/* FACTURA */}
       <div style={styles.card}>
-        <h2>📁 Facturas</h2>
+        <h3>Factura</h3>
 
-        {facturas.map((f) => (
+        <input placeholder="Concepto" onChange={e => setConcepto(e.target.value)} />
+        <input type="number" onChange={e => setBase(Number(e.target.value))} />
+
+        <button onClick={crearFactura}>Crear factura</button>
+      </div>
+
+      {/* LISTA */}
+      <div style={styles.card}>
+        <h3>Facturas</h3>
+
+        <button onClick={exportExcel}>Excel</button>
+
+        {facturas.map(f => (
           <div key={f.id}>
-            {f.total} €
+            {f.numero} - {f.total}€
 
-            <button onClick={() => descargarPDF(f)} style={styles.button}>
-              PDF
-            </button>
+            <button onClick={() => descargarPDF(f)}>PDF</button>
+            <button onClick={() => sendEmail(f)}>Email</button>
           </div>
         ))}
       </div>
@@ -352,10 +313,10 @@ export default function App() {
   );
 }
 
-/* ================= STYLES ================= */
+/* ================= STYLE ================= */
 const styles = {
-  container: { padding: 20, background: "#eaf4ff", minHeight: "100vh" },
-  card: { background: "white", padding: 15, marginBottom: 15, borderRadius: 10 },
-  button: { padding: 10, background: "#38bdf8", color: "white", border: 0, borderRadius: 8 },
-  login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" },
+  container: { padding: 20, fontFamily: "Arial" },
+  card: { background: "#fff", padding: 15, marginBottom: 15 },
+  btn: { padding: 10 },
+  center: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }
 };
