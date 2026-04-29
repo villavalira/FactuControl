@@ -17,7 +17,6 @@ import {
 export default function App() {
   const [user, setUser] = useState(null);
 
-  /* ================= DATA ================= */
   const [emisores, setEmisores] = useState([]);
   const [emisorSel, setEmisorSel] = useState(null);
 
@@ -26,17 +25,13 @@ export default function App() {
 
   const [facturas, setFacturas] = useState([]);
 
-  /* ================= FORMS ================= */
   const [emisorForm, setEmisorForm] = useState({
     nombre: "",
     nif: "",
     direccion: "",
     email: "",
     telefono: "",
-    logo: "",
   });
-
-  const [logo, setLogo] = useState(null);
 
   const [clienteForm, setClienteForm] = useState({
     nombre: "",
@@ -45,6 +40,8 @@ export default function App() {
     email: "",
     telefono: "",
   });
+
+  const [logo, setLogo] = useState(null);
 
   const [concepto, setConcepto] = useState("");
   const [base, setBase] = useState(0);
@@ -56,7 +53,6 @@ export default function App() {
   const irpf = base * IRPF;
   const total = base + iva - irpf;
 
-  /* ================= AUTH ================= */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
@@ -69,24 +65,16 @@ export default function App() {
   const login = () => signInWithPopup(auth, googleProvider);
   const logout = () => signOut(auth);
 
-  /* ================= LOAD ================= */
   const loadAll = async (uid) => {
     const e = await getDocs(query(collection(db, "emisores"), where("uid", "==", uid)));
     const c = await getDocs(query(collection(db, "clientes"), where("uid", "==", uid)));
     const f = await getDocs(query(collection(db, "facturas"), where("uid", "==", uid)));
 
-    const emisoresData = e.docs.map(d => ({ id: d.id, ...d.data() }));
-    const clientesData = c.docs.map(d => ({ id: d.id, ...d.data() }));
-    const facturasData = f.docs.map(d => ({ id: d.id, ...d.data() }));
-
-    setEmisores(emisoresData);
-    setClientes(clientesData);
-    setFacturas(facturasData);
-
-    if (!emisorSel && emisoresData.length > 0) setEmisorSel(emisoresData[0]);
+    setEmisores(e.docs.map(d => ({ id: d.id, ...d.data() })));
+    setClientes(c.docs.map(d => ({ id: d.id, ...d.data() })));
+    setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
   };
 
-  /* ================= LOGO ================= */
   const handleLogo = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -94,7 +82,6 @@ export default function App() {
     reader.readAsDataURL(file);
   };
 
-  /* ================= SAVE ================= */
   const saveEmisor = async () => {
     await addDoc(collection(db, "emisores"), {
       uid: user.uid,
@@ -114,7 +101,6 @@ export default function App() {
     loadAll(user.uid);
   };
 
-  /* ================= FACTURA NUMERO ================= */
   const generarNumero = () => {
     if (!facturas.length) return "FAC-000001";
 
@@ -122,11 +108,9 @@ export default function App() {
       parseInt((f.numero || "FAC-0").replace("FAC-", ""))
     );
 
-    const next = Math.max(...nums) + 1;
-    return "FAC-" + String(next).padStart(6, "0");
+    return "FAC-" + String(Math.max(...nums) + 1).padStart(6, "0");
   };
 
-  /* ================= CREATE FACTURA ================= */
   const crearFactura = async () => {
     const numero = generarNumero();
 
@@ -149,7 +133,6 @@ export default function App() {
   const getCliente = (id) => clientes.find(c => c.id === id);
   const getEmisor = (id) => emisores.find(e => e.id === id);
 
-  /* ================= PDF PRO ================= */
   const descargarPDF = (f) => {
     const pdf = new jsPDF();
 
@@ -169,7 +152,6 @@ export default function App() {
 
     pdf.text("EMISOR", 14, 45);
     pdf.text(em?.nombre || "", 14, 50);
-    pdf.text(em?.nif || "", 14, 55);
 
     pdf.text("CLIENTE", 110, 45);
     pdf.text(cl?.nombre || "", 110, 50);
@@ -184,7 +166,6 @@ export default function App() {
     pdf.save(f.numero + ".pdf");
   };
 
-  /* ================= EXCEL ================= */
   const exportExcel = () => {
     const data = facturas.map(f => ({
       Numero: f.numero,
@@ -203,14 +184,13 @@ export default function App() {
     XLSX.writeFile(wb, "facturas.xlsx");
   };
 
-  /* ================= EMAIL ================= */
   const sendEmail = async (f) => {
     const cl = getCliente(f.clienteId);
     const em = getEmisor(f.emisorId);
 
     await emailjs.send(
-      "TU_SERVICE_ID",
-      "TU_TEMPLATE_ID",
+      "TU_SERVICE",
+      "TU_TEMPLATE",
       {
         to_email: cl.email,
         cliente: cl.nombre,
@@ -218,17 +198,16 @@ export default function App() {
         numero: f.numero,
         total: f.total,
       },
-      "TU_PUBLIC_KEY"
+      "TU_KEY"
     );
 
     alert("Email enviado");
   };
 
-  /* ================= UI ================= */
   if (!user) {
     return (
       <div style={styles.login}>
-        <button onClick={login} style={styles.button}>
+        <button style={styles.button} onClick={login}>
           Login con Google
         </button>
       </div>
@@ -238,9 +217,8 @@ export default function App() {
   return (
     <div style={styles.app}>
 
-      {/* SIDEBAR */}
       <div style={styles.sidebar}>
-        <h2>📊 FactuControl</h2>
+        <h2>FactuControl</h2>
 
         <button style={styles.menu}>Emisor</button>
         <button style={styles.menu}>Clientes</button>
@@ -251,14 +229,10 @@ export default function App() {
         </button>
       </div>
 
-      {/* MAIN */}
       <div style={styles.main}>
 
-        <h1>Dashboard</h1>
-
-        {/* EMISOR */}
         <div style={styles.card}>
-          <h3>🏢 Emisor</h3>
+          <h3>Emisor</h3>
 
           <select onChange={(e) =>
             setEmisorSel(emisores.find(x => x.id === e.target.value))
@@ -284,16 +258,15 @@ export default function App() {
           </button>
         </div>
 
-        {/* CLIENTES */}
         <div style={styles.card}>
-          <h3>👥 Clientes</h3>
+          <h3>Clientes</h3>
 
           <select onChange={(e) =>
             setClienteSel(clientes.find(x => x.id === e.target.value))
           }>
             <option>Selecciona cliente</option>
             {clientes.map(c => (
-              <option key={c.id}>{c.nombre}</option>
+              <option key={c.id} value={c.id}>{c.nombre}</option>
             ))}
           </select>
 
@@ -306,9 +279,8 @@ export default function App() {
           </button>
         </div>
 
-        {/* FACTURA */}
         <div style={styles.card}>
-          <h3>🧾 Factura</h3>
+          <h3>Factura</h3>
 
           <input style={styles.input} placeholder="Concepto" onChange={e => setConcepto(e.target.value)} />
           <input style={styles.input} type="number" onChange={e => setBase(Number(e.target.value))} />
@@ -318,9 +290,8 @@ export default function App() {
           </button>
         </div>
 
-        {/* LISTA */}
         <div style={styles.card}>
-          <h3>📁 Facturas</h3>
+          <h3>Facturas</h3>
 
           <button style={styles.button} onClick={exportExcel}>
             Excel
@@ -343,14 +314,14 @@ export default function App() {
   );
 }
 
-/* ================= STYLE ================= */
+/* ================= STYLE FINAL ================= */
 const styles = {
   app: {
     display: "flex",
     height: "100vh",
-    fontFamily: "Inter, system-ui, sans-serif",
+    fontFamily: "Arial",
     background: "#0b1220",
-    color: "#e5e7eb",
+    color: "#fff",
   },
 
   sidebar: {
@@ -360,7 +331,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: 10,
-    borderRight: "1px solid rgba(255,255,255,0.05)",
   },
 
   main: {
@@ -370,52 +340,47 @@ const styles = {
   },
 
   card: {
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid rgba(255,255,255,0.08)",
+    background: "#111827",
     padding: 20,
-    borderRadius: 16,
+    borderRadius: 14,
     marginBottom: 20,
-    backdropFilter: "blur(10px)",
   },
 
   input: {
     width: "100%",
-    padding: 12,
+    padding: 10,
     marginTop: 8,
     marginBottom: 8,
-    borderRadius: 10,
-    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: 8,
+    border: "1px solid #374151",
     background: "#0b1220",
     color: "#fff",
-    outline: "none",
   },
 
   button: {
-    padding: "10px 14px",
-    background: "#6366f1",
+    padding: 10,
+    background: "#3b82f6",
     color: "white",
     border: 0,
-    borderRadius: 10,
+    borderRadius: 8,
     cursor: "pointer",
     marginTop: 10,
-    fontWeight: 600,
   },
 
   menu: {
-    padding: 12,
-    background: "transparent",
-    color: "#cbd5e1",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: 10,
+    padding: 10,
+    background: "#1f2937",
+    color: "white",
+    border: 0,
+    borderRadius: 8,
     cursor: "pointer",
-    textAlign: "left",
   },
 
   row: {
     display: "flex",
     justifyContent: "space-between",
-    padding: 12,
-    borderBottom: "1px solid rgba(255,255,255,0.06)",
+    padding: 10,
+    borderBottom: "1px solid #1f2937",
   },
 
   login: {
@@ -423,6 +388,5 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "#0b1220",
   },
 };
