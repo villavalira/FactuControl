@@ -21,7 +21,6 @@ export default function App() {
 
   const [facturas, setFacturas] = useState([]);
 
-  const [emisorForm, setEmisorForm] = useState({
     nombre: "",
     nif: "",
     direccion: "",
