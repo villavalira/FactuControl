@@ -303,7 +303,7 @@ const styles = {
     height: "100vh",
     fontFamily: "Inter, system-ui, sans-serif",
     background: "linear-gradient(135deg, #b15cca 0%, #702ab6 100%)",
-    color: "#c49eef",
+    color: "#ffffff",
   },
 
   sidebar: {
