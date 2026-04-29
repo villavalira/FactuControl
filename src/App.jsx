@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
-import emailjs from "@emailjs/browser";
 
 import { auth, googleProvider, db } from "./firebase";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
@@ -41,8 +39,6 @@ export default function App() {
     telefono: "",
   });
 
-  const [logo, setLogo] = useState(null);
-
   const [concepto, setConcepto] = useState("");
   const [base, setBase] = useState(0);
 
@@ -53,6 +49,7 @@ export default function App() {
   const irpf = base * IRPF;
   const total = base + iva - irpf;
 
+  /* ================= AUTH ================= */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
@@ -65,6 +62,7 @@ export default function App() {
   const login = () => signInWithPopup(auth, googleProvider);
   const logout = () => signOut(auth);
 
+  /* ================= LOAD ================= */
   const loadAll = async (uid) => {
     const e = await getDocs(query(collection(db, "emisores"), where("uid", "==", uid)));
     const c = await getDocs(query(collection(db, "clientes"), where("uid", "==", uid)));
@@ -75,18 +73,11 @@ export default function App() {
     setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
   };
 
-  const handleLogo = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => setLogo(reader.result);
-    reader.readAsDataURL(file);
-  };
-
+  /* ================= SAVE ================= */
   const saveEmisor = async () => {
     await addDoc(collection(db, "emisores"), {
       uid: user.uid,
       ...emisorForm,
-      logo,
     });
 
     loadAll(user.uid);
@@ -101,6 +92,7 @@ export default function App() {
     loadAll(user.uid);
   };
 
+  /* ================= NUMERACIÓN ================= */
   const generarNumero = () => {
     if (!facturas.length) return "FAC-000001";
 
@@ -108,9 +100,11 @@ export default function App() {
       parseInt((f.numero || "FAC-0").replace("FAC-", ""))
     );
 
-    return "FAC-" + String(Math.max(...nums) + 1).padStart(6, "0");
+    const next = Math.max(...nums) + 1;
+    return "FAC-" + String(next).padStart(6, "0");
   };
 
+  /* ================= FACTURA ================= */
   const crearFactura = async () => {
     const numero = generarNumero();
 
@@ -133,6 +127,7 @@ export default function App() {
   const getCliente = (id) => clientes.find(c => c.id === id);
   const getEmisor = (id) => emisores.find(e => e.id === id);
 
+  /* ================= PDF SIMPLE (ESTABLE) ================= */
   const descargarPDF = (f) => {
     const pdf = new jsPDF();
 
@@ -140,32 +135,34 @@ export default function App() {
     const cl = getCliente(f.clienteId);
 
     pdf.setFontSize(18);
-    pdf.text("FACTURA", 14, 18);
+    pdf.text("FACTURA", 20, 20);
 
-    pdf.setFontSize(10);
-    pdf.text(f.numero, 14, 26);
-    pdf.text(f.fecha, 14, 32);
+    pdf.setFontSize(11);
+    pdf.text(`Número: ${f.numero}`, 20, 30);
+    pdf.text(`Fecha: ${f.fecha}`, 20, 36);
 
-    if (em?.logo) {
-      pdf.addImage(em.logo, "PNG", 150, 10, 40, 40);
-    }
+    pdf.text("EMISOR", 20, 50);
+    pdf.text(em?.nombre || "", 20, 56);
+    pdf.text(em?.nif || "", 20, 62);
 
-    pdf.text("EMISOR", 14, 45);
-    pdf.text(em?.nombre || "", 14, 50);
+    pdf.text("CLIENTE", 120, 50);
+    pdf.text(cl?.nombre || "", 120, 56);
+    pdf.text(cl?.email || "", 120, 62);
 
-    pdf.text("CLIENTE", 110, 45);
-    pdf.text(cl?.nombre || "", 110, 50);
+    pdf.text("CONCEPTO:", 20, 80);
+    pdf.text(f.concepto || "", 20, 86);
 
-    autoTable(pdf, {
-      startY: 70,
-      head: [["Concepto", "Base", "IVA", "IRPF", "Total"]],
-      body: [[f.concepto, f.base, f.iva, f.irpf, f.total]],
-      theme: "grid",
-    });
+    pdf.text(`Base: ${f.base} €`, 20, 100);
+    pdf.text(`IVA: ${f.iva} €`, 20, 106);
+    pdf.text(`IRPF: ${f.irpf} €`, 20, 112);
 
-    pdf.save(f.numero + ".pdf");
+    pdf.setFontSize(14);
+    pdf.text(`TOTAL: ${f.total} €`, 20, 125);
+
+    pdf.save(`${f.numero}.pdf`);
   };
 
+  /* ================= EXCEL ================= */
   const exportExcel = () => {
     const data = facturas.map(f => ({
       Numero: f.numero,
@@ -184,26 +181,7 @@ export default function App() {
     XLSX.writeFile(wb, "facturas.xlsx");
   };
 
-  const sendEmail = async (f) => {
-    const cl = getCliente(f.clienteId);
-    const em = getEmisor(f.emisorId);
-
-    await emailjs.send(
-      "TU_SERVICE",
-      "TU_TEMPLATE",
-      {
-        to_email: cl.email,
-        cliente: cl.nombre,
-        empresa: em.nombre,
-        numero: f.numero,
-        total: f.total,
-      },
-      "TU_KEY"
-    );
-
-    alert("Email enviado");
-  };
-
+  /* ================= UI ================= */
   if (!user) {
     return (
       <div style={styles.login}>
@@ -234,32 +212,46 @@ export default function App() {
         <div style={styles.card}>
           <h3>Emisor</h3>
 
-          <select onChange={(e) =>
-            setEmisorSel(emisores.find(x => x.id === e.target.value))
-          }>
-            <option>Selecciona empresa</option>
-            {emisores.map(e => (
-              <option key={e.id} value={e.id}>{e.nombre}</option>
-            ))}
-          </select>
-
           <input style={styles.input} placeholder="Nombre"
-            onChange={e => setEmisorForm({...emisorForm, nombre: e.target.value})}
+            onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
           />
 
           <input style={styles.input} placeholder="NIF"
-            onChange={e => setEmisorForm({...emisorForm, nif: e.target.value})}
+            onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })}
           />
 
-          <input type="file" onChange={handleLogo} />
-
           <button style={styles.button} onClick={saveEmisor}>
-            Guardar
+            Guardar emisor
           </button>
         </div>
 
         <div style={styles.card}>
           <h3>Clientes</h3>
+
+          <input style={styles.input} placeholder="Nombre"
+            onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
+          />
+
+          <input style={styles.input} placeholder="Email"
+            onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
+          />
+
+          <button style={styles.button} onClick={saveCliente}>
+            Guardar cliente
+          </button>
+        </div>
+
+        <div style={styles.card}>
+          <h3>Factura</h3>
+
+          <select onChange={(e) =>
+            setEmisorSel(emisores.find(x => x.id === e.target.value))
+          }>
+            <option>Selecciona emisor</option>
+            {emisores.map(e => (
+              <option key={e.id} value={e.id}>{e.nombre}</option>
+            ))}
+          </select>
 
           <select onChange={(e) =>
             setClienteSel(clientes.find(x => x.id === e.target.value))
@@ -270,20 +262,13 @@ export default function App() {
             ))}
           </select>
 
-          <input style={styles.input} placeholder="Nombre"
-            onChange={e => setClienteForm({...clienteForm, nombre: e.target.value})}
+          <input style={styles.input} placeholder="Concepto"
+            onChange={e => setConcepto(e.target.value)}
           />
 
-          <button style={styles.button} onClick={saveCliente}>
-            Guardar
-          </button>
-        </div>
-
-        <div style={styles.card}>
-          <h3>Factura</h3>
-
-          <input style={styles.input} placeholder="Concepto" onChange={e => setConcepto(e.target.value)} />
-          <input style={styles.input} type="number" onChange={e => setBase(Number(e.target.value))} />
+          <input style={styles.input} type="number"
+            onChange={e => setBase(Number(e.target.value))}
+          />
 
           <button style={styles.button} onClick={crearFactura}>
             Crear factura
@@ -294,17 +279,16 @@ export default function App() {
           <h3>Facturas</h3>
 
           <button style={styles.button} onClick={exportExcel}>
-            Excel
+            Exportar Excel
           </button>
 
           {facturas.map(f => (
             <div key={f.id} style={styles.row}>
               {f.numero} - {f.total}€
 
-              <div>
-                <button onClick={() => descargarPDF(f)}>PDF</button>
-                <button onClick={() => sendEmail(f)}>Email</button>
-              </div>
+              <button onClick={() => descargarPDF(f)}>
+                PDF
+              </button>
             </div>
           ))}
         </div>
@@ -314,7 +298,7 @@ export default function App() {
   );
 }
 
-/* ================= STYLE FINAL ================= */
+/* ================= ESTILOS ESTABLES ================= */
 const styles = {
   app: {
     display: "flex",
@@ -325,7 +309,7 @@ const styles = {
   },
 
   sidebar: {
-    width: 240,
+    width: 220,
     background: "#0f172a",
     padding: 20,
     display: "flex",
@@ -342,7 +326,7 @@ const styles = {
   card: {
     background: "#111827",
     padding: 20,
-    borderRadius: 14,
+    borderRadius: 12,
     marginBottom: 20,
   },
 
