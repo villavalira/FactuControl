@@ -302,8 +302,8 @@ const styles = {
     display: "flex",
     height: "100vh",
     fontFamily: "Inter, system-ui, sans-serif",
-    background: "linear-gradient(135deg, #0b1220 0%, #0f172a 100%)",
-    color: "#e5e7eb",
+    background: "linear-gradient(135deg, #b15cca 0%, #702ab6 100%)",
+    color: "#c49eef",
   },
 
   sidebar: {
