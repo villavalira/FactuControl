@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
-
 import { auth, googleProvider, db } from "./firebase";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import {
