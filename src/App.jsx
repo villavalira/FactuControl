@@ -303,18 +303,20 @@ const styles = {
   app: {
     display: "flex",
     height: "100vh",
-    fontFamily: "Arial",
-    background: "#0b1220",
-    color: "#fff",
+    fontFamily: "Inter, system-ui, sans-serif",
+    background: "linear-gradient(135deg, #0b1220 0%, #0f172a 100%)",
+    color: "#e5e7eb",
   },
 
   sidebar: {
-    width: 220,
-    background: "#0f172a",
+    width: 240,
+    background: "rgba(15, 23, 42, 0.8)",
+    backdropFilter: "blur(12px)",
     padding: 20,
     display: "flex",
     flexDirection: "column",
     gap: 10,
+    borderRight: "1px solid rgba(255,255,255,0.08)",
   },
 
   main: {
@@ -324,47 +326,55 @@ const styles = {
   },
 
   card: {
-    background: "#111827",
+    background: "rgba(255,255,255,0.04)",
+    border: "1px solid rgba(255,255,255,0.08)",
     padding: 20,
-    borderRadius: 12,
+    borderRadius: 16,
     marginBottom: 20,
+    backdropFilter: "blur(10px)",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
   },
 
   input: {
     width: "100%",
-    padding: 10,
+    padding: 12,
     marginTop: 8,
     marginBottom: 8,
-    borderRadius: 8,
-    border: "1px solid #374151",
+    borderRadius: 10,
+    border: "1px solid rgba(255,255,255,0.1)",
     background: "#0b1220",
     color: "#fff",
+    outline: "none",
   },
 
   button: {
-    padding: 10,
-    background: "#3b82f6",
+    padding: "10px 14px",
+    background: "linear-gradient(135deg, #6366f1, #3b82f6)",
     color: "white",
     border: 0,
-    borderRadius: 8,
+    borderRadius: 10,
     cursor: "pointer",
     marginTop: 10,
+    fontWeight: 600,
+    transition: "all 0.2s ease",
   },
 
   menu: {
-    padding: 10,
-    background: "#1f2937",
-    color: "white",
-    border: 0,
-    borderRadius: 8,
+    padding: 12,
+    background: "rgba(255,255,255,0.05)",
+    color: "#cbd5e1",
+    border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: 10,
     cursor: "pointer",
+    textAlign: "left",
+    transition: "0.2s",
   },
 
   row: {
     display: "flex",
     justifyContent: "space-between",
-    padding: 10,
-    borderBottom: "1px solid #1f2937",
+    padding: 12,
+    borderBottom: "1px solid rgba(255,255,255,0.08)",
   },
 
   login: {
@@ -372,5 +382,6 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    background: "radial-gradient(circle at top, #0f172a, #0b1220)",
   },
 };
