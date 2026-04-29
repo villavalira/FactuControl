@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
+import * as XLSX from "xlsx";
+
 import { auth, googleProvider, db } from "./firebase";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import {
@@ -13,20 +15,21 @@ import {
 export default function App() {
   const [user, setUser] = useState(null);
 
+  /* ================= EMISORES ================= */
   const [emisores, setEmisores] = useState([]);
   const [emisorSel, setEmisorSel] = useState(null);
 
-  const [clientes, setClientes] = useState([]);
-  const [clienteSel, setClienteSel] = useState(null);
-
-  const [facturas, setFacturas] = useState([]);
-
+  const [emisorForm, setEmisorForm] = useState({
     nombre: "",
     nif: "",
     direccion: "",
     email: "",
     telefono: "",
   });
+
+  /* ================= CLIENTES ================= */
+  const [clientes, setClientes] = useState([]);
+  const [clienteSel, setClienteSel] = useState(null);
 
   const [clienteForm, setClienteForm] = useState({
     nombre: "",
@@ -35,6 +38,9 @@ export default function App() {
     email: "",
     telefono: "",
   });
+
+  /* ================= FACTURAS ================= */
+  const [facturas, setFacturas] = useState([]);
 
   const [concepto, setConcepto] = useState("");
   const [base, setBase] = useState(0);
@@ -77,6 +83,14 @@ export default function App() {
       ...emisorForm,
     });
 
+    setEmisorForm({
+      nombre: "",
+      nif: "",
+      direccion: "",
+      email: "",
+      telefono: "",
+    });
+
     loadAll(user.uid);
   };
 
@@ -84,6 +98,14 @@ export default function App() {
     await addDoc(collection(db, "clientes"), {
       uid: user.uid,
       ...clienteForm,
+    });
+
+    setClienteForm({
+      nombre: "",
+      dni: "",
+      direccion: "",
+      email: "",
+      telefono: "",
     });
 
     loadAll(user.uid);
@@ -97,8 +119,7 @@ export default function App() {
       parseInt((f.numero || "FAC-0").replace("FAC-", ""))
     );
 
-    const next = Math.max(...nums) + 1;
-    return "FAC-" + String(next).padStart(6, "0");
+    return "FAC-" + String(Math.max(...nums) + 1).padStart(6, "0");
   };
 
   /* ================= FACTURA ================= */
@@ -121,15 +142,12 @@ export default function App() {
     loadAll(user.uid);
   };
 
-  const getCliente = (id) => clientes.find(c => c.id === id);
-  const getEmisor = (id) => emisores.find(e => e.id === id);
-
-  /* ================= PDF SIMPLE (ESTABLE) ================= */
+  /* ================= PDF ================= */
   const descargarPDF = (f) => {
     const pdf = new jsPDF();
 
-    const em = getEmisor(f.emisorId);
-    const cl = getCliente(f.clienteId);
+    const em = emisores.find(e => e.id === f.emisorId);
+    const cl = clientes.find(c => c.id === f.clienteId);
 
     pdf.setFontSize(18);
     pdf.text("FACTURA", 20, 20);
@@ -139,22 +157,24 @@ export default function App() {
     pdf.text(`Fecha: ${f.fecha}`, 20, 36);
 
     pdf.text("EMISOR", 20, 50);
-    pdf.text(em?.nombre || "", 20, 56);
-    pdf.text(em?.nif || "", 20, 62);
+    pdf.text(`Nombre: ${em?.nombre}`, 20, 56);
+    pdf.text(`NIF: ${em?.nif}`, 20, 62);
+    pdf.text(`Email: ${em?.email}`, 20, 68);
+    pdf.text(`Tel: ${em?.telefono}`, 20, 74);
 
     pdf.text("CLIENTE", 120, 50);
-    pdf.text(cl?.nombre || "", 120, 56);
-    pdf.text(cl?.email || "", 120, 62);
+    pdf.text(`Nombre: ${cl?.nombre}`, 120, 56);
+    pdf.text(`Email: ${cl?.email}`, 120, 62);
+    pdf.text(`Tel: ${cl?.telefono}`, 120, 68);
 
-    pdf.text("CONCEPTO:", 20, 80);
-    pdf.text(f.concepto || "", 20, 86);
+    pdf.text(`Concepto: ${f.concepto}`, 20, 90);
 
-    pdf.text(`Base: ${f.base} €`, 20, 100);
-    pdf.text(`IVA: ${f.iva} €`, 20, 106);
-    pdf.text(`IRPF: ${f.irpf} €`, 20, 112);
+    pdf.text(`Base: ${f.base} €`, 20, 110);
+    pdf.text(`IVA: ${f.iva} €`, 20, 116);
+    pdf.text(`IRPF: ${f.irpf} €`, 20, 122);
 
     pdf.setFontSize(14);
-    pdf.text(`TOTAL: ${f.total} €`, 20, 125);
+    pdf.text(`TOTAL: ${f.total} €`, 20, 135);
 
     pdf.save(`${f.numero}.pdf`);
   };
@@ -193,7 +213,7 @@ export default function App() {
     <div style={styles.app}>
 
       <div style={styles.sidebar}>
-        <h2 style={{ color: "#ffffff" }}>FactuControl</h2>
+        <h2>FactuControl</h2>
 
         <button style={styles.menu}>Emisor</button>
         <button style={styles.menu}>Clientes</button>
@@ -206,15 +226,33 @@ export default function App() {
 
       <div style={styles.main}>
 
+        {/* EMISOR */}
         <div style={styles.card}>
           <h3>Emisor</h3>
 
           <input style={styles.input} placeholder="Nombre"
+            value={emisorForm.nombre}
             onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
           />
 
           <input style={styles.input} placeholder="NIF"
+            value={emisorForm.nif}
             onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })}
+          />
+
+          <input style={styles.input} placeholder="Dirección"
+            value={emisorForm.direccion}
+            onChange={e => setEmisorForm({ ...emisorForm, direccion: e.target.value })}
+          />
+
+          <input style={styles.input} placeholder="Email"
+            value={emisorForm.email}
+            onChange={e => setEmisorForm({ ...emisorForm, email: e.target.value })}
+          />
+
+          <input style={styles.input} placeholder="Teléfono"
+            value={emisorForm.telefono}
+            onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
           />
 
           <button style={styles.button} onClick={saveEmisor}>
@@ -222,14 +260,22 @@ export default function App() {
           </button>
         </div>
 
+        {/* CLIENTES */}
         <div style={styles.card}>
           <h3>Clientes</h3>
 
           <input style={styles.input} placeholder="Nombre"
+            value={clienteForm.nombre}
             onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
           />
 
+          <input style={styles.input} placeholder="DNI"
+            value={clienteForm.dni}
+            onChange={e => setClienteForm({ ...clienteForm, dni: e.target.value })}
+          />
+
           <input style={styles.input} placeholder="Email"
+            value={clienteForm.email}
             onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
           />
 
@@ -238,13 +284,14 @@ export default function App() {
           </button>
         </div>
 
+        {/* FACTURAS */}
         <div style={styles.card}>
           <h3>Factura</h3>
 
           <select onChange={(e) =>
             setEmisorSel(emisores.find(x => x.id === e.target.value))
           }>
-            <option>Selecciona emisor</option>
+            <option value="">Selecciona emisor</option>
             {emisores.map(e => (
               <option key={e.id} value={e.id}>{e.nombre}</option>
             ))}
@@ -253,7 +300,7 @@ export default function App() {
           <select onChange={(e) =>
             setClienteSel(clientes.find(x => x.id === e.target.value))
           }>
-            <option>Selecciona cliente</option>
+            <option value="">Selecciona cliente</option>
             {clientes.map(c => (
               <option key={c.id} value={c.id}>{c.nombre}</option>
             ))}
@@ -270,22 +317,20 @@ export default function App() {
           <button style={styles.button} onClick={crearFactura}>
             Crear factura
           </button>
-        </div>
-
-        <div style={styles.card}>
-          <h3>Facturas</h3>
 
           <button style={styles.button} onClick={exportExcel}>
             Exportar Excel
           </button>
+        </div>
+
+        {/* LISTA */}
+        <div style={styles.card}>
+          <h3>Facturas</h3>
 
           {facturas.map(f => (
             <div key={f.id} style={styles.row}>
               {f.numero} - {f.total}€
-
-              <button onClick={() => descargarPDF(f)}>
-                PDF
-              </button>
+              <button onClick={() => descargarPDF(f)}>PDF</button>
             </div>
           ))}
         </div>
@@ -295,90 +340,59 @@ export default function App() {
   );
 }
 
-/* ================= ESTILOS ESTABLES ================= */
+/* ================= ESTILOS ================= */
 const styles = {
   app: {
     display: "flex",
     height: "100vh",
-    fontFamily: "Inter, system-ui, sans-serif",
-    background: "linear-gradient(135deg, #b15cca 0%, #702ab6 100%)",
-    color: "#ffffff",
+    fontFamily: "Inter",
+    background: "linear-gradient(135deg, #6366f1, #3b82f6)",
+    color: "#fff",
   },
-
   sidebar: {
     width: 240,
-    background: "rgba(15, 23, 42, 0.8)",
-    backdropFilter: "blur(12px)",
     padding: 20,
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-    borderRight: "1px solid rgba(255,255,255,0.08)",
+    background: "rgba(0,0,0,0.3)",
   },
-
   main: {
     flex: 1,
-    padding: 30,
-    overflowY: "auto",
-  },
-
-  card: {
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid rgba(255,255,255,0.08)",
     padding: 20,
-    borderRadius: 16,
-    marginBottom: 20,
-    backdropFilter: "blur(10px)",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+    overflow: "auto",
   },
-
+  card: {
+    background: "rgba(255,255,255,0.08)",
+    padding: 20,
+    marginBottom: 20,
+    borderRadius: 12,
+  },
   input: {
     width: "100%",
-    padding: 12,
-    marginTop: 8,
-    marginBottom: 8,
-    borderRadius: 10,
-    border: "1px solid rgba(255,255,255,0.1)",
-    background: "#0b1220",
-    color: "#fff",
-    outline: "none",
+    padding: 10,
+    marginTop: 5,
+    marginBottom: 5,
   },
-
   button: {
-    padding: "10px 14px",
-    background: "linear-gradient(135deg, #6366f1, #3b82f6)",
-    color: "white",
-    border: 0,
-    borderRadius: 10,
-    cursor: "pointer",
+    padding: 10,
     marginTop: 10,
-    fontWeight: 600,
-    transition: "all 0.2s ease",
+    background: "#111",
+    color: "#fff",
+    border: 0,
+    borderRadius: 8,
   },
-
   menu: {
-    padding: 12,
-    background: "rgba(255,255,255,0.05)",
-    color: "#cbd5e1",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: 10,
-    cursor: "pointer",
-    textAlign: "left",
-    transition: "0.2s",
+    width: "100%",
+    padding: 10,
+    marginTop: 10,
   },
-
   row: {
     display: "flex",
     justifyContent: "space-between",
-    padding: 12,
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
+    padding: 10,
   },
-
   login: {
     height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "radial-gradient(circle at top, #0f172a, #0b1220)",
   },
 };
