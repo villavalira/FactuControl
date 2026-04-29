@@ -345,59 +345,84 @@ export default function App() {
 
 /* ================= STYLE ================= */
 const styles = {
-  app: { display: "flex", height: "100vh", fontFamily: "Arial", background: "#f6f7fb" },
+  app: {
+    display: "flex",
+    height: "100vh",
+    fontFamily: "Inter, system-ui, sans-serif",
+    background: "#0b1220",
+    color: "#e5e7eb",
+  },
 
-  sidebar: { width: 220, background: "#111827", color: "white", padding: 20 },
+  sidebar: {
+    width: 240,
+    background: "#0f172a",
+    padding: 20,
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    borderRight: "1px solid rgba(255,255,255,0.05)",
+  },
 
-  main: { flex: 1, padding: 30, overflowY: "auto" },
+  main: {
+    flex: 1,
+    padding: 30,
+    overflowY: "auto",
+  },
 
   card: {
-    background: "white",
+    background: "rgba(255,255,255,0.04)",
+    border: "1px solid rgba(255,255,255,0.08)",
     padding: 20,
-    borderRadius: 12,
+    borderRadius: 16,
     marginBottom: 20,
-    boxShadow: "0 10px 25px rgba(0,0,0,0.05)"
+    backdropFilter: "blur(10px)",
   },
 
   input: {
     width: "100%",
-    padding: 10,
+    padding: 12,
     marginTop: 8,
-    borderRadius: 8,
-    border: "1px solid #ddd"
+    marginBottom: 8,
+    borderRadius: 10,
+    border: "1px solid rgba(255,255,255,0.1)",
+    background: "#0b1220",
+    color: "#fff",
+    outline: "none",
   },
 
   button: {
-    padding: 10,
-    background: "#3b82f6",
+    padding: "10px 14px",
+    background: "#6366f1",
     color: "white",
     border: 0,
-    borderRadius: 8,
+    borderRadius: 10,
     cursor: "pointer",
-    marginTop: 10
+    marginTop: 10,
+    fontWeight: 600,
   },
 
   menu: {
-    width: "100%",
-    padding: 10,
-    marginTop: 10,
-    background: "#1f2937",
-    color: "white",
-    border: 0,
-    borderRadius: 8
+    padding: 12,
+    background: "transparent",
+    color: "#cbd5e1",
+    border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: 10,
+    cursor: "pointer",
+    textAlign: "left",
   },
 
   row: {
     display: "flex",
     justifyContent: "space-between",
-    padding: 10,
-    borderBottom: "1px solid #eee"
+    padding: 12,
+    borderBottom: "1px solid rgba(255,255,255,0.06)",
   },
 
   login: {
     height: "100vh",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+    background: "#0b1220",
+  },
 };
