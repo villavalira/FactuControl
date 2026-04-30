@@ -364,7 +364,7 @@ const styles = {
   },
 
   card: {
-    background: "#111827",
+    background: "#e2a9f1",
     padding: 20,
     borderRadius: 14,
     marginBottom: 20,
