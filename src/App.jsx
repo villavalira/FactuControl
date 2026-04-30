@@ -75,38 +75,61 @@ export default function App() {
   };
 
   /* ================= SAVE ================= */
+
   const saveEmisor = async () => {
-    await addDoc(collection(db, "emisores"), {
-      uid: user.uid,
-      ...emisorForm,
-    });
+    if (!user?.uid) {
+      console.log("Usuario no disponible");
+      return;
+    }
 
-    setEmisorForm({
-      nombre: "",
-      nif: "",
-      direccion: "",
-      email: "",
-      telefono: "",
-    });
+    try {
+      await addDoc(collection(db, "emisores"), {
+        uid: user.uid,
+        ...emisorForm,
+      });
 
-    loadAll(user.uid);
+      setEmisorForm({
+        nombre: "",
+        nif: "",
+        direccion: "",
+        email: "",
+        telefono: "",
+      });
+
+      loadAll(user.uid);
+
+      console.log("Emisor guardado correctamente");
+    } catch (error) {
+      console.error("Error guardando emisor:", error);
+    }
   };
 
   const saveCliente = async () => {
-    await addDoc(collection(db, "clientes"), {
-      uid: user.uid,
-      ...clienteForm,
-    });
+    if (!user?.uid) {
+      console.log("Usuario no disponible");
+      return;
+    }
 
-    setClienteForm({
-      nombre: "",
-      dni: "",
-      direccion: "",
-      email: "",
-      telefono: "",
-    });
+    try {
+      await addDoc(collection(db, "clientes"), {
+        uid: user.uid,
+        ...clienteForm,
+      });
 
-    loadAll(user.uid);
+      setClienteForm({
+        nombre: "",
+        dni: "",
+        direccion: "",
+        email: "",
+        telefono: "",
+      });
+
+      loadAll(user.uid);
+
+      console.log("Cliente guardado correctamente");
+    } catch (error) {
+      console.error("Error guardando cliente:", error);
+    }
   };
 
   /* ================= NUMERACIÓN ================= */
