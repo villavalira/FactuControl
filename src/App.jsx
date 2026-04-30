@@ -398,6 +398,9 @@ const styles = {
     border: 0,
     borderRadius: 8,
     cursor: "pointer",
+    fontWeight: "bold",
+    fontWeight: 600,
+letterSpacing: 0.3,
   },
 
   row: {
