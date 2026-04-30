@@ -350,7 +350,7 @@ const styles = {
 
   sidebar: {
     width: 240,
-    background: "#2ea3dd",
+    background: "#791f8f",
     padding: 20,
     display: "flex",
     flexDirection: "column",
