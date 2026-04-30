@@ -394,7 +394,7 @@ const styles = {
   menu: {
     padding: 10,
     background: "#e482da",
-    color: "white",
+    color: "black",
     border: 0,
     borderRadius: 8,
     cursor: "pointer",
