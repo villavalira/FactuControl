@@ -211,7 +211,7 @@ export default function App() {
     <div style={styles.app}>
 
       <div style={styles.sidebar}>
-        <h2>FactuControl</h2>
+        <h2 style={styles.sidebarTitle}>FactuControl</h2>
 
         <button style={styles.menu}>Emisor</button>
         <button style={styles.menu}>Clientes</button>
@@ -401,6 +401,7 @@ const styles = {
     fontWeight: "bold",
     fontWeight: 600,
 letterSpacing: 0.3,
+    textTransform: "uppercase",
   },
 
   row: {
@@ -409,7 +410,12 @@ letterSpacing: 0.3,
     padding: 10,
     borderBottom: "1px solid #e482da",
   },
-
+sidebarTitle: {
+  color: "#38bdf8",
+  fontSize: 22,
+  fontWeight: "700",
+  marginBottom: 20
+},
   login: {
     height: "100vh",
     display: "flex",
