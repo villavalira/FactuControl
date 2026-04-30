@@ -74,19 +74,24 @@ export default function App() {
     setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
   };
 
-  /* ================= SAVE ================= */
-
+    /* ================= SAVE EMISOR ================= */
   const saveEmisor = async () => {
+    console.log("CLICK EMISOR");
+
     if (!user?.uid) {
       console.log("Usuario no disponible");
       return;
     }
 
     try {
+      console.log("Guardando emisor:", emisorForm);
+
       await addDoc(collection(db, "emisores"), {
         uid: user.uid,
         ...emisorForm,
       });
+
+      console.log("Emisor guardado OK");
 
       setEmisorForm({
         nombre: "",
@@ -97,24 +102,29 @@ export default function App() {
       });
 
       loadAll(user.uid);
-
-      console.log("Emisor guardado correctamente");
     } catch (error) {
       console.error("Error guardando emisor:", error);
     }
   };
 
+  /* ================= SAVE CLIENTE ================= */
   const saveCliente = async () => {
+    console.log("CLICK CLIENTE");
+
     if (!user?.uid) {
       console.log("Usuario no disponible");
       return;
     }
 
     try {
+      console.log("Guardando cliente:", clienteForm);
+
       await addDoc(collection(db, "clientes"), {
         uid: user.uid,
         ...clienteForm,
       });
+
+      console.log("Cliente guardado OK");
 
       setClienteForm({
         nombre: "",
@@ -125,13 +135,10 @@ export default function App() {
       });
 
       loadAll(user.uid);
-
-      console.log("Cliente guardado correctamente");
     } catch (error) {
       console.error("Error guardando cliente:", error);
     }
   };
-
   /* ================= NUMERACIÓN ================= */
   const generarNumero = () => {
     if (!facturas.length) return "FAC-000001";
