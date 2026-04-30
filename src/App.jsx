@@ -12,7 +12,12 @@ import {
 
 export default function App() {
   const [user, setUser] = useState(null);
-
+<button type="button" onClick={saveEmisor}>
+  Guardar emisor
+</button>
+<button type="button" onClick={saveCliente}>
+  Guardar cliente
+</button>
   /* ================= EMISORES ================= */
   const [emisores, setEmisores] = useState([]);
   const [emisorSel, setEmisorSel] = useState(null);
