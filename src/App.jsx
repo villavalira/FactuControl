@@ -343,50 +343,70 @@ const styles = {
   app: {
     display: "flex",
     height: "100vh",
-    fontFamily: "Inter",
-    background: "linear-gradient(135deg, #6366f1, #3b82f6)",
+    fontFamily: "Arial",
+    background: "#0b1220",
     color: "#fff",
   },
+
   sidebar: {
     width: 240,
+    background: "#0f172a",
     padding: 20,
-    background: "rgba(0,0,0,0.3)",
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
   },
+
   main: {
     flex: 1,
-    padding: 20,
-    overflow: "auto",
+    padding: 30,
+    overflowY: "auto",
   },
+
   card: {
-    background: "rgba(255,255,255,0.08)",
+    background: "#111827",
     padding: 20,
+    borderRadius: 14,
     marginBottom: 20,
-    borderRadius: 12,
   },
+
   input: {
     width: "100%",
     padding: 10,
-    marginTop: 5,
-    marginBottom: 5,
+    marginTop: 8,
+    marginBottom: 8,
+    borderRadius: 8,
+    border: "1px solid #374151",
+    background: "#0b1220",
+    color: "#fff",
   },
+
   button: {
     padding: 10,
-    marginTop: 10,
-    background: "#111",
-    color: "#fff",
+    background: "#3b82f6",
+    color: "white",
     border: 0,
     borderRadius: 8,
-  },
-  menu: {
-    width: "100%",
-    padding: 10,
+    cursor: "pointer",
     marginTop: 10,
   },
+
+  menu: {
+    padding: 10,
+    background: "#1f2937",
+    color: "white",
+    border: 0,
+    borderRadius: 8,
+    cursor: "pointer",
+  },
+
   row: {
     display: "flex",
     justifyContent: "space-between",
     padding: 10,
+    borderBottom: "1px solid #1f2937",
   },
+
   login: {
     height: "100vh",
     display: "flex",
