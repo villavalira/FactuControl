@@ -75,8 +75,8 @@ export default function App() {
   };
 
     /* ================= SAVE EMISOR ================= */
-  const saveEmisor = async () => {
-    console.log("CLICK EMISOR");
+ const saveEmisor = async () => {
+  console.log("🔥 SAVE EMISOR EJECUTADO");
 
     if (!user?.uid) {
       console.log("Usuario no disponible");
