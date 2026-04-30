@@ -20,105 +20,22 @@ export default function App() {
   const [seccion, setSeccion] = useState("facturas");
 
   /* ================= EMISORES ================= */
-<input
-  style={styles.input}
-  placeholder="Nombre"
-  value={emisorForm.nombre}
-  onChange={(e) =>
-    setEmisorForm({ ...emisorForm, nombre: e.target.value })
-  }
-/>
-
-<input
-  style={styles.input}
-  placeholder="NIF"
-  value={emisorForm.nif}
-  onChange={(e) =>
-    setEmisorForm({ ...emisorForm, nif: e.target.value })
-  }
-/>
-
-<input
-  style={styles.input}
-  placeholder="Dirección"
-  value={emisorForm.direccion}
-  onChange={(e) =>
-    setEmisorForm({ ...emisorForm, direccion: e.target.value })
-  }
-/>
-
-<input
-  style={styles.input}
-  placeholder="Email"
-  value={emisorForm.email}
-  onChange={(e) =>
-    setEmisorForm({ ...emisorForm, email: e.target.value })
-  }
-/>
-
-<input
-  style={styles.input}
-  placeholder="Teléfono"
-  value={emisorForm.telefono}
-  onChange={(e) =>
-    setEmisorForm({ ...emisorForm, telefono: e.target.value })
-  }
-/>
+const [emisorForm, setEmisorForm] = useState({
+  nombre: "",
+  nif: "",
+  direccion: "",
+  email: "",
+  telefono: "",
+});
 
   /* ================= CLIENTES ================= */
-{/* CLIENTE */}
-<div style={styles.card}>
-  <h3>Clientes</h3>
-
-  <input
-    style={styles.input}
-    placeholder="Nombre"
-    value={clienteForm.nombre}
-    onChange={e =>
-      setClienteForm({ ...clienteForm, nombre: e.target.value })
-    }
-  />
-
-  <input
-    style={styles.input}
-    placeholder="DNI"
-    value={clienteForm.dni}
-    onChange={e =>
-      setClienteForm({ ...clienteForm, dni: e.target.value })
-    }
-  />
-
-  <input
-    style={styles.input}
-    placeholder="Dirección"
-    value={clienteForm.direccion}
-    onChange={e =>
-      setClienteForm({ ...clienteForm, direccion: e.target.value })
-    }
-  />
-
-  <input
-    style={styles.input}
-    placeholder="Email"
-    value={clienteForm.email}
-    onChange={e =>
-      setClienteForm({ ...clienteForm, email: e.target.value })
-    }
-  />
-
-  <input
-    style={styles.input}
-    placeholder="Teléfono"
-    value={clienteForm.telefono}
-    onChange={e =>
-      setClienteForm({ ...clienteForm, telefono: e.target.value })
-    }
-  />
-
-  <button style={styles.button} onClick={saveCliente}>
-    Guardar cliente
-  </button>
-</div>
+const [clienteForm, setClienteForm] = useState({
+  nombre: "",
+  dni: "",
+  direccion: "",
+  email: "",
+  telefono: "",
+});
   /* ================= FACTURAS ================= */
   const [facturas, setFacturas] = useState([]);
 
