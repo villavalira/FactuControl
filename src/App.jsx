@@ -19,9 +19,12 @@ export default function App() {
   /* ================= NAV ================= */
   const [seccion, setSeccion] = useState("emisor");
 
-  /* ================= EMISORES ================= */
+  /* ================= DATA ================= */
   const [emisores, setEmisores] = useState([]);
+  const [clientes, setClientes] = useState([]);
+  const [facturas, setFacturas] = useState([]);
 
+  /* ================= FORMS ================= */
   const [emisorForm, setEmisorForm] = useState({
     nombre: "",
     nif: "",
@@ -30,9 +33,6 @@ export default function App() {
     telefono: "",
   });
 
-  /* ================= CLIENTES ================= */
-  const [clientes, setClientes] = useState([]);
-
   const [clienteForm, setClienteForm] = useState({
     nombre: "",
     dni: "",
@@ -40,9 +40,6 @@ export default function App() {
     email: "",
     telefono: "",
   });
-
-  /* ================= FACTURAS ================= */
-  const [facturas, setFacturas] = useState([]);
 
   const [concepto, setConcepto] = useState("");
   const [base, setBase] = useState(0);
@@ -54,20 +51,19 @@ export default function App() {
   const irpf = base * IRPF;
   const total = base + iva - irpf;
 
-  /* ================= AUTH LISTENER ================= */
+  /* ================= AUTH ================= */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
       if (u) loadAll(u.uid);
     });
-
     return () => unsub();
   }, []);
 
   const login = () => signInWithPopup(auth, googleProvider);
   const logout = () => signOut(auth);
 
-  /* ================= LOAD DATA ================= */
+  /* ================= LOAD ================= */
   const loadAll = async (uid) => {
     const e = await getDocs(query(collection(db, "emisores"), where("uid", "==", uid)));
     const c = await getDocs(query(collection(db, "clientes"), where("uid", "==", uid)));
@@ -163,7 +159,6 @@ export default function App() {
       {/* MAIN */}
       <div style={styles.main}>
 
-        {/* EMISOR */}
         {seccion === "emisor" && (
           <div style={styles.card}>
             <h3>Emisor</h3>
@@ -175,13 +170,10 @@ export default function App() {
               </div>
             ))}
 
-            <input
-              style={styles.input}
+            <input style={styles.input}
               placeholder="Nombre"
               value={emisorForm.nombre}
-              onChange={(e) =>
-                setEmisorForm({ ...emisorForm, nombre: e.target.value })
-              }
+              onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
             />
 
             <button style={styles.button} onClick={saveEmisor}>
@@ -190,7 +182,6 @@ export default function App() {
           </div>
         )}
 
-        {/* CLIENTES */}
         {seccion === "clientes" && (
           <div style={styles.card}>
             <h3>Clientes</h3>
@@ -202,13 +193,10 @@ export default function App() {
               </div>
             ))}
 
-            <input
-              style={styles.input}
+            <input style={styles.input}
               placeholder="Nombre"
               value={clienteForm.nombre}
-              onChange={(e) =>
-                setClienteForm({ ...clienteForm, nombre: e.target.value })
-              }
+              onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
             />
 
             <button style={styles.button} onClick={saveCliente}>
@@ -217,30 +205,93 @@ export default function App() {
           </div>
         )}
 
-        {/* FACTURAS */}
-        {seccion === "facturas" && (
-          <div style={styles.card}>
-            <h3>Facturas</h3>
-
-            <input
-              style={styles.input}
-              placeholder="Concepto"
-              onChange={(e) => setConcepto(e.target.value)}
-            />
-
-            <input
-              style={styles.input}
-              type="number"
-              onChange={(e) => setBase(Number(e.target.value))}
-            />
-
-            <button style={styles.button}>
-              Crear factura
-            </button>
-          </div>
-        )}
-
       </div>
     </div>
   );
 }
+
+/* ================= ESTILOS (ESTO ES LO QUE TE FALTABA) ================= */
+const styles = {
+  app: {
+    display: "flex",
+    height: "100vh",
+    fontFamily: "Arial",
+    background: "#834fcd",
+    color: "#fff",
+  },
+
+  sidebar: {
+    width: 240,
+    background: "#791f8f",
+    padding: 20,
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+  },
+
+  main: {
+    flex: 1,
+    padding: 30,
+    overflowY: "auto",
+  },
+
+  card: {
+    background: "#e2a9f1",
+    padding: 20,
+    borderRadius: 14,
+    marginBottom: 20,
+  },
+
+  input: {
+    width: "100%",
+    padding: 10,
+    marginTop: 8,
+    marginBottom: 8,
+    borderRadius: 8,
+    border: "1px solid #374151",
+    background: "#0b1220",
+    color: "#fff",
+  },
+
+  button: {
+    padding: 10,
+    background: "#3b82f6",
+    color: "white",
+    border: 0,
+    borderRadius: 8,
+    cursor: "pointer",
+    marginTop: 10,
+  },
+
+  menu: {
+    padding: 10,
+    background: "#e482da",
+    color: "black",
+    border: 0,
+    borderRadius: 8,
+    cursor: "pointer",
+    fontWeight: 600,
+    textTransform: "uppercase",
+  },
+
+  row: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: 10,
+    borderBottom: "1px solid #e482da",
+  },
+
+  sidebarTitle: {
+    color: "#38bdf8",
+    fontSize: 22,
+    fontWeight: "700",
+    marginBottom: 20,
+  },
+
+  login: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+};
