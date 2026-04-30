@@ -243,14 +243,18 @@ export default function App() {
 
       <div style={styles.sidebar}>
         <h2 style={styles.sidebarTitle}>FactuControl</h2>
+const [seccion, setSeccion] = useState("emisor");
+        <button style={styles.menu} onClick={() => setSeccion("emisor")}>
+  Emisor
+</button>
 
-        <button style={styles.menu}>Emisor</button>
-        <button style={styles.menu}>Clientes</button>
-        <button style={styles.menu}>Facturas</button>
+<button style={styles.menu} onClick={() => setSeccion("clientes")}>
+  Clientes
+</button>
 
-        <button onClick={logout} style={{ ...styles.menu, background: "#ef4444" }}>
-          Logout
-        </button>
+<button style={styles.menu} onClick={() => setSeccion("facturas")}>
+  Facturas
+</button>
       </div>
 
       <div style={styles.main}>
