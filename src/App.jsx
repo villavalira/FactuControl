@@ -344,13 +344,13 @@ const styles = {
     display: "flex",
     height: "100vh",
     fontFamily: "Arial",
-    background: "#0b1220",
+    background: "#834fcd",
     color: "#fff",
   },
 
   sidebar: {
     width: 240,
-    background: "#0f172a",
+    background: "#2ea3dd",
     padding: 20,
     display: "flex",
     flexDirection: "column",
@@ -393,7 +393,7 @@ const styles = {
 
   menu: {
     padding: 10,
-    background: "#1f2937",
+    background: "#e482da",
     color: "white",
     border: 0,
     borderRadius: 8,
@@ -404,7 +404,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     padding: 10,
-    borderBottom: "1px solid #1f2937",
+    borderBottom: "1px solid #e482da",
   },
 
   login: {
