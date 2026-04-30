@@ -12,8 +12,7 @@ import {
 
 export default function App() {
   const [user, setUser] = useState(null);
-{seccion === "emisor" && (
-  <div style={styles.card}>
+
   {* ================= EMISORES ================= *}
   const [emisores, setEmisores] = useState([]);
   const [emisorSel, setEmisorSel] = useState(null);
@@ -26,7 +25,7 @@ export default function App() {
     telefono: "",
   });
   </div>
-)}
+
   /* ================= CLIENTES ================= */
   const [clientes, setClientes] = useState([]);
   const [clienteSel, setClienteSel] = useState(null);
