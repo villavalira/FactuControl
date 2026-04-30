@@ -258,29 +258,59 @@ export default function App() {
           </button>
         </div>
 
-        {/* CLIENTES */}
-        <div style={styles.card}>
-          <h3>Clientes</h3>
+       {/* CLIENTE */}
+<div style={styles.card}>
+  <h3>Clientes</h3>
 
-          <input style={styles.input} placeholder="Nombre"
-            value={clienteForm.nombre}
-            onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
-          />
+  <input
+    style={styles.input}
+    placeholder="Nombre"
+    value={clienteForm.nombre}
+    onChange={e =>
+      setClienteForm({ ...clienteForm, nombre: e.target.value })
+    }
+  />
 
-          <input style={styles.input} placeholder="DNI"
-            value={clienteForm.dni}
-            onChange={e => setClienteForm({ ...clienteForm, dni: e.target.value })}
-          />
+  <input
+    style={styles.input}
+    placeholder="DNI"
+    value={clienteForm.dni}
+    onChange={e =>
+      setClienteForm({ ...clienteForm, dni: e.target.value })
+    }
+  />
 
-          <input style={styles.input} placeholder="Email"
-            value={clienteForm.email}
-            onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
-          />
+  <input
+    style={styles.input}
+    placeholder="Dirección"
+    value={clienteForm.direccion}
+    onChange={e =>
+      setClienteForm({ ...clienteForm, direccion: e.target.value })
+    }
+  />
 
-          <button style={styles.button} onClick={saveCliente}>
-            Guardar cliente
-          </button>
-        </div>
+  <input
+    style={styles.input}
+    placeholder="Email"
+    value={clienteForm.email}
+    onChange={e =>
+      setClienteForm({ ...clienteForm, email: e.target.value })
+    }
+  />
+
+  <input
+    style={styles.input}
+    placeholder="Teléfono"
+    value={clienteForm.telefono}
+    onChange={e =>
+      setClienteForm({ ...clienteForm, telefono: e.target.value })
+    }
+  />
+
+  <button style={styles.button} onClick={saveCliente}>
+    Guardar cliente
+  </button>
+</div> 
 
         {/* FACTURAS */}
         <div style={styles.card}>
