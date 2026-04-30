@@ -238,16 +238,7 @@ export default function App() {
   }
 
   return (
-     <div>
-      {/* BOTONES SIEMPRE DENTRO DEL RETURN */}
-      <button type="button" onClick={saveEmisor}>
-        Guardar emisor
-      </button>
-
-      <button type="button" onClick={saveCliente}>
-        Guardar cliente
-      </button>
-    </div>
+  
     <div style={styles.app}>
 
       <div style={styles.sidebar}>
@@ -293,7 +284,7 @@ export default function App() {
             onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
           />
 
-         <button onClick={() => console.log("CLICK BOTÓN EMISOR")}>
+         <button style={styles.button} onClick={saveEmisor}>
   Guardar emisor
 </button> 
         </div>
