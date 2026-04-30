@@ -283,9 +283,9 @@ export default function App() {
             onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
           />
 
-          <button style={styles.button} onClick={saveEmisor}>
-            Guardar emisor
-          </button>
+         <button onClick={() => console.log("CLICK BOTÓN EMISOR")}>
+  Guardar emisor
+</button> 
         </div>
 
        {/* CLIENTE */}
