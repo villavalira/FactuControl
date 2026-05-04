@@ -59,16 +59,16 @@ export default function App() {
   const total = base + iva - irpf;
 
   /* ================= AUTH ================= */
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      if (u) loadAll(u.uid);
-    });
-    return () => unsub();
-  }, []);
+useEffect(() => {
+  const unsub = onAuthStateChanged(auth, (u) => {
+    if (!u?.uid) return;
 
-  const login = () => signInWithPopup(auth, googleProvider);
-  const logout = () => signOut(auth);
+    setUser(u);
+    loadAll(u.uid);
+  });
+
+  return () => unsub();
+}, []);
 
   /* ================= LOAD ================= */
 const loadAll = async (uid) => {
