@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import jsPDF from "jspdf";
 import { auth, googleProvider, db } from "./firebase";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import {
@@ -43,7 +42,7 @@ export default function App() {
     telefono: "",
   });
 
-  /* ================= FACTURA ================= */
+  /* ================= FACTURAS ================= */
   const [facturas, setFacturas] = useState([]);
 
   const [concepto, setConcepto] = useState("");
@@ -79,39 +78,15 @@ export default function App() {
     setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
   };
 
-  /* ================= SAVE ================= */
-const saveEmisor = async () => {
-  console.log("👉 CLICK EMISOR");
+  /* ================= EMISOR ================= */
+  const saveEmisor = async () => {
+    if (!user?.uid) return;
 
-  if (!user?.uid) {
-    console.log("❌ Usuario no logueado");
-    return;
-  }
-
-  console.log("✅ user OK:", user.uid);
-  console.log("📦 datos:", emisorForm);
-
-  try {
-    const docRef = await addDoc(collection(db, "emisores"), {
+    await addDoc(collection(db, "emisores"), {
       uid: user.uid,
-      nombre: emisorForm.nombre || "",
-      nif: emisorForm.nif || "",
-      direccion: emisorForm.direccion || "",
-      email: emisorForm.email || "",
-      telefono: emisorForm.telefono || "",
-      createdAt: new Date()
+      ...emisorForm,
     });
 
-    console.log("🎉 GUARDADO OK ID:", docRef.id);
-
-  } catch (error) {
-    console.error("🔥 ERROR FIRESTORE:", error.code, error.message);
-  }
-};
-
-    console.log("✅ GUARDADO EN FIREBASE");
-
-    // limpiar formulario
     setEmisorForm({
       nombre: "",
       nif: "",
@@ -120,14 +95,18 @@ const saveEmisor = async () => {
       telefono: "",
     });
 
-    // recargar datos
-    await loadAll(user.uid);
+    loadAll(user.uid);
+  };
 
-  } catch (error) {
-    console.error("🔥 ERROR:", error);
-  }
-};
+  const deleteEmisor = async (id) => {
+    await deleteDoc(doc(db, "emisores", id));
+    loadAll(user.uid);
+  };
+
+  /* ================= CLIENTE ================= */
   const saveCliente = async () => {
+    if (!user?.uid) return;
+
     await addDoc(collection(db, "clientes"), {
       uid: user.uid,
       ...clienteForm,
@@ -144,18 +123,12 @@ const saveEmisor = async () => {
     loadAll(user.uid);
   };
 
-  /* ================= DELETE ================= */
-  const deleteEmisor = async (id) => {
-    await deleteDoc(doc(db, "emisores", id));
-    loadAll(user.uid);
-  };
-
   const deleteCliente = async (id) => {
     await deleteDoc(doc(db, "clientes", id));
     loadAll(user.uid);
   };
 
-  /* ================= NUM FACTURA ================= */
+  /* ================= FACTURA NUM ================= */
   const generarNumero = () => {
     if (!facturas.length) return "FAC-000001";
 
@@ -206,7 +179,7 @@ const saveEmisor = async () => {
 
       {/* SIDEBAR */}
       <div style={styles.sidebar}>
-        <h2 style={styles.sidebarTitle}>FactuControl</h2>
+        <h2>FactuControl</h2>
 
         <button style={styles.menu} onClick={() => setSeccion("emisor")}>
           Emisor
@@ -220,7 +193,7 @@ const saveEmisor = async () => {
           Facturas
         </button>
 
-        <button style={{ ...styles.menu, background: "#ef4444" }} onClick={logout}>
+        <button style={{ ...styles.menu, background: "red" }} onClick={logout}>
           Logout
         </button>
       </div>
@@ -231,43 +204,28 @@ const saveEmisor = async () => {
         {/* EMISOR */}
         {seccion === "emisor" && (
           <div style={styles.card}>
-            <h3>Emisor</h3>
+            <h3>Emisores</h3>
 
             {emisores.map(e => (
               <div key={e.id} style={styles.row}>
-                {e.nombre}
-                <button onClick={() => deleteEmisor(e.id)}>Borrar</button>
+                <span onClick={() => setEmisorSel(e)}>
+                  {e.nombre}
+                </span>
+                <button onClick={() => deleteEmisor(e.id)}>X</button>
               </div>
             ))}
 
-            <input style={styles.input} placeholder="Nombre"
+            <input placeholder="Nombre"
               value={emisorForm.nombre}
               onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
             />
 
-            <input style={styles.input} placeholder="NIF"
+            <input placeholder="NIF"
               value={emisorForm.nif}
               onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })}
             />
 
-            <input style={styles.input} placeholder="Dirección"
-              value={emisorForm.direccion}
-              onChange={e => setEmisorForm({ ...emisorForm, direccion: e.target.value })}
-            />
-
-            <input style={styles.input} placeholder="Email"
-              value={emisorForm.email}
-              onChange={e => setEmisorForm({ ...emisorForm, email: e.target.value })}
-            />
-
-            <input style={styles.input} placeholder="Teléfono"
-              value={emisorForm.telefono}
-              onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
-            />
-
-            <button style={styles.button} onClick={saveEmisor}>
-              Guardar emisor
-            </button>
+            <button onClick={saveEmisor}>Guardar</button>
           </div>
         )}
 
@@ -278,50 +236,30 @@ const saveEmisor = async () => {
 
             {clientes.map(c => (
               <div key={c.id} style={styles.row}>
-                {c.nombre}
-                <button onClick={() => deleteCliente(c.id)}>Borrar</button>
+                <span onClick={() => setClienteSel(c)}>
+                  {c.nombre}
+                </span>
+                <button onClick={() => deleteCliente(c.id)}>X</button>
               </div>
             ))}
 
-            <input style={styles.input} placeholder="Nombre"
+            <input placeholder="Nombre"
               value={clienteForm.nombre}
               onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
             />
 
-            <input style={styles.input} placeholder="DNI"
-              value={clienteForm.dni}
-              onChange={e => setClienteForm({ ...clienteForm, dni: e.target.value })}
-            />
-
-            <input style={styles.input} placeholder="Dirección"
-              value={clienteForm.direccion}
-              onChange={e => setClienteForm({ ...clienteForm, direccion: e.target.value })}
-            />
-
-            <input style={styles.input} placeholder="Email"
-              value={clienteForm.email}
-              onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
-            />
-
-            <input style={styles.input} placeholder="Teléfono"
-              value={clienteForm.telefono}
-              onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })}
-            />
-
-            <button style={styles.button} onClick={saveCliente}>
-              Guardar cliente
-            </button>
+            <button onClick={saveCliente}>Guardar</button>
           </div>
         )}
 
         {/* FACTURAS */}
         {seccion === "facturas" && (
           <div style={styles.card}>
-            <h3>Crear factura</h3>
+            <h3>Factura</h3>
 
-            <p>Número: {generarNumero()}</p>
+            <p>Numero: {generarNumero()}</p>
 
-            <select style={styles.input} onChange={e =>
+            <select onChange={e =>
               setEmisorSel(emisores.find(x => x.id === e.target.value))
             }>
               <option>Emisor</option>
@@ -330,7 +268,7 @@ const saveEmisor = async () => {
               ))}
             </select>
 
-            <select style={styles.input} onChange={e =>
+            <select onChange={e =>
               setClienteSel(clientes.find(x => x.id === e.target.value))
             }>
               <option>Cliente</option>
@@ -339,23 +277,21 @@ const saveEmisor = async () => {
               ))}
             </select>
 
-            <input style={styles.input} placeholder="Concepto"
+            <input placeholder="Concepto"
               value={concepto}
               onChange={e => setConcepto(e.target.value)}
             />
 
-            <input style={styles.input} type="number"
+            <input type="number"
               value={base}
               onChange={e => setBase(Number(e.target.value))}
             />
 
-            <p>IVA: {iva.toFixed(2)} €</p>
-            <p>IRPF: {irpf.toFixed(2)} €</p>
-            <p><b>Total: {total.toFixed(2)} €</b></p>
+            <p>IVA: {iva.toFixed(2)}</p>
+            <p>IRPF: {irpf.toFixed(2)}</p>
+            <p><b>Total: {total.toFixed(2)}</b></p>
 
-            <button style={styles.button} onClick={crearFactura}>
-              Crear factura
-            </button>
+            <button onClick={crearFactura}>Crear factura</button>
           </div>
         )}
 
@@ -366,14 +302,12 @@ const saveEmisor = async () => {
 
 /* ================= ESTILOS ================= */
 const styles = {
-  app: { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff" },
-  sidebar: { width: 240, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 },
-  main: { flex: 1, padding: 30 },
-  card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14 },
-  input: { width: "100%", padding: 10, margin: "6px 0", borderRadius: 8 },
-  button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" },
-  menu: { padding: 10, background: "#e482da", border: 0, borderRadius: 8, fontWeight: "bold" },
-  row: { display: "flex", justifyContent: "space-between", padding: 8 },
-  sidebarTitle: { fontSize: 22, marginBottom: 20 },
-  login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" },
+  app: { display: "flex", minHeight: "100vh", fontFamily: "Arial" },
+  sidebar: { width: 200, background: "#333", color: "#fff", padding: 20 },
+  main: { flex: 1, padding: 20 },
+  card: { background: "#eee", padding: 20, borderRadius: 10 },
+  menu: { display: "block", margin: 10 },
+  row: { display: "flex", justifyContent: "space-between" },
+  button: { padding: 10 },
+  login: { display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }
 };
