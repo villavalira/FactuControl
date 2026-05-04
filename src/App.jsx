@@ -129,12 +129,12 @@ const loadFacturas = async (uid) => {
       telefono: "",
     });
 
-    loadAll(user.uid);
+     loadEmisores(user.uid);
   };
 
   const deleteEmisor = async (id) => {
     await deleteDoc(doc(db, "emisores", id));
-    loadAll(user.uid);
+    loadEmisores(user.uid);
   };
 
   /* ================= CLIENTE SAVE ================= */
@@ -175,13 +175,13 @@ const saveCliente = async () => {
       telefono: "",
     });
 
-    await loadAll(user.uid);
+     loadCliente(user.uid);
 
   };
 
-  const deleteEmisor = async (id) => {
-    await deleteDoc(doc(db, "emisores", id));
-    loadAll(user.uid);
+  const deleteCliente = async (id) => {
+    await deleteDoc(doc(db, "cliente", id));
+    loadCliente(user.uid);
   }
 
   /* ================= FACTURA ================= */
