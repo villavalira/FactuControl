@@ -79,30 +79,49 @@ export default function App() {
   };
 
   /* ================= EMISOR ================= */
-  const saveEmisor = async () => {
-    if (!user?.uid) return;
+ {seccion === "emisor" && (
+  <div style={styles.card}>
+    <h3>Emisor</h3>
 
-    await addDoc(collection(db, "emisores"), {
-      uid: user.uid,
-      ...emisorForm,
-    });
+    {emisores.map(e => (
+      <div key={e.id} style={styles.row}>
+        <span onClick={() => setEmisorSel(e)}>
+          {e.nombre}
+        </span>
+        <button onClick={() => deleteEmisor(e.id)}>Borrar</button>
+      </div>
+    ))}
 
-    setEmisorForm({
-      nombre: "",
-      nif: "",
-      direccion: "",
-      email: "",
-      telefono: "",
-    });
+    <input style={styles.input} placeholder="Nombre"
+      value={emisorForm.nombre}
+      onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
+    />
 
-    loadAll(user.uid);
-  };
+    <input style={styles.input} placeholder="CIF/NIF"
+      value={emisorForm.nif}
+      onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })}
+    />
 
-  const deleteEmisor = async (id) => {
-    await deleteDoc(doc(db, "emisores", id));
-    loadAll(user.uid);
-  };
+    <input style={styles.input} placeholder="Dirección"
+      value={emisorForm.direccion}
+      onChange={e => setEmisorForm({ ...emisorForm, direccion: e.target.value })}
+    />
 
+    <input style={styles.input} placeholder="Email"
+      value={emisorForm.email}
+      onChange={e => setEmisorForm({ ...emisorForm, email: e.target.value })}
+    />
+
+    <input style={styles.input} placeholder="Teléfono"
+      value={emisorForm.telefono}
+      onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
+    />
+
+    <button style={styles.button} onClick={saveEmisor}>
+      Guardar emisor
+    </button>
+  </div>
+)}
   /* ================= CLIENTE ================= */
   const saveCliente = async () => {
     if (!user?.uid) return;
