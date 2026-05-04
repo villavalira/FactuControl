@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import jsPDF from "jspdf";
 import { auth, googleProvider, db } from "./firebase";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import {
@@ -12,6 +13,7 @@ import {
 } from "firebase/firestore";
 
 export default function App() {
+
   /* ================= AUTH ================= */
   const [user, setUser] = useState(null);
 
@@ -30,13 +32,13 @@ export default function App() {
     telefono: "",
   });
 
-  /* ================= CLIENTE ================= */
+  /* ================= CLIENTES ================= */
   const [clientes, setClientes] = useState([]);
   const [clienteSel, setClienteSel] = useState(null);
 
   const [clienteForm, setClienteForm] = useState({
     nombre: "",
-    dni: "",
+    nif: "",
     direccion: "",
     email: "",
     telefono: "",
@@ -79,49 +81,31 @@ export default function App() {
   };
 
   /* ================= EMISOR ================= */
- {seccion === "emisor" && (
-  <div style={styles.card}>
-    <h3>Emisor</h3>
+  const saveEmisor = async () => {
+    if (!user?.uid) return;
 
-    {emisores.map(e => (
-      <div key={e.id} style={styles.row}>
-        <span onClick={() => setEmisorSel(e)}>
-          {e.nombre}
-        </span>
-        <button onClick={() => deleteEmisor(e.id)}>Borrar</button>
-      </div>
-    ))}
+    await addDoc(collection(db, "emisores"), {
+      uid: user.uid,
+      ...emisorForm,
+      createdAt: new Date(),
+    });
 
-    <input style={styles.input} placeholder="Nombre"
-      value={emisorForm.nombre}
-      onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
-    />
+    setEmisorForm({
+      nombre: "",
+      nif: "",
+      direccion: "",
+      email: "",
+      telefono: "",
+    });
 
-    <input style={styles.input} placeholder="CIF/NIF"
-      value={emisorForm.nif}
-      onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })}
-    />
+    loadAll(user.uid);
+  };
 
-    <input style={styles.input} placeholder="Dirección"
-      value={emisorForm.direccion}
-      onChange={e => setEmisorForm({ ...emisorForm, direccion: e.target.value })}
-    />
+  const deleteEmisor = async (id) => {
+    await deleteDoc(doc(db, "emisores", id));
+    loadAll(user.uid);
+  };
 
-    <input style={styles.input} placeholder="Email"
-      value={emisorForm.email}
-      onChange={e => setEmisorForm({ ...emisorForm, email: e.target.value })}
-    />
-
-    <input style={styles.input} placeholder="Teléfono"
-      value={emisorForm.telefono}
-      onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
-    />
-
-    <button style={styles.button} onClick={saveEmisor}>
-      Guardar emisor
-    </button>
-  </div>
-)}
   /* ================= CLIENTE ================= */
   const saveCliente = async () => {
     if (!user?.uid) return;
@@ -129,11 +113,12 @@ export default function App() {
     await addDoc(collection(db, "clientes"), {
       uid: user.uid,
       ...clienteForm,
+      createdAt: new Date(),
     });
 
     setClienteForm({
       nombre: "",
-      dni: "",
+      nif: "",
       direccion: "",
       email: "",
       telefono: "",
@@ -147,7 +132,7 @@ export default function App() {
     loadAll(user.uid);
   };
 
-  /* ================= FACTURA NUM ================= */
+  /* ================= NUM FACTURA ================= */
   const generarNumero = () => {
     if (!facturas.length) return "FAC-000001";
 
@@ -212,7 +197,7 @@ export default function App() {
           Facturas
         </button>
 
-        <button style={{ ...styles.menu, background: "red" }} onClick={logout}>
+        <button style={{ ...styles.menu, background: "#ef4444" }} onClick={logout}>
           Logout
         </button>
       </div>
@@ -220,35 +205,52 @@ export default function App() {
       {/* MAIN */}
       <div style={styles.main}>
 
-        {/* EMISOR */}
+        {/* ================= EMISOR ================= */}
         {seccion === "emisor" && (
           <div style={styles.card}>
-            <h3>Emisores</h3>
+            <h3>Emisor</h3>
 
             {emisores.map(e => (
               <div key={e.id} style={styles.row}>
                 <span onClick={() => setEmisorSel(e)}>
                   {e.nombre}
                 </span>
-                <button onClick={() => deleteEmisor(e.id)}>X</button>
+                <button onClick={() => deleteEmisor(e.id)}>Borrar</button>
               </div>
             ))}
 
-            <input placeholder="Nombre"
+            <input style={styles.input} placeholder="Nombre"
               value={emisorForm.nombre}
               onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
             />
 
-            <input placeholder="NIF"
+            <input style={styles.input} placeholder="NIF/CIF"
               value={emisorForm.nif}
               onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })}
             />
 
-            <button onClick={saveEmisor}>Guardar</button>
+            <input style={styles.input} placeholder="Dirección"
+              value={emisorForm.direccion}
+              onChange={e => setEmisorForm({ ...emisorForm, direccion: e.target.value })}
+            />
+
+            <input style={styles.input} placeholder="Email"
+              value={emisorForm.email}
+              onChange={e => setEmisorForm({ ...emisorForm, email: e.target.value })}
+            />
+
+            <input style={styles.input} placeholder="Teléfono"
+              value={emisorForm.telefono}
+              onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
+            />
+
+            <button style={styles.button} onClick={saveEmisor}>
+              Guardar emisor
+            </button>
           </div>
         )}
 
-        {/* CLIENTES */}
+        {/* ================= CLIENTES ================= */}
         {seccion === "clientes" && (
           <div style={styles.card}>
             <h3>Clientes</h3>
@@ -258,59 +260,89 @@ export default function App() {
                 <span onClick={() => setClienteSel(c)}>
                   {c.nombre}
                 </span>
-                <button onClick={() => deleteCliente(c.id)}>X</button>
+                <button onClick={() => deleteCliente(c.id)}>Borrar</button>
               </div>
             ))}
 
-            <input placeholder="Nombre"
+            <input style={styles.input} placeholder="Nombre"
               value={clienteForm.nombre}
               onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
             />
 
-            <button onClick={saveCliente}>Guardar</button>
+            <input style={styles.input} placeholder="CIF/DNI"
+              value={clienteForm.nif}
+              onChange={e => setClienteForm({ ...clienteForm, nif: e.target.value })}
+            />
+
+            <input style={styles.input} placeholder="Dirección"
+              value={clienteForm.direccion}
+              onChange={e => setClienteForm({ ...clienteForm, direccion: e.target.value })}
+            />
+
+            <input style={styles.input} placeholder="Email"
+              value={clienteForm.email}
+              onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
+            />
+
+            <input style={styles.input} placeholder="Teléfono"
+              value={clienteForm.telefono}
+              onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })}
+            />
+
+            <button style={styles.button} onClick={saveCliente}>
+              Guardar cliente
+            </button>
           </div>
         )}
 
-        {/* FACTURAS */}
+        {/* ================= FACTURAS ================= */}
         {seccion === "facturas" && (
           <div style={styles.card}>
             <h3>Factura</h3>
 
-            <p>Numero: {generarNumero()}</p>
+            <p>Número: {generarNumero()}</p>
 
-            <select onChange={e =>
-              setEmisorSel(emisores.find(x => x.id === e.target.value))
-            }>
-              <option>Emisor</option>
+            <select style={styles.input}
+              onChange={e =>
+                setEmisorSel(emisores.find(x => x.id === e.target.value))
+              }
+            >
+              <option>Selecciona emisor</option>
               {emisores.map(e => (
                 <option key={e.id} value={e.id}>{e.nombre}</option>
               ))}
             </select>
 
-            <select onChange={e =>
-              setClienteSel(clientes.find(x => x.id === e.target.value))
-            }>
-              <option>Cliente</option>
+            <select style={styles.input}
+              onChange={e =>
+                setClienteSel(clientes.find(x => x.id === e.target.value))
+              }
+            >
+              <option>Selecciona cliente</option>
               {clientes.map(c => (
                 <option key={c.id} value={c.id}>{c.nombre}</option>
               ))}
             </select>
 
-            <input placeholder="Concepto"
+            <input style={styles.input}
+              placeholder="Concepto"
               value={concepto}
               onChange={e => setConcepto(e.target.value)}
             />
 
-            <input type="number"
+            <input style={styles.input}
+              type="number"
               value={base}
               onChange={e => setBase(Number(e.target.value))}
             />
 
-            <p>IVA: {iva.toFixed(2)}</p>
-            <p>IRPF: {irpf.toFixed(2)}</p>
-            <p><b>Total: {total.toFixed(2)}</b></p>
+            <p>IVA: {iva.toFixed(2)} €</p>
+            <p>IRPF: {irpf.toFixed(2)} €</p>
+            <p><b>Total: {total.toFixed(2)} €</b></p>
 
-            <button onClick={crearFactura}>Crear factura</button>
+            <button style={styles.button} onClick={crearFactura}>
+              Crear factura
+            </button>
           </div>
         )}
 
@@ -319,14 +351,15 @@ export default function App() {
   );
 }
 
-/* ================= ESTILOS ================= */
+/* ================= ESTILOS ORIGINALES ================= */
 const styles = {
-  app: { display: "flex", minHeight: "100vh", fontFamily: "Arial" },
-  sidebar: { width: 200, background: "#333", color: "#fff", padding: 20 },
-  main: { flex: 1, padding: 20 },
-  card: { background: "#eee", padding: 20, borderRadius: 10 },
-  menu: { display: "block", margin: 10 },
-  row: { display: "flex", justifyContent: "space-between" },
-  button: { padding: 10 },
-  login: { display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }
+  app: { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff" },
+  sidebar: { width: 240, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 },
+  main: { flex: 1, padding: 30 },
+  card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14 },
+  input: { width: "100%", padding: 10, margin: "6px 0", borderRadius: 8 },
+  button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" },
+  menu: { padding: 10, background: "#e482da", border: 0, borderRadius: 8, fontWeight: "bold" },
+  row: { display: "flex", justifyContent: "space-between", padding: 8 },
+  login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" },
 };
