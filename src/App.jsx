@@ -107,13 +107,34 @@ export default function App() {
   };
 
   /* ================= CLIENTE SAVE ================= */
-  const saveCliente = async () => {
-    if (!user?.uid) return;
+const saveCliente = async () => {
+  console.log("👉 CLICK CLIENTE");
 
-    await addDoc(collection(db, "clientes"), {
+  if (!user) {
+    console.log("❌ user null");
+    return;
+  }
+
+  if (!user.uid) {
+    console.log("❌ user.uid no existe");
+    return;
+  }
+
+  console.log("✅ user OK:", user.uid);
+  console.log("📦 clienteForm:", clienteForm);
+
+  try {
+    const docRef = await addDoc(collection(db, "clientes"), {
       uid: user.uid,
-      ...clienteForm,
+      nombre: clienteForm.nombre || "",
+      nif: clienteForm.nif || "",
+      direccion: clienteForm.direccion || "",
+      email: clienteForm.email || "",
+      telefono: clienteForm.telefono || "",
+      createdAt: new Date()
     });
+
+    console.log("🎉 CLIENTE GUARDADO ID:", docRef.id);
 
     setClienteForm({
       nombre: "",
@@ -123,13 +144,12 @@ export default function App() {
       telefono: "",
     });
 
-    loadAll(user.uid);
-  };
+    await loadAll(user.uid);
 
-  const deleteCliente = async (id) => {
-    await deleteDoc(doc(db, "clientes", id));
-    loadAll(user.uid);
-  };
+  } catch (error) {
+    console.error("🔥 ERROR CLIENTE FIRESTORE:", error.code, error.message);
+  }
+};
 
   /* ================= FACTURA ================= */
   const generarNumero = () => {
