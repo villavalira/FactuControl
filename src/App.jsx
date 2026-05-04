@@ -61,15 +61,14 @@ export default function App() {
   /* ================= AUTH ================= */
 useEffect(() => {
   const unsub = onAuthStateChanged(auth, (u) => {
-    if (!u?.uid) return;
-
+    console.log("AUTH STATE:", u);
     setUser(u);
-    loadAll(u.uid);
+
+    if (u?.uid) loadAll(u.uid);
   });
 
   return () => unsub();
 }, []);
-
   /* ================= LOAD ================= */
 const loadAll = async (uid) => {
   const [e, c, f] = await Promise.all([
