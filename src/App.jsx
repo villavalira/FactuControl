@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+ import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import { auth, googleProvider, db } from "./firebase";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
@@ -22,7 +22,6 @@ export default function App() {
 
   /* ================= EMISOR ================= */
   const [emisores, setEmisores] = useState([]);
-  const [emisorSel, setEmisorSel] = useState(null);
 
   const [emisorForm, setEmisorForm] = useState({
     nombre: "",
@@ -34,7 +33,6 @@ export default function App() {
 
   /* ================= CLIENTES ================= */
   const [clientes, setClientes] = useState([]);
-  const [clienteSel, setClienteSel] = useState(null);
 
   const [clienteForm, setClienteForm] = useState({
     nombre: "",
@@ -46,6 +44,9 @@ export default function App() {
 
   /* ================= FACTURAS ================= */
   const [facturas, setFacturas] = useState([]);
+
+  const [emisorSel, setEmisorSel] = useState(null);
+  const [clienteSel, setClienteSel] = useState(null);
 
   const [concepto, setConcepto] = useState("");
   const [base, setBase] = useState(0);
@@ -80,14 +81,13 @@ export default function App() {
     setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
   };
 
-  /* ================= EMISOR ================= */
+  /* ================= EMISOR SAVE ================= */
   const saveEmisor = async () => {
     if (!user?.uid) return;
 
     await addDoc(collection(db, "emisores"), {
       uid: user.uid,
       ...emisorForm,
-      createdAt: new Date(),
     });
 
     setEmisorForm({
@@ -106,14 +106,13 @@ export default function App() {
     loadAll(user.uid);
   };
 
-  /* ================= CLIENTE ================= */
+  /* ================= CLIENTE SAVE ================= */
   const saveCliente = async () => {
     if (!user?.uid) return;
 
     await addDoc(collection(db, "clientes"), {
       uid: user.uid,
       ...clienteForm,
-      createdAt: new Date(),
     });
 
     setClienteForm({
@@ -132,7 +131,7 @@ export default function App() {
     loadAll(user.uid);
   };
 
-  /* ================= NUM FACTURA ================= */
+  /* ================= FACTURA ================= */
   const generarNumero = () => {
     if (!facturas.length) return "FAC-000001";
 
@@ -143,9 +142,8 @@ export default function App() {
     return "FAC-" + String(Math.max(...nums) + 1).padStart(6, "0");
   };
 
-  /* ================= CREAR FACTURA ================= */
   const crearFactura = async () => {
-    if (!emisorSel || !clienteSel) return;
+    if (!user?.uid || !emisorSel || !clienteSel) return;
 
     await addDoc(collection(db, "facturas"), {
       uid: user.uid,
@@ -183,7 +181,7 @@ export default function App() {
 
       {/* SIDEBAR */}
       <div style={styles.sidebar}>
-        <h2>FactuControl</h2>
+        <h2 style={styles.sidebarTitle}>FactuControl</h2>
 
         <button style={styles.menu} onClick={() => setSeccion("emisor")}>
           Emisor
@@ -212,9 +210,7 @@ export default function App() {
 
             {emisores.map(e => (
               <div key={e.id} style={styles.row}>
-                <span onClick={() => setEmisorSel(e)}>
-                  {e.nombre}
-                </span>
+                {e.nombre}
                 <button onClick={() => deleteEmisor(e.id)}>Borrar</button>
               </div>
             ))}
@@ -257,9 +253,7 @@ export default function App() {
 
             {clientes.map(c => (
               <div key={c.id} style={styles.row}>
-                <span onClick={() => setClienteSel(c)}>
-                  {c.nombre}
-                </span>
+                {c.nombre}
                 <button onClick={() => deleteCliente(c.id)}>Borrar</button>
               </div>
             ))}
@@ -269,7 +263,7 @@ export default function App() {
               onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
             />
 
-            <input style={styles.input} placeholder="CIF/DNI"
+            <input style={styles.input} placeholder="NIF/CIF"
               value={clienteForm.nif}
               onChange={e => setClienteForm({ ...clienteForm, nif: e.target.value })}
             />
@@ -298,40 +292,34 @@ export default function App() {
         {/* ================= FACTURAS ================= */}
         {seccion === "facturas" && (
           <div style={styles.card}>
-            <h3>Factura</h3>
+            <h3>Crear factura</h3>
 
             <p>Número: {generarNumero()}</p>
 
             <select style={styles.input}
-              onChange={e =>
-                setEmisorSel(emisores.find(x => x.id === e.target.value))
-              }
+              onChange={e => setEmisorSel(emisores.find(x => x.id === e.target.value))}
             >
-              <option>Selecciona emisor</option>
+              <option>Emisor</option>
               {emisores.map(e => (
                 <option key={e.id} value={e.id}>{e.nombre}</option>
               ))}
             </select>
 
             <select style={styles.input}
-              onChange={e =>
-                setClienteSel(clientes.find(x => x.id === e.target.value))
-              }
+              onChange={e => setClienteSel(clientes.find(x => x.id === e.target.value))}
             >
-              <option>Selecciona cliente</option>
+              <option>Cliente</option>
               {clientes.map(c => (
                 <option key={c.id} value={c.id}>{c.nombre}</option>
               ))}
             </select>
 
-            <input style={styles.input}
-              placeholder="Concepto"
+            <input style={styles.input} placeholder="Concepto"
               value={concepto}
               onChange={e => setConcepto(e.target.value)}
             />
 
-            <input style={styles.input}
-              type="number"
+            <input style={styles.input} type="number"
               value={base}
               onChange={e => setBase(Number(e.target.value))}
             />
@@ -351,7 +339,7 @@ export default function App() {
   );
 }
 
-/* ================= ESTILOS ORIGINALES ================= */
+/* ================= ESTILOS (NO TOCADOS) ================= */
 const styles = {
   app: { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff" },
   sidebar: { width: 240, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 },
@@ -361,5 +349,6 @@ const styles = {
   button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" },
   menu: { padding: 10, background: "#e482da", border: 0, borderRadius: 8, fontWeight: "bold" },
   row: { display: "flex", justifyContent: "space-between", padding: 8 },
+  sidebarTitle: { fontSize: 22, marginBottom: 20 },
   login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" },
 };
