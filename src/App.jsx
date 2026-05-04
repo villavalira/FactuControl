@@ -73,16 +73,22 @@ useEffect(() => {
   const logout = () => signOut(auth);
 
   /* ================= LOAD ================= */
-const loadAll = async (uid) => {
-  const [e, c, f] = await Promise.all([
-    getDocs(query(collection(db, "emisores"), where("uid", "==", uid))),
-    getDocs(query(collection(db, "clientes"), where("uid", "==", uid))),
-    getDocs(query(collection(db, "facturas"), where("uid", "==", uid))),
-  ]);
+const loadEmisores = async (uid) => {
+  const q = query(collection(db, "emisores"), where("uid", "==", uid));
+  const snap = await getDocs(q);
+  setEmisores(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+};
 
-  setEmisores(e.docs.map(d => ({ id: d.id, ...d.data() })));
-  setClientes(c.docs.map(d => ({ id: d.id, ...d.data() })));
-  setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
+const loadClientes = async (uid) => {
+  const q = query(collection(db, "clientes"), where("uid", "==", uid));
+  const snap = await getDocs(q);
+  setClientes(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+};
+
+const loadFacturas = async (uid) => {
+  const q = query(collection(db, "facturas"), where("uid", "==", uid));
+  const snap = await getDocs(q);
+  setFacturas(snap.docs.map(d => ({ id: d.id, ...d.data() })));
 };
 
   /* ================= EMISOR SAVE ================= */
