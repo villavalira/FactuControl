@@ -72,9 +72,10 @@ export default function App() {
 
   /* ================= LOAD ================= */
   const loadAll = async (uid) => {
-    const e = await getDocs(query(collection(db, "emisores"), where("uid", "==", uid)));
-    const c = await getDocs(query(collection(db, "clientes"), where("uid", "==", uid)));
-    const f = await getDocs(query(collection(db, "facturas"), where("uid", "==", uid)));
+    const [e, c, f] = await Promise.all([
+  getDocs(query(collection(db, "emisores"), where("uid", "==", uid))),
+  getDocs(query(collection(db, "clientes"), where("uid", "==", uid))),
+  getDocs(query(collection(db, "facturas"), where("uid", "==", uid))),
 
     setEmisores(e.docs.map(d => ({ id: d.id, ...d.data() })));
     setClientes(c.docs.map(d => ({ id: d.id, ...d.data() })));
