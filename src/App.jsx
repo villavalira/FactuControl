@@ -64,7 +64,11 @@ useEffect(() => {
     console.log("AUTH STATE:", u);
     setUser(u);
 
-    if (u?.uid) loadAll(u.uid);
+    if (u?.uid) {
+  loadEmisores(u.uid);
+  loadClientes(u.uid);
+  loadFacturas(u.uid);
+}
   });
 
   return () => unsub();
