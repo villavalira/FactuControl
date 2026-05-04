@@ -247,9 +247,7 @@ export default function App() {
         )}
 
         {/* ================= CLIENTES ================= */}
-       console.log("FUNCION CLIENTE EJECUTADA");
-alert("CLIENTE CLICK");
-        {seccion === "clientes" && (
+         {seccion === "clientes" && (
           <div style={styles.card}>
             <h3>Clientes</h3>
 
