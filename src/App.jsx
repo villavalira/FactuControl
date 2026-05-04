@@ -247,6 +247,8 @@ export default function App() {
         )}
 
         {/* ================= CLIENTES ================= */}
+       console.log("FUNCION CLIENTE EJECUTADA");
+alert("CLIENTE CLICK");
         {seccion === "clientes" && (
           <div style={styles.card}>
             <h3>Clientes</h3>
@@ -282,7 +284,6 @@ export default function App() {
               value={clienteForm.telefono}
               onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })}
             />
-
             <button style={styles.button} onClick={saveCliente}>
               Guardar cliente
             </button>
