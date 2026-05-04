@@ -177,10 +177,12 @@ const saveCliente = async () => {
 
     await loadAll(user.uid);
 
-  } catch (error) {
-    console.error("🔥 ERROR CLIENTE FIRESTORE:", error.code, error.message);
+  };
+
+  const deleteEmisor = async (id) => {
+    await deleteDoc(doc(db, "emisores", id));
+    loadAll(user.uid);
   }
-};
 
   /* ================= FACTURA ================= */
   const generarNumero = () => {
