@@ -228,12 +228,20 @@ const saveCliente = async () => {
           <div style={styles.card}>
             <h3>Emisor</h3>
 
-            {emisores.map(e => (
-              <div key={e.id} style={styles.row}>
-                {e.nombre}
-                <button onClick={() => deleteEmisor(e.id)}>Borrar</button>
-              </div>
-            ))}
+{emisores.map(e => (
+  <div key={e.id} style={styles.row}>
+
+    <span>{e.nombre}</span>
+
+    <button
+      style={{ padding: "6px 10px", borderRadius: 6, background: "#ef4444", color: "#fff", border: "none" }}
+      onClick={() => deleteEmisor(e.id)}
+    >
+      Borrar
+    </button>
+
+  </div>
+))}
 
             <input style={styles.input} placeholder="Nombre"
               value={emisorForm.nombre}
@@ -271,12 +279,20 @@ const saveCliente = async () => {
           <div style={styles.card}>
             <h3>Clientes</h3>
 
-            {clientes.map(c => (
-              <div key={c.id} style={styles.row}>
-                {c.nombre}
-                <button onClick={() => deleteCliente(c.id)}>Borrar</button>
-              </div>
-            ))}
+{clientes.map(c => (
+  <div key={c.id} style={styles.row}>
+
+    <span>{c.nombre}</span>
+
+    <button
+      style={{ padding: "6px 10px", borderRadius: 6, background: "#ef4444", color: "#fff", border: "none" }}
+      onClick={() => deleteCliente(c.id)}
+    >
+      Borrar
+    </button>
+
+  </div>
+))}
 
             <input style={styles.input} placeholder="Nombre"
               value={clienteForm.nombre}
@@ -367,7 +383,7 @@ const styles = {
   input: { width: "100%", padding: 10, margin: "6px 0", borderRadius: 8 },
   button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" },
   menu: { padding: 10, background: "#e482da", border: 0, borderRadius: 8, fontWeight: "bold" },
-  row: { display: "flex", justifyContent: "space-between", padding: 8 },
+  row: {display: "flex",   alignItems: "center", justifyContent: "flex-start", padding: 8, gap: 12 },
   sidebarTitle: { fontSize: 22, marginBottom: 20 },
   login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" },
 };
