@@ -71,16 +71,17 @@ export default function App() {
   const logout = () => signOut(auth);
 
   /* ================= LOAD ================= */
-  const loadAll = async (uid) => {
-    const [e, c, f] = await Promise.all([
-  getDocs(query(collection(db, "emisores"), where("uid", "==", uid))),
-  getDocs(query(collection(db, "clientes"), where("uid", "==", uid))),
-  getDocs(query(collection(db, "facturas"), where("uid", "==", uid))),
+const loadAll = async (uid) => {
+  const [e, c, f] = await Promise.all([
+    getDocs(query(collection(db, "emisores"), where("uid", "==", uid))),
+    getDocs(query(collection(db, "clientes"), where("uid", "==", uid))),
+    getDocs(query(collection(db, "facturas"), where("uid", "==", uid))),
+  ]);
 
-    setEmisores(e.docs.map(d => ({ id: d.id, ...d.data() })));
-    setClientes(c.docs.map(d => ({ id: d.id, ...d.data() })));
-    setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
-  };
+  setEmisores(e.docs.map(d => ({ id: d.id, ...d.data() })));
+  setClientes(c.docs.map(d => ({ id: d.id, ...d.data() })));
+  setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
+};
 
   /* ================= EMISOR SAVE ================= */
   const saveEmisor = async () => {
