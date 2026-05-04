@@ -83,14 +83,8 @@ export default function App() {
 const saveEmisor = async () => {
   console.log("👉 CLICK EMISOR");
 
-  // comprobar usuario
-  if (!user) {
-    console.log("❌ user es null");
-    return;
-  }
-
-  if (!user.uid) {
-    console.log("❌ user.uid no existe");
+  if (!user?.uid) {
+    console.log("❌ Usuario no logueado");
     return;
   }
 
@@ -98,10 +92,22 @@ const saveEmisor = async () => {
   console.log("📦 datos:", emisorForm);
 
   try {
-    await addDoc(collection(db, "emisores"), {
+    const docRef = await addDoc(collection(db, "emisores"), {
       uid: user.uid,
-      ...emisorForm,
+      nombre: emisorForm.nombre || "",
+      nif: emisorForm.nif || "",
+      direccion: emisorForm.direccion || "",
+      email: emisorForm.email || "",
+      telefono: emisorForm.telefono || "",
+      createdAt: new Date()
     });
+
+    console.log("🎉 GUARDADO OK ID:", docRef.id);
+
+  } catch (error) {
+    console.error("🔥 ERROR FIRESTORE:", error.code, error.message);
+  }
+};
 
     console.log("✅ GUARDADO EN FIREBASE");
 
