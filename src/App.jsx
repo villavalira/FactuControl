@@ -80,12 +80,32 @@ export default function App() {
   };
 
   /* ================= SAVE ================= */
-  const saveEmisor = async () => {
+const saveEmisor = async () => {
+  console.log("👉 CLICK EMISOR");
+
+  // comprobar usuario
+  if (!user) {
+    console.log("❌ user es null");
+    return;
+  }
+
+  if (!user.uid) {
+    console.log("❌ user.uid no existe");
+    return;
+  }
+
+  console.log("✅ user OK:", user.uid);
+  console.log("📦 datos:", emisorForm);
+
+  try {
     await addDoc(collection(db, "emisores"), {
       uid: user.uid,
       ...emisorForm,
     });
 
+    console.log("✅ GUARDADO EN FIREBASE");
+
+    // limpiar formulario
     setEmisorForm({
       nombre: "",
       nif: "",
@@ -94,9 +114,13 @@ export default function App() {
       telefono: "",
     });
 
-    loadAll(user.uid);
-  };
+    // recargar datos
+    await loadAll(user.uid);
 
+  } catch (error) {
+    console.error("🔥 ERROR:", error);
+  }
+};
   const saveCliente = async () => {
     await addDoc(collection(db, "clientes"), {
       uid: user.uid,
