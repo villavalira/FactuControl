@@ -69,6 +69,9 @@ useEffect(() => {
 
   return () => unsub();
 }, []);
+   const login = () => signInWithPopup(auth, googleProvider);
+  const logout = () => signOut(auth);
+
   /* ================= LOAD ================= */
 const loadAll = async (uid) => {
   const [e, c, f] = await Promise.all([
