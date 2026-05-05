@@ -20,10 +20,19 @@ const menuStyle = {
   fontSize: isMobile ? 16 : 30,
   padding: isMobile ? 6 : 10
 };
+  const appStyle = {
+  ...styles.app,
+  flexDirection: isMobile ? "column" : "row"
+};
   const sidebarStyle = {
   ...styles.sidebar,
   width: isMobile ? 140 : 200,
   padding: isMobile ? 10 : 20
+};
+    const titleStyle = {
+  ...styles.sidebarTitle,
+  fontSize: isMobile ? 12 : 16,
+  textAlign: isMobile ? "center" : "left"
 };
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
@@ -263,7 +272,7 @@ const generarNumero = () => {
 
   /* ================= UI ================= */
   return (
-    <div style={styles.app}>
+    <div style={appStyle}>
 
       {/* SIDEBAR */}
 
