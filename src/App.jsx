@@ -76,9 +76,10 @@ export default function App() {
   };
 
   /* ================= NUMERO FACTURA ================= */
-  const generarNumero = () => {
-    return Date.now().toString();
-  };
+const generarNumero = () => {
+  const siguiente = facturas.length + 1;
+  return String(siguiente).padStart(4, "0");
+};
 
   /* ================= PDF ================= */
   const generarPDF = (f) => {
