@@ -402,6 +402,6 @@ const styles = {
   button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" },
   menu: { padding: 10, background: "#e482da", border: 0, borderRadius: 8, fontWeight: "bold" },
   row: {display: "flex",   alignItems: "center", justifyContent: "flex-start", padding: 8, gap: 12 },
-  sidebarTitle: { color: 'white', fontSize: '40px', fontWeight: 'bold' },
+  sidebarTitle: { color: 'white', fontSize: '30px', fontWeight: 'bold' },
   login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" },
 };
