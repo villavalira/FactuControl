@@ -297,21 +297,22 @@ const generarNumero = () => {
 
   /* ================= UI ================= */
   return (
-    <div style={appStyle}>
+<div style={appStyle}>
 
-      {/* SIDEBAR */}
+  {/* 🔝 MENU SUPERIOR */}
+  <div style={topBarStyle}>
+    <h2 style={titleStyle}>FactuControl</h2>
 
-<div style={sidebarStyle}>
-  <h2 style={titleStyle}>FactuControl</h2>
+    <div style={menuContainerStyle}>
+      <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
+      <button onClick={() => setSeccion("clientes")} style={menuStyle}>Clientes</button>
+      <button onClick={() => setSeccion("facturas")} style={menuStyle}>Facturas</button>
+      <button onClick={logout} style={{ ...menuStyle, background: "red" }}>Logout</button>
+    </div>
+  </div>
 
-       <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
-<button onClick={() => setSeccion("clientes")} style={menuStyle}>Clientes</button>
-<button onClick={() => setSeccion("facturas")} style={menuStyle}>Facturas</button>
-<button onClick={logout} style={{ ...menuStyle, background: "red" }}>Logout</button>
-      </div>
-
-      {/* MAIN */}
-      <div style={mainStyle}>
+  {/* ⬇️ CONTENIDO */}
+  <div style={mainStyle}>
 {seccion === "emisor" && (
   <div style={styles.card}>
     <h3>Emisor</h3>
