@@ -19,17 +19,20 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(false);
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 16 : 30,
+  fontSize: isMobile ? 12 : 16,
   padding: isMobile ? 6 : 10
 };
   const appStyle = {
   ...styles.app,
   flexDirection: isMobile ? "column" : "row"
 };
-  const sidebarStyle = {
+const sidebarStyle = {
   ...styles.sidebar,
-  width: isMobile ? 140 : 200,
-  padding: isMobile ? 10 : 20
+  width: isMobile ? "100%" : 200,
+  padding: isMobile ? 12 : 20,
+  flexDirection: isMobile ? "row" : "column",
+  justifyContent: isMobile ? "space-around" : "flex-start",
+  alignItems: "center"
 };
   const mainStyle = {
   ...styles.main,
@@ -38,8 +41,8 @@ const menuStyle = {
 };
     const titleStyle = {
   ...styles.sidebarTitle,
-  fontSize: isMobile ? 12 : 16,
-  textAlign: isMobile ? "center" : "left"
+  fontSize: isMobile ? 18 : 30,
+  marginBottom: isMobile ? 0 : 20
 };
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
