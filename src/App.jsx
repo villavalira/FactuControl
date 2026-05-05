@@ -19,7 +19,7 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(false);
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 12 : 15,
+  fontSize: isMobile ? 11 : 16,
   padding: isMobile ? "8px 10px" : "10px 14px",
   flex: isMobile ? "1" : "none",
   margin: "4px",
@@ -42,15 +42,12 @@ const sidebarStyle = isMobile
       boxSizing: "border-box",
       display: "flex",
       flexDirection: "row",
+      justifyContent: "space-around",
       alignItems: "center",
-      justifyContent: "space-between",
       padding: "10px",
-      background: "linear-gradient(135deg, #5b2c83, #7b2cbf)"
+      gap: "6px"
     }
-  : {
-      ...styles.sidebar,
-      background: "linear-gradient(180deg, #5b2c83, #7b2cbf)"
-    };
+  : styles.sidebar;
   
 const mainStyle = {
   ...styles.main,
