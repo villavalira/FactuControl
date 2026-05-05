@@ -29,10 +29,13 @@ const menuStyle = {
   ...styles.app,
   flexDirection: isMobile ? "column" : "row"
 };
-const sidebarStyle = {
-  ...styles.sidebar,
-  width: isMobile ? "100vw" : 200,
-  boxSizing: "border-box"
+const sidebarStyle = isMobile
+  ? {
+      ...styles.sidebar,
+      width: "100%",
+      boxSizing: "border-box"
+    }
+  : styles.sidebar;
 };
   const mainStyle = {
   ...styles.main,
