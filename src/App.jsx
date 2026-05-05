@@ -31,11 +31,7 @@ const menuStyle = {
 };
 const sidebarStyle = {
   ...styles.sidebar,
-  width: "100%",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: isMobile ? "10px 12px" : 20,
+  width: isMobile ? "100vw" : 200,
   boxSizing: "border-box"
 };
   const mainStyle = {
@@ -50,9 +46,13 @@ const titleStyle = {
   flexShrink: 0
 };
 useEffect(() => {
-  const check = () => setIsMobile(window.innerWidth < 768);
+  const check = () => {
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+  };
+
   check();
   window.addEventListener("resize", check);
+
   return () => window.removeEventListener("resize", check);
 }, []);
   /* ================= AUTH ================= */
@@ -441,6 +441,7 @@ const styles = { app:
 { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
  sidebar: { overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
  main: { flex: 1, padding: 20, width: "100%" }, 
+ body: { margin: 0, padding: 0},
  card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14 }, 
  input: { width: "85%", padding: 10, margin: "6px 0", borderRadius: 8 }, 
  button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" }, 
