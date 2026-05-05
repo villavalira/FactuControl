@@ -194,18 +194,20 @@ const crearFactura = async () => {
   }
 
   try {
-    await addDoc(collection(db, "facturas"), {
-      uid: user.uid,
-      numero: generarNumero(),
-      emisorId: emisorSel.id,
-      clienteId: clienteSel.id,
-      concepto,
-      base,
-      iva,
-      irpf,
-      total,
-      fecha: new Date().toLocaleDateString(),
-    });
+   await addDoc(collection(db, "facturas"), {
+  uid: user.uid,
+  numero: generarNumero(),
+
+  emisorId: emisorSel,
+  clienteId: clienteSel,
+
+  concepto,
+  base,
+  iva,
+  irpf,
+  total,
+  fecha: new Date().toLocaleDateString(),
+});
 
     console.log("✅ FACTURA CREADA");
 
@@ -369,9 +371,7 @@ const crearFactura = async () => {
            <select
   style={styles.input}
   value={emisorSel?.id || ""}
-  onChange={e =>
-    setEmisorSel(e.target.value)
-  }
+ onChange={e => setEmisorSel(e.target.value)}
 >
   <option value="">Emisor</option>
   {emisores.map(e => (
@@ -384,9 +384,7 @@ const crearFactura = async () => {
            <select
   style={styles.input}
   value={clienteSel?.id || ""}
-  onChange={e =>
-    setClienteSel(e.target.value)
-  }
+  onChange={e => setClienteSel(e.target.value)}
 >
   <option value="">Cliente</option>
   {clientes.map(c => (
