@@ -36,7 +36,7 @@ const sidebarStyle = isMobile
       boxSizing: "border-box"
     }
   : styles.sidebar;
-};
+  
   const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30,
