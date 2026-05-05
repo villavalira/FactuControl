@@ -398,7 +398,7 @@ const styles = {
   sidebar: { width: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 },
   main: { flex: 1, padding: 30 },
   card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14 },
-  input: { width: "100%", padding: 10, margin: "6px 0", borderRadius: 8 },
+  input: { width: "85%", padding: 10, margin: "6px 0", borderRadius: 8 },
   button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" },
   menu: { padding: 10, background: "#e482da", border: 0, borderRadius: 8, fontWeight: "bold" },
   row: {display: "flex",   alignItems: "center", justifyContent: "flex-start", padding: 8, gap: 12 },
