@@ -180,9 +180,19 @@ const deleteCliente = async (id) => {
     return "FAC-" + String(Math.max(...nums) + 1).padStart(6, "0");
   };
 
-  const crearFactura = async () => {
-    if (!user?.uid || !emisorSel || !clienteSel) return;
+const crearFactura = async () => {
+  console.log("CLICK FACTURA");
 
+  console.log("user", user);
+  console.log("emisorSel", emisorSel);
+  console.log("clienteSel", clienteSel);
+
+  if (!user?.uid || !emisorSel || !clienteSel) {
+    console.log("❌ falta algo");
+    return;
+  }
+
+  try {
     await addDoc(collection(db, "facturas"), {
       uid: user.uid,
       numero: generarNumero(),
@@ -196,11 +206,17 @@ const deleteCliente = async (id) => {
       fecha: new Date().toLocaleDateString(),
     });
 
+    console.log("✅ FACTURA CREADA");
+
     setConcepto("");
     setBase(0);
 
     loadAll(user.uid);
-  };
+
+  } catch (err) {
+    console.error("🔥 ERROR FACTURA:", err);
+  }
+};
 
   /* ================= LOGIN ================= */
   if (!user) {
@@ -349,23 +365,35 @@ const deleteCliente = async (id) => {
 
             <p>Número: {generarNumero()}</p>
 
-            <select style={styles.input}
-              onChange={e => setEmisorSel(emisores.find(x => x.id === e.target.value))}
-            >
-              <option>Emisor</option>
-              {emisores.map(e => (
-                <option key={e.id} value={e.id}>{e.nombre}</option>
-              ))}
-            </select>
+           <select
+  style={styles.input}
+  value={emisorSel?.id || ""}
+  onChange={e =>
+    setEmisorSel(emisores.find(x => x.id === e.target.value))
+  }
+>
+  <option value="">Emisor</option>
+  {emisores.map(e => (
+    <option key={e.id} value={e.id}>
+      {e.nombre}
+    </option>
+  ))}
+</select>
 
-            <select style={styles.input}
-              onChange={e => setClienteSel(clientes.find(x => x.id === e.target.value))}
-            >
-              <option>Cliente</option>
-              {clientes.map(c => (
-                <option key={c.id} value={c.id}>{c.nombre}</option>
-              ))}
-            </select>
+           <select
+  style={styles.input}
+  value={clienteSel?.id || ""}
+  onChange={e =>
+    setClienteSel(clientes.find(x => x.id === e.target.value))
+  }
+>
+  <option value="">Cliente</option>
+  {clientes.map(c => (
+    <option key={c.id} value={c.id}>
+      {c.nombre}
+    </option>
+  ))}
+</select>
 
             <input style={styles.input} placeholder="Concepto"
               value={concepto}
