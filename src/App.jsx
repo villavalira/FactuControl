@@ -21,8 +21,7 @@ const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
   padding: isMobile ? "6px 8px" : 10,
-  flex: 1,
-  margin: "0 3px",
+   margin: "0 3px",
   textAlign: "center",
   color: "black" // 👈 ESTO LO ARREGLA
 };
