@@ -407,13 +407,16 @@ const crearFactura = async () => {
     <p><b>Concepto:</b> {f.concepto}</p>
     <p><b>Total:</b> {f.total.toFixed(2)} €</p>
 
-    <button onClick={() => generarPDF(f)}>
+    <button
+      style={{ marginTop: 8 }}
+      onClick={() => generarPDF(f)}
+    >
       Descargar PDF
-    
+    </button>
 
   </div>
 ))}
-            </button>
+           
           </div>
         )}
 
