@@ -36,13 +36,10 @@ const sidebarStyle = {
   ...styles.sidebar,
   width: isMobile ? "100%" : 200,
   display: "flex",
-  flexDirection: isMobile ? "row" : "column",
-  alignItems: "center",
-  justifyContent: "space-between",
-  gap: "8px",
-  boxSizing: "border-box",
-  overflow: "visible"
+  flexDirection: "column",   // 👈 siempre columna
+  boxSizing: "border-box"
 };
+  
 const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
