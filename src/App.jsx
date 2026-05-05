@@ -15,7 +15,11 @@ import {
 export default function App() {
   /* ================= MOVIL ================= */
   const [isMobile, setIsMobile] = useState(false);
-
+const menuStyle = {
+  ...styles.menu,
+  fontSize: isMobile ? 12 : 16,
+  padding: isMobile ? 6 : 10
+};
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
   check();
@@ -260,10 +264,10 @@ const generarNumero = () => {
       <div style={styles.sidebar}>
         <h2 style={styles.sidebarTitle}>FactuControl</h2>
 
-        <button onClick={() => setSeccion("emisor")} style={styles.menu}>Emisor</button>
-        <button onClick={() => setSeccion("clientes")} style={styles.menu}>Clientes</button>
-        <button onClick={() => setSeccion("facturas")} style={styles.menu}>Facturas</button>
-        <button onClick={logout} style={{ ...styles.menu, background: "red" }}>Logout</button>
+       <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
+<button onClick={() => setSeccion("clientes")} style={menuStyle}>Clientes</button>
+<button onClick={() => setSeccion("facturas")} style={menuStyle}>Facturas</button>
+<button onClick={logout} style={{ ...menuStyle, background: "red" }}>Logout</button>
       </div>
 
       {/* MAIN */}
