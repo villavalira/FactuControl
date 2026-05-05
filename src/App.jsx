@@ -34,7 +34,14 @@ const appStyle = {
 
 const sidebarStyle = {
   ...styles.sidebar,
-  width: isMobile ? "100%" : 200
+  width: isMobile ? "100%" : 200,
+  display: "flex",
+  flexDirection: isMobile ? "row" : "column",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: "8px",
+  boxSizing: "border-box",
+  overflow: "visible"
 };
 
 const menuStyle = {
