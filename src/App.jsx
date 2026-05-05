@@ -21,22 +21,12 @@ const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
   padding: isMobile ? "6px 8px" : 10,
-  flex: 1,
-  margin: "0 3px",
+  margin: isMobile ? "0 3px" : "6px 0",
   textAlign: "center",
-  color: "black" // 👈 ESTO LO ARREGLA
+  color: "black",
+  flex: isMobile ? 1 : "none"   // 👈 CLAVE
 };
-  const appStyle = {
-  ...styles.app,
-  flexDirection: isMobile ? "column" : "row"
-};
-const sidebarStyle = isMobile
-  ? {
-      ...styles.sidebar,
-      width: "100%",
-      boxSizing: "border-box"
-    }
-  : styles.sidebar;
+
 
 const mainStyle = {
   ...styles.main,
