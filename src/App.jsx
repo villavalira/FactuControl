@@ -74,8 +74,11 @@ const loadFacturas = async (uid) => {
   const q = query(collection(db, "facturas"), where("uid", "==", uid));
   const snap = await getDocs(q);
   setFacturas(snap.docs.map(d => ({ id: d.id, ...d.data() })));
- 
- const generarPDF = (f) => {
+
+};
+
+ /* ================= generar pdf ================= */
+  const generarPDF = (f) => {
   const doc = new jsPDF();
 
   doc.text(`FACTURA Nº: ${f.numero}`, 10, 10);
@@ -86,7 +89,6 @@ const loadFacturas = async (uid) => {
   doc.text(`TOTAL: ${f.total.toFixed(2)} €`, 10, 60);
 
   doc.save(`factura-${f.numero}.pdf`);
-};
 };
   /* ================= AUTH ================= */
 useEffect(() => {
