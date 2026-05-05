@@ -261,7 +261,11 @@ const generarNumero = () => {
     <div style={styles.app}>
 
       {/* SIDEBAR */}
-      <div style={styles.sidebar}>
+      const sidebarStyle = {
+  ...styles.sidebar,
+  width: isMobile ? 120 : 200,
+  padding: isMobile ? 10 : 20
+};
         <h2 style={styles.sidebarTitle}>FactuControl</h2>
 
        <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
@@ -409,7 +413,7 @@ const generarNumero = () => {
 /* ================= ESTILOS (NO TOCADOS) ================= */ 
 const styles = { app:
 { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
- sidebar: {   width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
+ sidebar: { overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
  main: { flex: 1, padding: 20, width: "100%" }, 
  card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14 }, 
  input: { width: "85%", padding: 10, margin: "6px 0", borderRadius: 8 }, 
