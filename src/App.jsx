@@ -276,7 +276,7 @@ const generarNumero = () => {
 
       {/* SIDEBAR */}
 
-<div style={sidebarStyle}>>
+<div style={sidebarStyle}>
   <h2 style={titleStyle}>FactuControl</h2>
 
        <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
@@ -286,7 +286,7 @@ const generarNumero = () => {
       </div>
 
       {/* MAIN */}
-      <div style={styles.main}>
+      <div style={mainStyle}>
 {seccion === "emisor" && (
   <div style={styles.card}>
     <h3>Emisor</h3>
