@@ -201,7 +201,7 @@ const crearFactura = async () => {
 
     console.log("FACTURA CREADA", docRef.id);
 
-    await loadFacturas(user.uid);
+// await loadFacturas(user.uid);
 
   } catch (error) {
     console.error("❌ ERROR FACTURA:", error);
