@@ -23,7 +23,8 @@ const menuStyle = {
   padding: isMobile ? "6px 8px" : 10,
   flex: 1,              // 👈 clave para repartir espacio
   margin: "0 3px",
-  textAlign: "center"
+  textAlign: "center",
+  color: "black", 
 };
   const appStyle = {
   ...styles.app,
