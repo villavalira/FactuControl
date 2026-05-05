@@ -37,22 +37,25 @@ const appStyle = {
 /* ================= SIDEBAR ================= */
 const sidebarStyle = {
   ...styles.sidebar,
-  width: isMobile ? "100%" : 200,
-  flexDirection: isMobile ? "row" : "column",
-  justifyContent: isMobile ? "space-around" : "flex-start",
+  width: "100%",
+  boxSizing: "border-box",
+  display: "flex",
+  flexDirection: "row",
   alignItems: "center",
-  boxSizing: "border-box"
+  justifyContent: "flex-start",
+  gap: "6px",
+  overflowX: "auto",
+  whiteSpace: "nowrap"
 };
-
 /* ================= MENU ================= */
 const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
-  padding: isMobile ? "6px 8px" : 10,
-  margin: isMobile ? "0 3px" : "6px 0",
-  textAlign: "center",
-  color: "black",
-  flex: isMobile ? 1 : "none"
+  padding: isMobile ? "6px 10px" : 10,
+  margin: "0 4px",
+  flex: "0 0 auto",
+  whiteSpace: "nowrap",
+  color: "black"
 };
 
 /* ================= TITLE ================= */
