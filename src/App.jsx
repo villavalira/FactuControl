@@ -353,17 +353,6 @@ const crearFactura = async () => {
            <select
   style={styles.input}
   value={emisorSel?.id || ""}
- onChange={e => setEmisorSel(e.target.value)}
->
-  <option value="">Emisor</option>
-  {emisores.map(e => (
-    <option key={e.id} value={e.id}>
-      {e.nombre}
-    </option>
-  ))}
-<select
-  style={styles.input}
-  value={emisorSel?.id || ""}
   onChange={e => {
     const seleccionado = emisores.find(em => em.id === e.target.value);
     setEmisorSel(seleccionado);
