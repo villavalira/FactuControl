@@ -21,8 +21,9 @@ const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
   padding: isMobile ? "6px 8px" : 10,
-  whiteSpace: "nowrap",
-  flexShrink: 0
+  flex: 1,              // 👈 clave para repartir espacio
+  margin: "0 3px",
+  textAlign: "center"
 };
   const appStyle = {
   ...styles.app,
@@ -31,13 +32,11 @@ const menuStyle = {
 const sidebarStyle = {
   ...styles.sidebar,
   width: "100%",
-  padding: isMobile ? 8 : 20,
-  display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  overflowX: "auto",
-  gap: 6
+  padding: isMobile ? "10px 12px" : 20,
+  boxSizing: "border-box"
 };
   const mainStyle = {
   ...styles.main,
@@ -47,7 +46,8 @@ const sidebarStyle = {
 const titleStyle = {
   ...styles.sidebarTitle,
   fontSize: isMobile ? 14 : 30,
-  marginRight: isMobile ? 10 : 0
+  marginRight: isMobile ? 10 : 0,
+  flexShrink: 0
 };
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
