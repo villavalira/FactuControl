@@ -28,49 +28,30 @@ useEffect(() => {
   return () => window.removeEventListener("resize", check);
 }, []);
 
-/* ================= APP ================= */
 const appStyle = {
-  ...styles.app,
-  flexDirection: isMobile ? "column" : "row"
+  ...styles.app
 };
 
-/* ================= SIDEBAR ================= */
 const sidebarStyle = {
   ...styles.sidebar,
-  width: "100%",
-  boxSizing: "border-box",
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "flex-start",
-  gap: "6px",
-  overflowX: "auto",
-  whiteSpace: "nowrap"
+  width: isMobile ? "100%" : 200
 };
-/* ================= MENU ================= */
+
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 11 : 16,
-  padding: isMobile ? "6px 10px" : 10,
-  margin: "0 4px",
-  flex: "0 0 auto",
-  whiteSpace: "nowrap",
+  fontSize: isMobile ? 12 : 16,
+  padding: isMobile ? "6px 8px" : 10,
   color: "black"
 };
 
-/* ================= TITLE ================= */
-const titleStyle = {
-  ...styles.sidebarTitle,
-  fontSize: isMobile ? 14 : 30,
-  margin: 0,
-  flexShrink: 0
-};
-
-/* ================= MAIN ================= */
 const mainStyle = {
   ...styles.main,
-  padding: isMobile ? 10 : 30,
-  width: "100%"
+  padding: isMobile ? 10 : 30
+};
+
+const titleStyle = {
+  ...styles.sidebarTitle,
+  fontSize: isMobile ? 14 : 30
 };
   /* ================= AUTH ================= */
   const [user, setUser] = useState(null);
