@@ -173,9 +173,9 @@ const deleteCliente = async (id) => {
 const crearFactura = async () => {
   console.log("👉 CLICK FACTURA");
 
-  console.log("USER:", user);
-  console.log("EMISOR:", emisorSel);
-  console.log("CLIENTE:", clienteSel);
+  console.log("USER:", user.uid);
+  console.log("EMISOR:", emisorSel.id);
+  console.log("CLIENTE:", clienteSel.id);
 
   try {
     const data = {
@@ -185,27 +185,22 @@ const crearFactura = async () => {
       emisorId: emisorSel.id,
       clienteId: clienteSel.id,
 
-      concepto,
-      base,
-      iva,
-      irpf,
-      total,
+      concepto: "TEST",
+      base: 10,
+      iva: 2.1,
+      irpf: 0.7,
+      total: 11.4,
       fecha: new Date().toLocaleDateString(),
     };
 
-    console.log("📦 DATA A GUARDAR:", data);
+    console.log("📦 DATA:", data);
 
     const docRef = await addDoc(collection(db, "facturas"), data);
 
-    console.log("✅ FACTURA CREADA ID:", docRef.id);
-
-    setConcepto("");
-    setBase(0);
-
-    loadAll(user.uid);
+    console.log("✅ FACTURA CREADA:", docRef.id);
 
   } catch (err) {
-    console.error("🔥 ERROR FIRESTORE COMPLETO:", err.code, err.message, err);
+    console.error("🔥 FIRESTORE ERROR COMPLETO:", err.code, err.message);
   }
 };
   /* ================= LOGIN ================= */
