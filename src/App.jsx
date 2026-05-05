@@ -25,11 +25,7 @@ const menuStyle = {
   width: isMobile ? 140 : 200,
   padding: isMobile ? 10 : 20
 };
-  const titleStyle = {
-  ...styles.sidebarTitle,
-  fontSize: isMobile ? 16 : 30,
-  textAlign: isMobile ? "center" : "left"
-};
+
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
   check();
