@@ -275,20 +275,7 @@ const deleteCliente = async (id) => {
       </div>
     );
   }
- /* ================= generar pdf ================= */
-  const generarPDF = (f) => {
-  const doc = new jsPDF();
 
-  doc.text(`FACTURA Nº: ${f.numero}`, 10, 10);
-  doc.text(`Concepto: ${f.concepto}`, 10, 20);
-  doc.text(`Base: ${f.base} €`, 10, 30);
-  doc.text(`IVA: ${f.iva.toFixed(2)} €`, 10, 40);
-  doc.text(`IRPF: ${f.irpf.toFixed(2)} €`, 10, 50);
-  doc.text(`TOTAL: ${f.total.toFixed(2)} €`, 10, 60);
-
-  doc.save(`factura-${f.numero}.pdf`);
-};
- 
   /* ================= UI ================= */
   return (
     <div style={styles.app}>
