@@ -174,63 +174,6 @@ const [clientes, setClientes] = useState([]);
       {/* MAIN */}
       <div style={styles.main}>
         
-      {/* ================= EMISOR ================= */}
-        const saveEmisor = async () => {
-  if (!user?.uid) return;
-
-  try {
-    await addDoc(collection(db, "emisores"), {
-      uid: user.uid,
-      nombre: emisorForm.nombre,
-      nif: emisorForm.nif,
-      direccion: emisorForm.direccion,
-      email: emisorForm.email,
-      telefono: emisorForm.telefono,
-    });
-
-    setEmisorForm({
-      nombre: "",
-      nif: "",
-      direccion: "",
-      email: "",
-      telefono: "",
-    });
-
-    loadAll(user.uid);
-
-  } catch (error) {
-    console.error("❌ ERROR EMISOR:", error);
-  }
-};
-        
-       {/* ================= CLIENTE ================= */}    
-     const saveCliente = async () => {
-  if (!user?.uid) return;
-
-  try {
-    await addDoc(collection(db, "clientes"), {
-      uid: user.uid,
-      nombre: clienteForm.nombre,
-      nif: clienteForm.nif,
-      direccion: clienteForm.direccion,
-      email: clienteForm.email,
-      telefono: clienteForm.telefono,
-    });
-
-    setClienteForm({
-      nombre: "",
-      nif: "",
-      direccion: "",
-      email: "",
-      telefono: "",
-    });
-
-    loadAll(user.uid);
-
-  } catch (error) {
-    console.error("❌ ERROR CLIENTE:", error);
-  }
-};   
         {/* ================= FACTURAS ================= */}
         {seccion === "facturas" && (
           <div style={styles.card}>
