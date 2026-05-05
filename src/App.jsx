@@ -74,6 +74,19 @@ const loadFacturas = async (uid) => {
   const q = query(collection(db, "facturas"), where("uid", "==", uid));
   const snap = await getDocs(q);
   setFacturas(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+ 
+ const generarPDF = (f) => {
+  const doc = new jsPDF();
+
+  doc.text(`FACTURA Nº: ${f.numero}`, 10, 10);
+  doc.text(`Concepto: ${f.concepto}`, 10, 20);
+  doc.text(`Base: ${f.base} €`, 10, 30);
+  doc.text(`IVA: ${f.iva.toFixed(2)} €`, 10, 40);
+  doc.text(`IRPF: ${f.irpf.toFixed(2)} €`, 10, 50);
+  doc.text(`TOTAL: ${f.total.toFixed(2)} €`, 10, 60);
+
+  doc.save(`factura-${f.numero}.pdf`);
+};
 };
   /* ================= AUTH ================= */
 useEffect(() => {
@@ -168,45 +181,99 @@ const deleteCliente = async (id) => {
   await deleteDoc(doc(db, "clientes", id)); // 
   loadAll(user.uid); // 
 };
-/* ================= FACTURA ================= */
-const crearFactura = async () => {
-  console.log("👉 CLICK FACTURA");
 
-  console.log("USER:", user?.uid);
-  console.log("EMISOR:", emisorSel?.id);
-  console.log("CLIENTE:", clienteSel?.id);
+/* ================= FACTURAS ================= */
+{seccion === "facturas" && (
+  <div style={styles.card}>
+    <h3>Crear factura</h3>
 
-  if (!user?.uid || !emisorSel?.id || !clienteSel?.id) {
-    console.log("❌ falta algo");
-    return;
-  }
+    <p>Número: se generará al crear</p>
 
-  try {
-    const data = {
-      uid: user.uid,
-      numero: generarNumero(),
-      emisorId: emisorSel.id,
-      clienteId: clienteSel.id,
-      concepto,
-      base,
-      iva,
-      irpf,
-      total,
-      fecha: new Date().toISOString()
-    };
+    {/* EMISOR */}
+    <select
+      style={styles.input}
+      value={emisorSel?.id || ""}
+      onChange={e => {
+        const seleccionado = emisores.find(em => em.id === e.target.value);
+        setEmisorSel(seleccionado);
+      }}
+    >
+      <option value="">Emisor</option>
+      {emisores.map(e => (
+        <option key={e.id} value={e.id}>
+          {e.nombre}
+        </option>
+      ))}
+    </select>
 
-    console.log("📦 DATA:", data);
+    {/* CLIENTE (IMPORTANTE) */}
+    <select
+      style={styles.input}
+      value={clienteSel?.id || ""}
+      onChange={e => {
+        const seleccionado = clientes.find(c => c.id === e.target.value);
+        setClienteSel(seleccionado);
+      }}
+    >
+      <option value="">Cliente</option>
+      {clientes.map(c => (
+        <option key={c.id} value={c.id}>
+          {c.nombre}
+        </option>
+      ))}
+    </select>
 
-    const docRef = await addDoc(collection(db, "facturas"), data);
+    <input
+      style={styles.input}
+      placeholder="Concepto"
+      value={concepto}
+      onChange={e => setConcepto(e.target.value)}
+    />
 
-    console.log("FACTURA CREADA", docRef.id);
+    <input
+      style={styles.input}
+      type="number"
+      placeholder="Base"
+      value={base}
+      onChange={e => setBase(Number(e.target.value))}
+    />
 
- await loadFacturas(user.uid);
+    <p>IVA: {iva.toFixed(2)} €</p>
+    <p>IRPF: {irpf.toFixed(2)} €</p>
+    <p><b>Total: {total.toFixed(2)} €</b></p>
 
-  } catch (error) {
-    console.error("❌ ERROR FACTURA:", error);
-  }
-};
+    <button style={styles.button} onClick={crearFactura}>
+      Crear factura
+    </button>
+
+    <hr style={{ marginTop: 20 }} />
+
+    <h3>Facturas creadas</h3>
+
+    {facturas.length === 0 && <p>No hay facturas aún</p>}
+
+    {facturas.map(f => (
+      <div
+        key={f.id}
+        style={{
+          background: "#fff",
+          color: "#000",
+          marginTop: 10,
+          padding: 10,
+          borderRadius: 8
+        }}
+      >
+        <p><b>Nº:</b> {f.numero}</p>
+        <p><b>Concepto:</b> {f.concepto}</p>
+        <p><b>Total:</b> {f.total.toFixed(2)} €</p>
+
+        <button onClick={() => generarPDF(f)}>
+          Descargar PDF
+        </button>
+      </div>
+    ))}
+  </div>
+)}
    
   /* ================= LOGIN ================= */
   if (!user) {
