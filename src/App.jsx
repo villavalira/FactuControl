@@ -21,9 +21,10 @@ const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
   padding: isMobile ? "6px 8px" : 10,
-  margin: isMobile ? "0 3px" : "6px 0",
+  flex: 1,
+  margin: "0 3px",
   textAlign: "center",
-  color: "black",
+  color: "black" // 👈 ESTO LO ARREGLA
 };
 
 const mainStyle = {
@@ -34,9 +35,9 @@ const mainStyle = {
 
 const titleStyle = {
   ...styles.sidebarTitle,
-  fontSize: isMobile ? 13 : 28,
-  margin: 0,
-  color: "white"
+  fontSize: isMobile ? 14 : 30,
+  marginRight: isMobile ? 10 : 0, 
+  flexShrink: 0
 };
 useEffect(() => {
   const check = () => {
