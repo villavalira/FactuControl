@@ -17,13 +17,18 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(false);
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 12 : 16,
+  fontSize: isMobile ? 16 : 30,
   padding: isMobile ? 6 : 10
 };
   const sidebarStyle = {
   ...styles.sidebar,
   width: isMobile ? 140 : 200,
   padding: isMobile ? 10 : 20
+};
+  const titleStyle = {
+  ...styles.sidebarTitle,
+  fontSize: isMobile ? 16 : 30,
+  textAlign: isMobile ? "center" : "left"
 };
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
@@ -268,7 +273,7 @@ const generarNumero = () => {
       {/* SIDEBAR */}
 
 <div style={sidebarStyle}>>
-  <h2 style={styles.sidebarTitle}>FactuControl</h2>
+  <h2 style={titleStyle}>FactuControl</h2>
 
        <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
 <button onClick={() => setSeccion("clientes")} style={menuStyle}>Clientes</button>
