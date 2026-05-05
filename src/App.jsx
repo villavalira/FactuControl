@@ -13,7 +13,15 @@ import {
 } from "firebase/firestore";
 
 export default function App() {
+  /* ================= MOVIL ================= */
+  const [isMobile, setIsMobile] = useState(false);
 
+useEffect(() => {
+  const check = () => setIsMobile(window.innerWidth < 768);
+  check();
+  window.addEventListener("resize", check);
+  return () => window.removeEventListener("resize", check);
+}, []);
   /* ================= AUTH ================= */
   const [user, setUser] = useState(null);
 
@@ -396,9 +404,9 @@ const generarNumero = () => {
 
 /* ================= ESTILOS (NO TOCADOS) ================= */ 
 const styles = { app:
-{ display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff" },
- sidebar: { width: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
- main: { flex: 1, padding: 30 }, 
+{ display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
+ sidebar: {   width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
+ main: { flex: 1, padding: 20, width: "100%" }, 
  card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14 }, 
  input: { width: "85%", padding: 10, margin: "6px 0", borderRadius: 8 }, 
  button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" }, 
