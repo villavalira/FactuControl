@@ -19,12 +19,17 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(false);
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 11 : 16,
-  padding: isMobile ? "6px 8px" : 10,
-  flex: 1,              // 👈 clave para repartir espacio
-  margin: "0 3px",
-  textAlign: "center",
-  color: "black", 
+  fontSize: isMobile ? 12 : 15,
+  padding: isMobile ? "8px 10px" : "10px 14px",
+  flex: isMobile ? "1" : "none",
+  margin: "4px",
+  borderRadius: "10px",
+  background: "rgba(255,255,255,0.12)",
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.15)",
+  backdropFilter: "blur(10px)",
+  transition: "all 0.2s ease",
+  cursor: "pointer"
 };
   const appStyle = {
   ...styles.app,
@@ -34,20 +39,31 @@ const sidebarStyle = isMobile
   ? {
       ...styles.sidebar,
       width: "100%",
-      boxSizing: "border-box"
+      boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "10px",
+      background: "linear-gradient(135deg, #5b2c83, #7b2cbf)"
     }
-  : styles.sidebar;
+  : {
+      ...styles.sidebar,
+      background: "linear-gradient(180deg, #5b2c83, #7b2cbf)"
+    };
   
-  const mainStyle = {
+const mainStyle = {
   ...styles.main,
-  padding: isMobile ? 10 : 30,
-  width: "100%"
+  padding: isMobile ? 12 : 30,
+  background: "#f6f7fb",
+  minHeight: "100vh"
 };
 const titleStyle = {
   ...styles.sidebarTitle,
-  fontSize: isMobile ? 14 : 30,
-  marginRight: isMobile ? 10 : 0,
-  flexShrink: 0
+  fontSize: isMobile ? 14 : 28,
+  fontWeight: "700",
+  letterSpacing: "0.5px",
+  color: "white"
 };
 useEffect(() => {
   const check = () => {
