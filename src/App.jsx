@@ -47,10 +47,9 @@ const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
   padding: isMobile ? "6px 10px" : 10,
-  margin: "0 4px",
-  color: "black",
-  flex: "0 0 auto",   // 👈 IMPORTANTE
-  whiteSpace: "nowrap"
+  flex: "0 0 auto",
+  whiteSpace: "nowrap",
+  color: "black"
 };
 const mainStyle = {
   ...styles.main,
