@@ -170,14 +170,7 @@ const deleteCliente = async (id) => {
 };
 
   /* ================= FACTURA ================= */
-  const crearFactura = async () => {
-  console.log("👉 CLICK CREAR FACTURA");
-
-  console.log("USER:", user);
-  console.log("EMISOR:", emisorSel);
-  console.log("CLIENTE:", clienteSel);
-  console.log("BASE:", base);
-   };
+ 
    const generarNumero = () => {
     if (!facturas.length) return "FAC-000001";
 
@@ -377,7 +370,7 @@ const crearFactura = async () => {
   style={styles.input}
   value={emisorSel?.id || ""}
   onChange={e =>
-    setEmisorSel(emisores.find(x => x.id === e.target.value))
+    setEmisorSel(e.target.value)
   }
 >
   <option value="">Emisor</option>
@@ -392,7 +385,7 @@ const crearFactura = async () => {
   style={styles.input}
   value={clienteSel?.id || ""}
   onChange={e =>
-    setClienteSel(clientes.find(x => x.id === e.target.value))
+    setClienteSel(e.target.value)
   }
 >
   <option value="">Cliente</option>
