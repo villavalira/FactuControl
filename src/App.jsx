@@ -128,13 +128,11 @@ const saveEmisor = async () => {
     email: "",
     telefono: "",
   });
-
-  loadAll(user.uid); // 👈 IMPORTANTE
-};
-
 const deleteEmisor = async (id) => {
   await deleteDoc(doc(db, "emisores", id));
-  loadAll(user.uid); // 👈 IMPORTANTE
+  loadAll(user.uid); // ✅
+};
+  loadAll(user.uid); // 👈 dentro de la función
 };
   /* ================= CLIENTE SAVE ================= */
 const saveCliente = async () => {
