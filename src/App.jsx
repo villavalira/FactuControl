@@ -34,9 +34,9 @@ const mainStyle = {
 
 const titleStyle = {
   ...styles.sidebarTitle,
-  fontSize: isMobile ? 14 : 30,
-  marginRight: isMobile ? 10 : 0,
-  flexShrink: 0
+  fontSize: isMobile ? 13 : 28,
+  margin: 0,
+  color: "white"
 };
 useEffect(() => {
   const check = () => {
