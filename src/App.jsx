@@ -82,22 +82,71 @@ export default function App() {
 
   /* ================= PDF ================= */
   const generarPDF = (f) => {
-    const doc = new jsPDF();
+  const doc = new jsPDF();
 
-    const emisor = emisores.find(e => e.id === f.emisorId);
-    const cliente = clientes.find(c => c.id === f.clienteId);
+  const emisor = emisores.find(e => e.id === f.emisorId);
+  const cliente = clientes.find(c => c.id === f.clienteId);
 
-    doc.text(`FACTURA Nº: ${f.numero}`, 10, 10);
-    doc.text(`Emisor: ${emisor?.nombre || ""}`, 10, 20);
-    doc.text(`Cliente: ${cliente?.nombre || ""}`, 10, 30);
-    doc.text(`Concepto: ${f.concepto}`, 10, 40);
-    doc.text(`Base: ${f.base} €`, 10, 50);
-    doc.text(`IVA: ${f.iva.toFixed(2)} €`, 10, 60);
-    doc.text(`IRPF: ${f.irpf.toFixed(2)} €`, 10, 70);
-    doc.text(`TOTAL: ${f.total.toFixed(2)} €`, 10, 80);
+  /* ================= TITULO ================= */
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.text("FACTURA", 105, 20, { align: "center" });
 
-    doc.save(`factura-${f.numero}.pdf`);
-  };
+  /* ================= LINEA SEPARADORA ================= */
+  doc.setLineWidth(0.5);
+  doc.line(10, 25, 200, 25);
+
+  /* ================= EMISOR ================= */
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "bold");
+  doc.text("EMISOR", 15, 35);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(emisor?.nombre || "", 15, 42);
+  doc.text(emisor?.nif || "", 15, 48);
+  doc.text(emisor?.direccion || "", 15, 54);
+  doc.text(emisor?.email || "", 15, 60);
+  doc.text(emisor?.telefono || "", 15, 66);
+
+  /* ================= CLIENTE ================= */
+  doc.setFont("helvetica", "bold");
+  doc.text("CLIENTE", 120, 35);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(cliente?.nombre || "", 120, 42);
+  doc.text(cliente?.nif || "", 120, 48);
+  doc.text(cliente?.direccion || "", 120, 54);
+  doc.text(cliente?.email || "", 120, 60);
+  doc.text(cliente?.telefono || "", 120, 66);
+
+  /* ================= INFO FACTURA ================= */
+  doc.setFont("helvetica", "bold");
+  doc.text(`Factura Nº: ${f.numero}`, 15, 80);
+  doc.text(`Fecha: ${new Date(f.fecha).toLocaleDateString()}`, 120, 80);
+
+  /* ================= TABLA SIMPLE ================= */
+  doc.setLineWidth(0.2);
+  doc.line(10, 85, 200, 85);
+
+  doc.setFont("helvetica", "bold");
+  doc.text("Concepto", 15, 95);
+  doc.text("Base", 120, 95);
+  doc.text("IVA", 150, 95);
+  doc.text("Total", 175, 95);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(f.concepto, 15, 105);
+  doc.text(`${f.base.toFixed(2)} €`, 120, 105);
+  doc.text(`${f.iva.toFixed(2)} €`, 150, 105);
+  doc.text(`${f.total.toFixed(2)} €`, 175, 105);
+
+  /* ================= TOTAL GRANDE ================= */
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text(`TOTAL: ${f.total.toFixed(2)} €`, 150, 140);
+
+  doc.save(`factura-${f.numero}.pdf`);
+};
 
   /* ================= FACTURA ================= */
   const crearFactura = async () => {
