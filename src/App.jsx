@@ -195,9 +195,10 @@ const crearFactura = async () => {
 
     console.log("📦 DATA:", data);
 
-    const docRef = await addDoc(collection(db, "facturas"), data);
+    const docRef = await addDoc(collection(db, "facturas"), {...});
 
-    console.log("✅ FACTURA CREADA:", docRef.id);
+console.log("FACTURA CREADA");
+return;
 
   } catch (err) {
     console.error("🔥 FIRESTORE ERROR COMPLETO:", err.code, err.message);
