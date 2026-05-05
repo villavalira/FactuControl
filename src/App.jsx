@@ -201,7 +201,7 @@ const crearFactura = async () => {
 
     console.log("FACTURA CREADA", docRef.id);
 
-// await loadFacturas(user.uid);
+ await loadFacturas(user.uid);
 
   } catch (error) {
     console.error("❌ ERROR FACTURA:", error);
@@ -353,7 +353,7 @@ const crearFactura = async () => {
           <div style={styles.card}>
             <h3>Crear factura</h3>
 
-            <p>Número: {generarNumero()}</p>
+            <p>Número: se generará al crear la factura</p>
 
            <select
   style={styles.input}
@@ -387,6 +387,32 @@ const crearFactura = async () => {
 
             <button style={styles.button} onClick={crearFactura}>
               Crear factura
+             </button>
+             <hr style={{ marginTop: 20 }} />
+
+<h3>Facturas creadas</h3>
+
+{facturas.length === 0 && <p>No hay facturas aún</p>}
+
+{facturas.map(f => (
+  <div key={f.id} style={{
+    background: "#fff",
+    color: "#000",
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 8
+  }}>
+
+    <p><b>Nº:</b> {f.numero}</p>
+    <p><b>Concepto:</b> {f.concepto}</p>
+    <p><b>Total:</b> {f.total.toFixed(2)} €</p>
+
+    <button onClick={() => generarPDF(f)}>
+      Descargar PDF
+    
+
+  </div>
+))}
             </button>
           </div>
         )}
