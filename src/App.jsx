@@ -25,7 +25,6 @@ const menuStyle = {
   width: isMobile ? 140 : 200,
   padding: isMobile ? 10 : 20
 };
-
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
   check();
