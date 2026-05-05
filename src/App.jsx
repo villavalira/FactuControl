@@ -113,46 +113,37 @@ const loadFacturas = async (uid) => {
 };
 
   /* ================= EMISOR SAVE ================= */
-  const saveEmisor = async () => {
-    if (!user?.uid) return;
+const saveEmisor = async () => {
+  if (!user?.uid) return;
 
-    await addDoc(collection(db, "emisores"), {
-      uid: user.uid,
-      ...emisorForm,
-    });
+  await addDoc(collection(db, "emisores"), {
+    uid: user.uid,
+    ...emisorForm,
+  });
 
-    setEmisorForm({
-      nombre: "",
-      nif: "",
-      direccion: "",
-      email: "",
-      telefono: "",
-    });
+  setEmisorForm({
+    nombre: "",
+    nif: "",
+    direccion: "",
+    email: "",
+    telefono: "",
+  });
 
-     loadEmisores(user.uid);
-  };
+  loadAll(user.uid); // 👈 IMPORTANTE
+};
 
-  const deleteEmisor = async (id) => {
-    await deleteDoc(doc(db, "emisores", id));
-    loadEmisores(user.uid);
-  };
-
+const deleteEmisor = async (id) => {
+  await deleteDoc(doc(db, "emisores", id));
+  loadAll(user.uid); // 👈 IMPORTANTE
+};
   /* ================= CLIENTE SAVE ================= */
 const saveCliente = async () => {
   console.log("👉 CLICK CLIENTE");
 
-  if (!user) {
+  if (!user?.uid) {
     console.log("❌ user null");
     return;
   }
-
-  if (!user.uid) {
-    console.log("❌ user.uid no existe");
-    return;
-  }
-
-  console.log("✅ user OK:", user.uid);
-  console.log("📦 clienteForm:", clienteForm);
 
   try {
     const docRef = await addDoc(collection(db, "clientes"), {
@@ -175,14 +166,17 @@ const saveCliente = async () => {
       telefono: "",
     });
 
-     loadCliente(user.uid);
+    loadAll(user.uid); // 👈 IMPORTANTE
 
-  };
-
-  const deleteCliente = async (id) => {
-    await deleteDoc(doc(db, "cliente", id));
-    loadCliente(user.uid);
+  } catch (error) {
+    console.error("🔥 ERROR CLIENTE:", error);
   }
+};
+
+const deleteCliente = async (id) => {
+  await deleteDoc(doc(db, "clientes", id)); // 
+  loadAll(user.uid); // 
+};
 
   /* ================= FACTURA ================= */
   const generarNumero = () => {
