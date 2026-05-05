@@ -178,32 +178,26 @@ const crearFactura = async () => {
   console.log("CLIENTE:", clienteSel.id);
 
   try {
-    const data = {
-      uid: user.uid,
-      numero: "TEST-000001",
-
-      emisorId: emisorSel.id,
-      clienteId: clienteSel.id,
-
-      concepto: "TEST",
-      base: 10,
-      iva: 2.1,
-      irpf: 0.7,
-      total: 11.4,
-      fecha: new Date().toISOString()
-    };
-
-    console.log("📦 DATA:", data);
-
-    const docRef = await addDoc(collection(db, "facturas"), {...});
-
-console.log("FACTURA CREADA");
-return;
-
-  } catch (err) {
-    console.error("🔥 FIRESTORE ERROR COMPLETO:", err.code, err.message);
-  }
+ const data = {
+  uid: user.uid,
+  numero: generarNumero(),
+  emisorId: emisorSel.id,
+  clienteId: clienteSel.id,
+  concepto,
+  base,
+  iva,
+  irpf,
+  total,
+  fecha: new Date().toISOString()
 };
+
+console.log("📦 DATA:", data);
+
+const docRef = await addDoc(collection(db, "facturas"), data);
+
+console.log("FACTURA CREADA", docRef.id);
+   return
+   
   /* ================= LOGIN ================= */
   if (!user) {
     return (
