@@ -190,7 +190,7 @@ const crearFactura = async () => {
       iva: 2.1,
       irpf: 0.7,
       total: 11.4,
-      fecha: new Date().toLocaleDateString(),
+      fecha: new Date().toISOString()
     };
 
     console.log("📦 DATA:", data);
@@ -361,17 +361,18 @@ const crearFactura = async () => {
       {e.nombre}
     </option>
   ))}
-</select>
-
-           <select
+<select
   style={styles.input}
-  value={clienteSel?.id || ""}
-  onChange={e => setClienteSel(e.target.value)}
+  value={emisorSel?.id || ""}
+  onChange={e => {
+    const seleccionado = emisores.find(em => em.id === e.target.value);
+    setEmisorSel(seleccionado);
+  }}
 >
-  <option value="">Cliente</option>
-  {clientes.map(c => (
-    <option key={c.id} value={c.id}>
-      {c.nombre}
+  <option value="">Emisor</option>
+  {emisores.map(e => (
+    <option key={e.id} value={e.id}>
+      {e.nombre}
     </option>
   ))}
 </select>
