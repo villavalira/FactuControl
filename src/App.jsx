@@ -178,7 +178,7 @@ const crearFactura = async () => {
   console.log("CLIENTE:", clienteSel);
 
   try {
-    const docRef = await addDoc(collection(db, "facturas"), {
+    const data = {
       uid: user.uid,
       numero: generarNumero(),
 
@@ -191,7 +191,11 @@ const crearFactura = async () => {
       irpf,
       total,
       fecha: new Date().toLocaleDateString(),
-    });
+    };
+
+    console.log("📦 DATA A GUARDAR:", data);
+
+    const docRef = await addDoc(collection(db, "facturas"), data);
 
     console.log("✅ FACTURA CREADA ID:", docRef.id);
 
@@ -201,10 +205,9 @@ const crearFactura = async () => {
     loadAll(user.uid);
 
   } catch (err) {
-    console.error("🔥 ERROR FIRESTORE:", err);
+    console.error("🔥 ERROR FIRESTORE COMPLETO:", err.code, err.message, err);
   }
 };
-
   /* ================= LOGIN ================= */
   if (!user) {
     return (
