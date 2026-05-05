@@ -19,8 +19,10 @@ export default function App() {
   const [isMobile, setIsMobile] = useState(false);
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 12 : 16,
-  padding: isMobile ? 6 : 10
+  fontSize: isMobile ? 11 : 16,
+  padding: isMobile ? "6px 8px" : 10,
+  whiteSpace: "nowrap",
+  flexShrink: 0
 };
   const appStyle = {
   ...styles.app,
@@ -28,21 +30,24 @@ const menuStyle = {
 };
 const sidebarStyle = {
   ...styles.sidebar,
-  width: isMobile ? "100%" : 200,
-  padding: isMobile ? 12 : 20,
-  flexDirection: isMobile ? "row" : "column",
-  justifyContent: isMobile ? "space-around" : "flex-start",
-  alignItems: "center"
+  width: "100%",
+  padding: isMobile ? 8 : 20,
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  overflowX: "auto",
+  gap: 6
 };
   const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30,
   width: "100%"
 };
-    const titleStyle = {
+const titleStyle = {
   ...styles.sidebarTitle,
-  fontSize: isMobile ? 18 : 30,
-  marginBottom: isMobile ? 0 : 20
+  fontSize: isMobile ? 14 : 30,
+  marginRight: isMobile ? 10 : 0
 };
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
