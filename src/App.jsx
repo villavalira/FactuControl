@@ -170,46 +170,30 @@ const deleteCliente = async (id) => {
 };
 
   /* ================= FACTURA ================= */
- 
-   const generarNumero = () => {
-    if (!facturas.length) return "FAC-000001";
-
-    const nums = facturas.map(f =>
-      parseInt((f.numero || "FAC-0").replace("FAC-", ""))
-    );
-
-    return "FAC-" + String(Math.max(...nums) + 1).padStart(6, "0");
-  };
-
 const crearFactura = async () => {
-  console.log("CLICK FACTURA");
+  console.log("👉 CLICK FACTURA");
 
-  console.log("user", user);
-  console.log("emisorSel", emisorSel);
-  console.log("clienteSel", clienteSel);
-
-  if (!user?.uid || !emisorSel || !clienteSel) {
-    console.log("❌ falta algo");
-    return;
-  }
+  console.log("USER:", user);
+  console.log("EMISOR:", emisorSel);
+  console.log("CLIENTE:", clienteSel);
 
   try {
-   await addDoc(collection(db, "facturas"), {
-  uid: user.uid,
-  numero: generarNumero(),
+    const docRef = await addDoc(collection(db, "facturas"), {
+      uid: user.uid,
+      numero: generarNumero(),
 
-  emisorId: emisorSel,
-  clienteId: clienteSel,
+      emisorId: emisorSel.id,
+      clienteId: clienteSel.id,
 
-  concepto,
-  base,
-  iva,
-  irpf,
-  total,
-  fecha: new Date().toLocaleDateString(),
-});
+      concepto,
+      base,
+      iva,
+      irpf,
+      total,
+      fecha: new Date().toLocaleDateString(),
+    });
 
-    console.log("✅ FACTURA CREADA");
+    console.log("✅ FACTURA CREADA ID:", docRef.id);
 
     setConcepto("");
     setBase(0);
@@ -217,7 +201,7 @@ const crearFactura = async () => {
     loadAll(user.uid);
 
   } catch (err) {
-    console.error("🔥 ERROR FACTURA:", err);
+    console.error("🔥 ERROR FIRESTORE:", err);
   }
 };
 
