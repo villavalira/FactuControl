@@ -43,14 +43,15 @@ const sidebarStyle = {
   boxSizing: "border-box",
   overflow: "visible"
 };
-
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 12 : 16,
-  padding: isMobile ? "6px 8px" : 10,
-  color: "black"
+  fontSize: isMobile ? 11 : 16,
+  padding: isMobile ? "6px 10px" : 10,
+  margin: "0 4px",
+  color: "black",
+  flex: "0 0 auto",   // 👈 IMPORTANTE
+  whiteSpace: "nowrap"
 };
-
 const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30
