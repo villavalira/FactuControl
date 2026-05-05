@@ -170,7 +170,15 @@ const deleteCliente = async (id) => {
 };
 
   /* ================= FACTURA ================= */
-  const generarNumero = () => {
+  const crearFactura = async () => {
+  console.log("👉 CLICK CREAR FACTURA");
+
+  console.log("USER:", user);
+  console.log("EMISOR:", emisorSel);
+  console.log("CLIENTE:", clienteSel);
+  console.log("BASE:", base);
+   };
+   const generarNumero = () => {
     if (!facturas.length) return "FAC-000001";
 
     const nums = facturas.map(f =>
