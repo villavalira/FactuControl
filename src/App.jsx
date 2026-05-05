@@ -30,15 +30,18 @@ export default function App() {
     telefono: "",
   });
 
-  /* ================= CLIENTES ================= */
-  const [clientes, setClientes] = useState([]);
-  const [clienteForm, setClienteForm] = useState({
-    nombre: "",
-    nif: "",
-    direccion: "",
-    email: "",
-    telefono: "",
-  });
+  {/* ================= CLIENTES ================= */} 
+  {seccion === "clientes" && ( 
+    <div style={styles.card}>
+      <h3>Clientes</h3> 
+      {clientes.map(c => ( 
+      <div key={c.id} style={styles.row}> 
+        <span>{c.nombre}</span> 
+        <button style={{ padding: "6px 10px", borderRadius: 6, background: "#ef4444", color: "#fff", border: "none" }} onClick={() => deleteCliente(c.id)} 
+          > Borrar </button>
+      </div> 
+    ))} 
+      <input style={styles.input} placeholder="Nombre" value={clienteForm.nombre} onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })} /> <input style={styles.input} placeholder="NIF/CIF" value={clienteForm.nif} onChange={e => setClienteForm({ ...clienteForm, nif: e.target.value })} /> <input style={styles.input} placeholder="Dirección" value={clienteForm.direccion} onChange={e => setClienteForm({ ...clienteForm, direccion: e.target.value })} /> <input style={styles.input} placeholder="Email" value={clienteForm.email} onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })} /> <input style={styles.input} placeholder="Teléfono" value={clienteForm.telefono} onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })} /> <button style={styles.button} onClick={saveCliente}> Guardar cliente </button> </div> )}
 
   /* ================= FACTURAS ================= */
   const [facturas, setFacturas] = useState([]);
