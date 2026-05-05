@@ -77,8 +77,9 @@ export default function App() {
 
   /* ================= NUMERO FACTURA ================= */
 const generarNumero = () => {
-  const siguiente = facturas.length + 1;
-  return String(siguiente).padStart(4, "0");
+  const year = new Date().getFullYear();
+  const next = facturas.length + 1;
+  return `${year}-${String(next).padStart(4, "0")}`;
 };
 
   /* ================= PDF ================= */
