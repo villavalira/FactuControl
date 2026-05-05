@@ -24,7 +24,6 @@ const menuStyle = {
   margin: isMobile ? "0 3px" : "6px 0",
   textAlign: "center",
   color: "black",
-  flex: isMobile ? 1 : "none"   // 👈 CLAVE
 };
 
 const mainStyle = {
