@@ -168,35 +168,45 @@ const deleteCliente = async (id) => {
   await deleteDoc(doc(db, "clientes", id)); // 
   loadAll(user.uid); // 
 };
-
-  /* ================= FACTURA ================= */
+/* ================= FACTURA ================= */
 const crearFactura = async () => {
   console.log("👉 CLICK FACTURA");
 
-  console.log("USER:", user.uid);
-  console.log("EMISOR:", emisorSel.id);
-  console.log("CLIENTE:", clienteSel.id);
+  console.log("USER:", user?.uid);
+  console.log("EMISOR:", emisorSel?.id);
+  console.log("CLIENTE:", clienteSel?.id);
+
+  if (!user?.uid || !emisorSel?.id || !clienteSel?.id) {
+    console.log("❌ falta algo");
+    return;
+  }
 
   try {
- const data = {
-  uid: user.uid,
-  numero: generarNumero(),
-  emisorId: emisorSel.id,
-  clienteId: clienteSel.id,
-  concepto,
-  base,
-  iva,
-  irpf,
-  total,
-  fecha: new Date().toISOString()
+    const data = {
+      uid: user.uid,
+      numero: generarNumero(),
+      emisorId: emisorSel.id,
+      clienteId: clienteSel.id,
+      concepto,
+      base,
+      iva,
+      irpf,
+      total,
+      fecha: new Date().toISOString()
+    };
+
+    console.log("📦 DATA:", data);
+
+    const docRef = await addDoc(collection(db, "facturas"), data);
+
+    console.log("FACTURA CREADA", docRef.id);
+
+    await loadFacturas(user.uid);
+
+  } catch (error) {
+    console.error("❌ ERROR FACTURA:", error);
+  }
 };
-
-console.log("📦 DATA:", data);
-
-const docRef = await addDoc(collection(db, "facturas"), data);
-
-console.log("FACTURA CREADA", docRef.id);
-   return
    
   /* ================= LOGIN ================= */
   if (!user) {
