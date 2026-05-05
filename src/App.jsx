@@ -20,16 +20,11 @@ export default function App() {
 const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
-  padding: isMobile ? "8px 10px" : "10px 14px",
-  flex: isMobile ? "1" : "none",
-  margin: "4px",
+  padding: isMobile ? "6px 8px" : 10,
+  margin: "0 2px",
   borderRadius: "10px",
-  background: "rgba(255,255,255,0.12)",
-  color: "#fff",
-  border: "1px solid rgba(255,255,255,0.15)",
-  backdropFilter: "blur(10px)",
-  transition: "all 0.2s ease",
-  cursor: "pointer"
+  color: "#000",
+  whiteSpace: "nowrap"
 };
   const appStyle = {
   ...styles.app,
@@ -57,8 +52,9 @@ const mainStyle = {
 };
 const titleStyle = {
   ...styles.sidebarTitle,
-  fontSize: isMobile ? 14 : 28,
+  fontSize: isMobile ? 13 : 28,
   fontWeight: "700",
+  margin: 0,
   letterSpacing: "0.5px",
   color: "white"
 };
