@@ -21,10 +21,10 @@ const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
   padding: isMobile ? "6px 8px" : 10,
-  margin: "0 2px",
-  borderRadius: "10px",
-  color: "#000",
-  whiteSpace: "nowrap"
+  flex: 1,
+  margin: "0 3px",
+  textAlign: "center",
+  color: "black" // 👈 ESTO LO ARREGLA
 };
   const appStyle = {
   ...styles.app,
@@ -34,29 +34,21 @@ const sidebarStyle = isMobile
   ? {
       ...styles.sidebar,
       width: "100%",
-      boxSizing: "border-box",
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-around",
-      alignItems: "center",
-      padding: "10px",
-      gap: "6px"
+      boxSizing: "border-box"
     }
   : styles.sidebar;
-  
+
 const mainStyle = {
   ...styles.main,
-  padding: isMobile ? 12 : 30,
-  background: "#f6f7fb",
-  minHeight: "100vh"
+  padding: isMobile ? 10 : 30,
+  width: "100%"
 };
+
 const titleStyle = {
   ...styles.sidebarTitle,
-  fontSize: isMobile ? 13 : 28,
-  fontWeight: "700",
-  margin: 0,
-  letterSpacing: "0.5px",
-  color: "white"
+  fontSize: isMobile ? 14 : 30,
+  marginRight: isMobile ? 10 : 0,
+  flexShrink: 0
 };
 useEffect(() => {
   const check = () => {
