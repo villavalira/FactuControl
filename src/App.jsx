@@ -20,6 +20,11 @@ const menuStyle = {
   fontSize: isMobile ? 12 : 16,
   padding: isMobile ? 6 : 10
 };
+  const sidebarStyle = {
+  ...styles.sidebar,
+  width: isMobile ? 140 : 200,
+  padding: isMobile ? 10 : 20
+};
 useEffect(() => {
   const check = () => setIsMobile(window.innerWidth < 768);
   check();
@@ -262,7 +267,7 @@ const generarNumero = () => {
 
       {/* SIDEBAR */}
 
-<div style={styles.sidebar}>
+<div style={sidebarStyle}>>
   <h2 style={styles.sidebarTitle}>FactuControl</h2>
 
        <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
