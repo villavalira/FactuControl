@@ -16,28 +16,8 @@ export default function App() {
   /* ================= PRUEBA ================= */
   
   /* ================= MOVIL ================= */
-  const [isMobile, setIsMobile] = useState(false);
-const menuStyle = {
-  ...styles.menu,
-  fontSize: isMobile ? 11 : 16,
-  padding: isMobile ? "6px 8px" : 10,
-   margin: "0 3px",
-  textAlign: "center",
-  color: "black" // 👈 ESTO LO ARREGLA
-};
+const [isMobile, setIsMobile] = useState(false);
 
-const mainStyle = {
-  ...styles.main,
-  padding: isMobile ? 10 : 30,
-  width: "100%"
-};
-
-const titleStyle = {
-  ...styles.sidebarTitle,
-  fontSize: isMobile ? 14 : 30,
-  marginRight: isMobile ? 10 : 0, 
-  flexShrink: 0
-};
 useEffect(() => {
   const check = () => {
     setIsMobile(window.matchMedia("(max-width: 768px)").matches);
@@ -45,9 +25,50 @@ useEffect(() => {
 
   check();
   window.addEventListener("resize", check);
-
   return () => window.removeEventListener("resize", check);
 }, []);
+
+/* ================= APP ================= */
+const appStyle = {
+  ...styles.app,
+  flexDirection: isMobile ? "column" : "row"
+};
+
+/* ================= SIDEBAR ================= */
+const sidebarStyle = {
+  ...styles.sidebar,
+  width: isMobile ? "100%" : 200,
+  flexDirection: isMobile ? "row" : "column",
+  justifyContent: isMobile ? "space-around" : "flex-start",
+  alignItems: "center",
+  boxSizing: "border-box"
+};
+
+/* ================= MENU ================= */
+const menuStyle = {
+  ...styles.menu,
+  fontSize: isMobile ? 11 : 16,
+  padding: isMobile ? "6px 8px" : 10,
+  margin: isMobile ? "0 3px" : "6px 0",
+  textAlign: "center",
+  color: "black",
+  flex: isMobile ? 1 : "none"
+};
+
+/* ================= TITLE ================= */
+const titleStyle = {
+  ...styles.sidebarTitle,
+  fontSize: isMobile ? 14 : 30,
+  margin: 0,
+  flexShrink: 0
+};
+
+/* ================= MAIN ================= */
+const mainStyle = {
+  ...styles.main,
+  padding: isMobile ? 10 : 30,
+  width: "100%"
+};
   /* ================= AUTH ================= */
   const [user, setUser] = useState(null);
 
