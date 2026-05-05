@@ -180,7 +180,7 @@ const crearFactura = async () => {
   try {
     const data = {
       uid: user.uid,
-      numero: generarNumero(),
+      numero: "TEST-000001",
 
       emisorId: emisorSel.id,
       clienteId: clienteSel.id,
