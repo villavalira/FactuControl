@@ -13,6 +13,8 @@ import {
 } from "firebase/firestore";
 
 export default function App() {
+  /* ================= PRUEBA ================= */
+  
   /* ================= MOVIL ================= */
   const [isMobile, setIsMobile] = useState(false);
 const menuStyle = {
@@ -28,6 +30,11 @@ const menuStyle = {
   ...styles.sidebar,
   width: isMobile ? 140 : 200,
   padding: isMobile ? 10 : 20
+};
+  const mainStyle = {
+  ...styles.main,
+  padding: isMobile ? 10 : 30,
+  width: "100%"
 };
     const titleStyle = {
   ...styles.sidebarTitle,
