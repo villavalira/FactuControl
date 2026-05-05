@@ -57,74 +57,100 @@ export default function App() {
   const total = base + iva - irpf;
 
   /* ================= LOAD ================= */
-  const loadAll = async (uid) => {
-    const [e, c, f] = await Promise.all([
-      getDocs(query(collection(db, "emisores"), where("uid", "==", uid))),
-      getDocs(query(collection(db, "clientes"), where("uid", "==", uid))),
-      getDocs(query(collection(db, "facturas"), where("uid", "==", uid))),
-    ]);
+  const loadEmisores = async (uid) => {
+    const q = query(collection(db, "emisores"), where("uid", "==", uid));
+    const snap = await getDocs(q);
+    setEmisores(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  };
 
-    setEmisores(e.docs.map(d => ({ id: d.id, ...d.data() })));
-    setClientes(c.docs.map(d => ({ id: d.id, ...d.data() })));
-    setFacturas(f.docs.map(d => ({ id: d.id, ...d.data() })));
+  const loadClientes = async (uid) => {
+    const q = query(collection(db, "clientes"), where("uid", "==", uid));
+    const snap = await getDocs(q);
+    setClientes(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  };
+
+  const loadFacturas = async (uid) => {
+    const q = query(collection(db, "facturas"), where("uid", "==", uid));
+    const snap = await getDocs(q);
+    setFacturas(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  };
+
+  /* ================= NUMERO FACTURA ================= */
+  const generarNumero = () => {
+    return Date.now().toString();
   };
 
   /* ================= PDF ================= */
   const generarPDF = (f) => {
     const doc = new jsPDF();
 
+    const emisor = emisores.find(e => e.id === f.emisorId);
+    const cliente = clientes.find(c => c.id === f.clienteId);
+
     doc.text(`FACTURA Nº: ${f.numero}`, 10, 10);
-    doc.text(`Concepto: ${f.concepto}`, 10, 20);
-    doc.text(`Base: ${f.base} €`, 10, 30);
-    doc.text(`IVA: ${f.iva.toFixed(2)} €`, 10, 40);
-    doc.text(`IRPF: ${f.irpf.toFixed(2)} €`, 10, 50);
-    doc.text(`TOTAL: ${f.total.toFixed(2)} €`, 10, 60);
+    doc.text(`Emisor: ${emisor?.nombre || ""}`, 10, 20);
+    doc.text(`Cliente: ${cliente?.nombre || ""}`, 10, 30);
+    doc.text(`Concepto: ${f.concepto}`, 10, 40);
+    doc.text(`Base: ${f.base} €`, 10, 50);
+    doc.text(`IVA: ${f.iva.toFixed(2)} €`, 10, 60);
+    doc.text(`IRPF: ${f.irpf.toFixed(2)} €`, 10, 70);
+    doc.text(`TOTAL: ${f.total.toFixed(2)} €`, 10, 80);
 
     doc.save(`factura-${f.numero}.pdf`);
   };
 
   /* ================= FACTURA ================= */
   const crearFactura = async () => {
+    console.log("👉 CLICK FACTURA");
+
     if (!user?.uid || !emisorSel?.id || !clienteSel?.id) {
       console.log("❌ falta algo");
       return;
     }
 
-    try {
-      const data = {
-        uid: user.uid,
-        numero: Date.now(),
-        emisorId: emisorSel.id,
-        clienteId: clienteSel.id,
-        concepto,
-        base,
-        iva,
-        irpf,
-        total,
-        fecha: new Date().toISOString(),
-      };
+    const data = {
+      uid: user.uid,
+      numero: generarNumero(),
+      emisorId: emisorSel.id,
+      clienteId: clienteSel.id,
+      concepto,
+      base,
+      iva,
+      irpf,
+      total,
+      fecha: new Date().toISOString()
+    };
 
-      const docRef = await addDoc(collection(db, "facturas"), data);
+    const docRef = await addDoc(collection(db, "facturas"), data);
 
-      console.log("✅ FACTURA CREADA", docRef.id);
+    console.log("FACTURA CREADA", docRef.id);
 
-      await loadAll(user.uid);
-
-      setConcepto("");
-      setBase(0);
-
-    } catch (error) {
-      console.error("❌ ERROR FACTURA:", error);
-    }
+    loadFacturas(user.uid);
   };
 
-  /* ================= EMISOR ================= */
-  const saveEmisor = async () => {
-    if (!user?.uid) return;
+  /* ================= AUTH ================= */
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
 
+      if (u?.uid) {
+        loadEmisores(u.uid);
+        loadClientes(u.uid);
+        loadFacturas(u.uid);
+      }
+    });
+
+    return () => unsub();
+  }, []);
+
+  const login = () => signInWithPopup(auth, googleProvider);
+  const logout = () => signOut(auth);
+
+  /* ================= SAVE EMISOR ================= */
+  const saveEmisor = async () => {
     await addDoc(collection(db, "emisores"), {
       uid: user.uid,
-      ...emisorForm,
+      ...emisorForm
     });
 
     setEmisorForm({
@@ -135,16 +161,14 @@ export default function App() {
       telefono: "",
     });
 
-    loadAll(user.uid);
+    loadEmisores(user.uid);
   };
 
-  /* ================= CLIENTE ================= */
+  /* ================= SAVE CLIENTE ================= */
   const saveCliente = async () => {
-    if (!user?.uid) return;
-
     await addDoc(collection(db, "clientes"), {
       uid: user.uid,
-      ...clienteForm,
+      ...clienteForm
     });
 
     setClienteForm({
@@ -155,26 +179,10 @@ export default function App() {
       telefono: "",
     });
 
-    loadAll(user.uid);
+    loadClientes(user.uid);
   };
 
-  /* ================= AUTH ================= */
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-
-      if (u?.uid) {
-        loadAll(u.uid);
-      }
-    });
-
-    return () => unsub();
-  }, []);
-
-  const login = () => signInWithPopup(auth, googleProvider);
-  const logout = () => signOut(auth);
-
-  /* ================= LOGIN ================= */
+  /* ================= UI LOGIN ================= */
   if (!user) {
     return (
       <div style={styles.login}>
@@ -193,119 +201,53 @@ export default function App() {
       <div style={styles.sidebar}>
         <h2 style={styles.sidebarTitle}>FactuControl</h2>
 
-        <button style={styles.menu} onClick={() => setSeccion("emisor")}>Emisor</button>
-        <button style={styles.menu} onClick={() => setSeccion("clientes")}>Clientes</button>
-        <button style={styles.menu} onClick={() => setSeccion("facturas")}>Facturas</button>
-
-        <button style={{ ...styles.menu, background: "#ef4444" }} onClick={logout}>
-          Logout
-        </button>
+        <button onClick={() => setSeccion("emisor")} style={styles.menu}>Emisor</button>
+        <button onClick={() => setSeccion("clientes")} style={styles.menu}>Clientes</button>
+        <button onClick={() => setSeccion("facturas")} style={styles.menu}>Facturas</button>
+        <button onClick={logout} style={{ ...styles.menu, background: "red" }}>Logout</button>
       </div>
 
+      {/* MAIN */}
       <div style={styles.main}>
 
-        {/* ================= EMISOR ================= */}
-        {seccion === "emisor" && (
-          <div style={styles.card}>
-            <h3>Emisor</h3>
-
-            {emisores.map(e => (
-              <div key={e.id}>{e.nombre}</div>
-            ))}
-
-            <input placeholder="Nombre" value={emisorForm.nombre}
-              onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })} />
-
-            <input placeholder="NIF" value={emisorForm.nif}
-              onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })} />
-
-            <input placeholder="Dirección" value={emisorForm.direccion}
-              onChange={e => setEmisorForm({ ...emisorForm, direccion: e.target.value })} />
-
-            <input placeholder="Email" value={emisorForm.email}
-              onChange={e => setEmisorForm({ ...emisorForm, email: e.target.value })} />
-
-            <input placeholder="Teléfono" value={emisorForm.telefono}
-              onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })} />
-
-            <button onClick={saveEmisor}>Guardar emisor</button>
-          </div>
-        )}
-
-        {/* ================= CLIENTES ================= */}
-        {seccion === "clientes" && (
-          <div style={styles.card}>
-            <h3>Clientes</h3>
-
-            {clientes.map(c => (
-              <div key={c.id}>{c.nombre}</div>
-            ))}
-
-            <input placeholder="Nombre" value={clienteForm.nombre}
-              onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })} />
-
-            <input placeholder="NIF" value={clienteForm.nif}
-              onChange={e => setClienteForm({ ...clienteForm, nif: e.target.value })} />
-
-            <input placeholder="Dirección" value={clienteForm.direccion}
-              onChange={e => setClienteForm({ ...clienteForm, direccion: e.target.value })} />
-
-            <input placeholder="Email" value={clienteForm.email}
-              onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })} />
-
-            <input placeholder="Teléfono" value={clienteForm.telefono}
-              onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })} />
-
-            <button onClick={saveCliente}>Guardar cliente</button>
-          </div>
-        )}
-
-        {/* ================= FACTURAS ================= */}
+        {/* FACTURAS */}
         {seccion === "facturas" && (
           <div style={styles.card}>
-            <h3>Facturas</h3>
 
-            <select
-              value={emisorSel?.id || ""}
-              onChange={e => setEmisorSel(emisores.find(x => x.id === e.target.value))}
-            >
+            <h3>Crear factura</h3>
+
+            <select value={emisorSel?.id || ""} onChange={e => setEmisorSel(emisores.find(x => x.id === e.target.value))}>
               <option>Emisor</option>
-              {emisores.map(e => (
-                <option key={e.id} value={e.id}>{e.nombre}</option>
-              ))}
+              {emisores.map(e => <option key={e.id} value={e.id}>{e.nombre}</option>)}
             </select>
 
-            <select
-              value={clienteSel?.id || ""}
-              onChange={e => setClienteSel(clientes.find(x => x.id === e.target.value))}
-            >
+            <select value={clienteSel?.id || ""} onChange={e => setClienteSel(clientes.find(x => x.id === e.target.value))}>
               <option>Cliente</option>
-              {clientes.map(c => (
-                <option key={c.id} value={c.id}>{c.nombre}</option>
-              ))}
+              {clientes.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
             </select>
 
-            <input placeholder="Concepto" value={concepto}
-              onChange={e => setConcepto(e.target.value)} />
+            <input placeholder="Concepto" value={concepto} onChange={e => setConcepto(e.target.value)} />
+            <input type="number" value={base} onChange={e => setBase(Number(e.target.value))} />
 
-            <input type="number" value={base}
-              onChange={e => setBase(Number(e.target.value))} />
+            <p>Total: {total.toFixed(2)} €</p>
 
             <button onClick={crearFactura}>Crear factura</button>
 
-            <hr />
+            <h3>Facturas</h3>
 
             {facturas.map(f => (
               <div key={f.id}>
                 <p>{f.numero}</p>
-                <p>{f.concepto}</p>
-                <p>{f.total}</p>
 
-                <button onClick={() => generarPDF(f)}>
-                  PDF
-                </button>
+                <p>
+                  {emisores.find(e => e.id === f.emisorId)?.nombre} →
+                  {clientes.find(c => c.id === f.clienteId)?.nombre}
+                </p>
+
+                <button onClick={() => generarPDF(f)}>PDF</button>
               </div>
             ))}
+
           </div>
         )}
 
