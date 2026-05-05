@@ -27,7 +27,6 @@ const menuStyle = {
   flex: isMobile ? 1 : "none"   // 👈 CLAVE
 };
 
-
 const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30,
