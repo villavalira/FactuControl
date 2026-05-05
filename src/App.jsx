@@ -261,12 +261,9 @@ const generarNumero = () => {
     <div style={styles.app}>
 
       {/* SIDEBAR */}
-      const sidebarStyle = {
-  ...styles.sidebar,
-  width: isMobile ? 120 : 200,
-  padding: isMobile ? 10 : 20
-};
-        <h2 style={styles.sidebarTitle}>FactuControl</h2>
+
+<div style={styles.sidebar}>
+  <h2 style={styles.sidebarTitle}>FactuControl</h2>
 
        <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
 <button onClick={() => setSeccion("clientes")} style={menuStyle}>Clientes</button>
