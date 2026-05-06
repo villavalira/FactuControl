@@ -529,7 +529,7 @@ const generarNumero = () => {
       Guardar cliente
     </button>
   </div>
-)}
+}
         {/* FACTURAS */}
         {seccion === "facturas" && (
     <div style={centerPage}>
