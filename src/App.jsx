@@ -572,9 +572,7 @@ const generarNumero = () => {
             ))}
 
           </div>
-        )}
-
-      </div>
+            </div>
     </div>
   );
 )}
