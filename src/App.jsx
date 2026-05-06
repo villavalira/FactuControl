@@ -75,14 +75,14 @@ const styles = {
     marginBottom: 20,
     color: "#000",
   },
-
   input: {
-    width: "100%",
-    padding: 6,
-    marginTop: 8,
-    borderRadius: 8,
-    border: "1px solid #ccc",
-  },
+  width: "100%",
+  padding: "6px 8px",
+  marginTop: 6,
+  fontSize: 13,
+  borderRadius: 6,
+  border: "1px solid #ccc",
+ 
 };
 
 export default function App() {
