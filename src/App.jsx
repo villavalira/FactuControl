@@ -274,12 +274,28 @@ export default function App() {
           <h3>FactuControl</h3>
 
           <div style={styles.menu}>
-            <button style={styles.button} onClick={() => setSeccion("emisor")}>Emisor</button>
-            <button style={styles.button} onClick={() => setSeccion("clientes")}>Clientes</button>
-            <button style={styles.button} onClick={() => setSeccion("facturas")}>Facturas</button>
-            <button style={{ ...styles.button, ...styles.danger }} onClick={logout}>Logout</button>
-            <button onClick={() => setSeccion("admin")}>Admin</button>
-          </div>
+  <button style={styles.button} onClick={() => setSeccion("emisor")}>
+    Emisor
+  </button>
+
+  <button style={styles.button} onClick={() => setSeccion("clientes")}>
+    Clientes
+  </button>
+
+  <button style={styles.button} onClick={() => setSeccion("facturas")}>
+    Facturas
+  </button>
+
+  {isAdmin && (
+    <button style={styles.button} onClick={() => setSeccion("admin")}>
+      Admin
+    </button>
+  )}
+
+  <button style={{ ...styles.button, ...styles.danger }} onClick={logout}>
+    Logout
+  </button>
+</div>
         </div>
       </div>
 
