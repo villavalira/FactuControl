@@ -14,7 +14,21 @@ import {
 
 export default function App() {
   /* ================= PRUEBA ================= */
-  
+  /* ================= ESTILOS (NO TOCADOS) ================= */ 
+const styles = { app:
+{ display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
+ sidebar: { width: 180, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10, borderRadius: 0, height: "fit-content", overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
+ main: { flex: 1, padding: 20, width: "100%" }, 
+ body: { margin: 0, padding: 0},
+ card: { background: "#e2a9f1", color: "#000", padding: 28, width: "100%", maxWidth: 900, margin: "0 auto", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", border: "1px solid rgba(121, 31, 143, 0.2)" },  
+ input: { width: "100%", padding: 12, margin: "8px 0", borderRadius: 10, border: "1px solid rgba(121, 31, 143, 0.25)", outline: "none", fontSize: 14, background: "white" }, 
+ button: { padding: "10px 14px" , background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 500 }, 
+ menu: { padding: "8px 14px", background: "#e482da", border: "1px solid #e6e8ec", borderRadius: 999, fontWeight: "bold" }, 
+ row: {display: "flex", alignItems: "center", justifyContent: "flex-start", padding: 8, gap: 12 }, 
+ sidebarTitle: { color: 'white', fontSize: '30px', fontWeight: 'bold' }, 
+ login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }, 
+};
+
   /* ================= MOVIL ================= */
 const [isMobile, setIsMobile] = useState(false);
 const [animKey, setAnimKey] = useState(0);
@@ -635,18 +649,4 @@ const generarNumero = () => {
   );
 }
 
-/* ================= ESTILOS (NO TOCADOS) ================= */ 
-const styles = { app:
-{ display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
- sidebar: { width: 180, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10, borderRadius: 0, height: "fit-content", overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
- main: { flex: 1, padding: 20, width: "100%" }, 
- body: { margin: 0, padding: 0},
- card: { background: "#e2a9f1", color: "#000", padding: 28, width: "100%", maxWidth: 900, margin: "0 auto", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", border: "1px solid rgba(121, 31, 143, 0.2)" },  
- input: { width: "100%", padding: 12, margin: "8px 0", borderRadius: 10, border: "1px solid rgba(121, 31, 143, 0.25)", outline: "none", fontSize: 14, background: "white" }, 
- button: { padding: "10px 14px" , background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 500 }, 
- menu: { padding: "8px 14px", background: "#e482da", border: "1px solid #e6e8ec", borderRadius: 999, fontWeight: "bold" }, 
- row: {display: "flex", alignItems: "center", justifyContent: "flex-start", padding: 8, gap: 12 }, 
- sidebarTitle: { color: 'white', fontSize: '30px', fontWeight: 'bold' }, 
- login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }, 
-};
 
