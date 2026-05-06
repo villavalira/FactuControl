@@ -97,6 +97,8 @@ export default function App() {
   const [emisorSel, setEmisorSel] = useState(null);
   const [clienteSel, setClienteSel] = useState(null);
 
+  const ADMIN_EMAIL = "andrea.garcia192@gmail.com";
+  const isAdmin = user?.email === ADMIN_EMAIL;
   const [emisorForm, setEmisorForm] = useState({
     nombre: "",
     nif: "",
@@ -276,12 +278,18 @@ export default function App() {
             <button style={styles.button} onClick={() => setSeccion("clientes")}>Clientes</button>
             <button style={styles.button} onClick={() => setSeccion("facturas")}>Facturas</button>
             <button style={{ ...styles.button, ...styles.danger }} onClick={logout}>Logout</button>
+            <button onClick={() => setSeccion("admin")}>Admin</button>
           </div>
         </div>
       </div>
 
       <div style={styles.container}>
-
+         {/* ADMIN */}
+{seccion === "admin" && isAdmin && (
+  <div>
+    <h3>Panel Admin</h3>
+  </div>
+)}
         {/* EMISOR */}
         {seccion === "emisor" && (
           <div style={styles.card}>
