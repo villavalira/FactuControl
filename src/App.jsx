@@ -43,17 +43,18 @@ const topBarStyle = {
   display: "flex",
   justifyContent: "center",
   background: "#791f8f",
-  padding: isMobile ? 10 : "15px 20px"
-};
+  padding: isMobile ? 10 : "15px 40px"
+  };
 const topBarInnerStyle = {
   width: "100%",
-  maxWidth: 900,
+  maxWidth: isMobile ? "100%" : 1200,
+  margin: "0 auto",
   display: "flex",
-  flexDirection: "row",   // 👈 SIEMPRE row
+  flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
   gap: 10,
-  flexWrap: "wrap"        // 👈 clave para móvil
+  flexWrap: "wrap"
 };
 const menuContainerStyle = {
   display: "flex",
