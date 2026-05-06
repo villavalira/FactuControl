@@ -42,28 +42,34 @@ const sidebarStyle = {
   const topBarStyle = {
   display: "flex",
   flexDirection: isMobile ? "column" : "row",
-  alignItems: isMobile ? "flex-start" : "center",
+  alignItems: isMobile ? "center" : "center",
   justifyContent: "space-between",
-  padding: isMobile ? "10px" : "20px 40px",
+  padding: "15px 20px",
   background: "#791f8f",
+};
+  const topBarInnerStyle = {
   width: "100%",
-  boxSizing: "border-box"
+  maxWidth: 1000,
+  margin: "0 auto",
+  display: "flex",
+  flexDirection: isMobile ? "column" : "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: 10
 };
 const menuContainerStyle = {
   display: "flex",
-  flexDirection: isMobile ? "row" : "row",
-  flexWrap: "wrap",
-  gap: 10,
-  marginTop: isMobile ? 10 : 0,
-  width: isMobile ? "100%" : "auto"
+  flexDirection: "row",
+  gap: 8,
+  width: isMobile ? "100%" : "auto",
+  justifyContent: isMobile ? "center" : "flex-end"
 };
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 13 : 16,
-  padding: isMobile ? "8px" : "10px 14px",
-  flex: isMobile ? "1" : "0 0 auto",
+  fontSize: isMobile ? 12 : 16,
+  padding: isMobile ? "6px 8px" : "10px 14px",
+  flex: isMobile ? 1 : "unset",
   textAlign: "center",
-  whiteSpace: "nowrap",
   color: "black"
 };
 const mainStyle = {
@@ -321,6 +327,7 @@ const generarNumero = () => {
 
   {/* 🔝 MENU SUPERIOR */}
   <div style={topBarStyle}>
+      <div style={topBarInnerStyle}>
     <h2 style={titleStyle}>FactuControl</h2>
 
     <div style={menuContainerStyle}>
