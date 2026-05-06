@@ -457,13 +457,6 @@ const generarNumero = () => {
       >
 
       {/* ⬇️ CONTENIDO */}
-      <div
-        key={animKey}
-        style={{
-          ...mainStyle,
-          animation: "fadeSlide 0.25s ease"
-        }}
-      >
 
      {seccion === "emisor" && (
   <div style={styles.card}>
@@ -596,6 +589,7 @@ const generarNumero = () => {
 
       </div>
     </div>
+       </div>
   );
 }
 
