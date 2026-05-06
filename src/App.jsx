@@ -17,17 +17,38 @@ export default function App() {
   
   /* ================= MOVIL ================= */
 const [isMobile, setIsMobile] = useState(false);
-
+const [animKey, setAnimKey] = useState(0);
 useEffect(() => {
+
   const check = () => {
     setIsMobile(window.matchMedia("(max-width: 768px)").matches);
   };
-
+    
   check();
   window.addEventListener("resize", check);
   return () => window.removeEventListener("resize", check);
 }, []);
+useEffect(() => {
+  const animationStyle = document.createElement("style");
+  animationStyle.innerHTML = `
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  `;
 
+  document.head.appendChild(animationStyle);
+
+  return () => {
+    document.head.removeChild(animationStyle);
+  };
+}, []);
 const appStyle = {
   ...styles.app
 };
@@ -64,6 +85,7 @@ const topBarInnerStyle = {
   WebkitBackdropFilter: "blur(10px)",
   borderRadius: isMobile ? 12 : 0
 };
+
 const menuContainerStyle = {
   display: "flex",
   flexDirection: "row",
@@ -93,7 +115,6 @@ const menuStyle = {
   fontSize: isMobile ? 12 : 16,
   padding: isMobile ? "6px 10px" : "10px 14px",
   whiteSpace: "nowrap",
-  transition: "all 0.2s ease",
   cursor: "pointer",
   transition: "transform 0.15s ease, box-shadow 0.15s ease"
 };
@@ -102,6 +123,7 @@ const mainStyle = {
   padding: isMobile ? 10 : 30,
   maxWidth: 1000,
   margin: "0 auto"
+  animation: "fadeSlide 0.25s ease"
 };
 
 const titleStyle = {
@@ -391,7 +413,13 @@ const generarNumero = () => {
   </div>
  </div>
   {/* ⬇️ CONTENIDO */}
-  <div style={mainStyle}>
+  <div
+  style={{
+    ...mainStyle,
+    animation: "fadeSlide 0.25s ease"
+  }}
+  key={animKey}
+>
 {seccion === "emisor" && (
   <div style={styles.card}>
     <h3>Emisor</h3>
