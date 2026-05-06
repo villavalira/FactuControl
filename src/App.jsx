@@ -85,12 +85,12 @@ const sidebarStyle = {
   display: "flex",
   justifyContent: "center",
   borderRadius: 0,
-  overflow: "hidden"
+  overflow: "hidden",
+  boxShadow: "none"
 };
 
 const topBarInnerStyle = {
   width: "100%",
-  maxWidth: 1100,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
