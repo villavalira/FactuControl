@@ -97,6 +97,13 @@ const menuContainerStyle = {
   alignItems: "center",
   width: isMobile ? "100%" : "auto"
 };
+  const centerPage = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-start",
+  minHeight: "70vh",
+  paddingTop: 20
+};
   const hoverEffect = {
   onMouseEnter: (e) => {
     e.target.style.transform = "scale(1.05)";
@@ -434,7 +441,7 @@ const generarNumero = () => {
   }}
 >
 {seccion === "emisor" && (
-  <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+  <div style={centerPage}>
     <div style={styles.card}>
     <h3>Emisor</h3>
 
@@ -479,7 +486,7 @@ const generarNumero = () => {
   </div>
 )}
         {seccion === "clientes" && (
-  <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+  <div style={centerPage}>
     <div style={styles.card}>
     <h3>Clientes</h3>
 
@@ -525,7 +532,7 @@ const generarNumero = () => {
 )}
         {/* FACTURAS */}
         {seccion === "facturas" && (
-    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+    <div style={centerPage}>
           <div style={styles.card}>
 
             <h3>Crear factura</h3>
@@ -576,7 +583,7 @@ const styles = { app:
  sidebar: { overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
  main: { flex: 1, padding: 20, width: "100%" }, 
  body: { margin: 0, padding: 0},
- card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14 }, 
+ card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14, width: "100%", maxWidth: 500 },  
  input: { width: "85%", padding: 10, margin: "6px 0", borderRadius: 8 }, 
  button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" }, 
  menu: { padding: 10, background: "#e482da", border: 0, borderRadius: 8, fontWeight: "bold" }, 
