@@ -389,194 +389,94 @@ const generarNumero = () => {
   }
 
   /* ================= UI ================= */
-  return (
-<div style={appStyle}>
+    return (
+    <div style={appStyle}>
 
-  {/* 🔝 MENU SUPERIOR */}
-  <div style={topBarStyle}>
-      <div style={topBarInnerStyle}>
-    <h2 style={titleStyle}>FactuControl</h2>
+      {/* 🔝 MENU SUPERIOR */}
+      <div style={topBarStyle}>
+        <div style={topBarInnerStyle}>
+          <h2 style={titleStyle}>FactuControl</h2>
 
-    <div style={menuContainerStyle}>
-  <button
-    onClick={() => cambiarSeccion("emisor")}
-    style={menuStyle}
-    {...hoverEffect}
-  >
-    Emisor
-  </button>
+          <div style={menuContainerStyle}>
+            <button onClick={() => cambiarSeccion("emisor")} style={menuStyle} {...hoverEffect}>
+              Emisor
+            </button>
 
-  <button
-    onClick={() => cambiarSeccion("clientes")}
-    style={menuStyle}
-    {...hoverEffect}
-  >
-    Clientes
-  </button>
+            <button onClick={() => cambiarSeccion("clientes")} style={menuStyle} {...hoverEffect}>
+              Clientes
+            </button>
 
-  <button
-    onClick={() => cambiarSeccion("facturas")}
-    style={menuStyle}
-    {...hoverEffect}
-  >
-    Facturas
-  </button>
+            <button onClick={() => cambiarSeccion("facturas")} style={menuStyle} {...hoverEffect}>
+              Facturas
+            </button>
 
-  <button
-    onClick={logout}
-    style={{ ...menuStyle, background: "red" }}
-    {...hoverEffect}
-  >
-    Logout
-  </button>
-</div>
-  </div>
- </div>
-  {/* ⬇️ CONTENIDO */}
- <div
-  key={animKey}
-  style={{
-    ...mainStyle,
-    animation: "fadeSlide 0.25s ease"
-  }}
->
-{seccion === "emisor" && (
-  <div style={centerPage}>
-    <div style={styles.card}>
-    <h3>Emisor</h3>
+            <button onClick={logout} style={{ ...menuStyle, background: "red" }} {...hoverEffect}>
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
 
-    <input
-      style={styles.input}
-      placeholder="Nombre"
-      value={emisorForm.nombre}
-      onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
-    />
+      
+      {/* ⬇️ CONTENIDO */}
+      <div
+        key={animKey}
+        style={{
+          ...mainStyle,
+          animation: "fadeSlide 0.25s ease"
+        }}
+      >
 
-    <input
-      style={styles.input}
-      placeholder="NIF"
-      value={emisorForm.nif}
-      onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })}
-    />
+        {seccion === "emisor" && (
+          <div style={centerPage}>
+            <div style={styles.card}>
+              <h3>Emisor</h3>
+              ...
+              <button style={styles.button} onClick={saveEmisor}>
+                Guardar emisor
+              </button>
+            </div>
+          </div>
+        )}
 
-    <input
-      style={styles.input}
-      placeholder="Dirección"
-      value={emisorForm.direccion}
-      onChange={e => setEmisorForm({ ...emisorForm, direccion: e.target.value })}
-    />
+        {seccion === "clientes" && (
+          <div style={centerPage}>
+            <div style={styles.card}>
+              <h3>Clientes</h3>
+              ...
+              <button style={styles.button} onClick={saveCliente}>
+                Guardar cliente
+              </button>
+            </div>
+          </div>
+        )}
 
-    <input
-      style={styles.input}
-      placeholder="Email"
-      value={emisorForm.email}
-      onChange={e => setEmisorForm({ ...emisorForm, email: e.target.value })}
-    />
-
-    <input
-      style={styles.input}
-      placeholder="Teléfono"
-      value={emisorForm.telefono}
-      onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
-    />
-
-    <button style={styles.button} onClick={saveEmisor}>
-      Guardar emisor
-    </button>
-  </div>
-    </div>
-)}
-      {seccion === "clientes" && (
-  <div style={centerPage}>
-    <div style={styles.card}>
-      <h3>Clientes</h3>
-
-      <input
-        style={styles.input}
-        placeholder="Nombre"
-        value={clienteForm.nombre}
-        onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
-      />
-
-      <input
-        style={styles.input}
-        placeholder="NIF"
-        value={clienteForm.nif}
-        onChange={e => setClienteForm({ ...clienteForm, nif: e.target.value })}
-      />
-
-      <input
-        style={styles.input}
-        placeholder="Dirección"
-        value={clienteForm.direccion}
-        onChange={e => setClienteForm({ ...clienteForm, direccion: e.target.value })}
-      />
-
-      <input
-        style={styles.input}
-        placeholder="Email"
-        value={clienteForm.email}
-        onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
-      />
-
-      <input
-        style={styles.input}
-        placeholder="Teléfono"
-        value={clienteForm.telefono}
-        onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })}
-      />
-
-      <button style={styles.button} onClick={saveCliente}>
-        Guardar cliente
-      </button>
-    </div>
-  </div>
-)}
-        {/* FACTURAS */}
         {seccion === "facturas" && (
-    <div style={centerPage}>
-          <div style={styles.card}>
+          <div style={centerPage}>
+            <div style={styles.card}>
+              <h3>Crear factura</h3>
+              ...
+              <h3>Facturas</h3>
 
-            <h3>Crear factura</h3>
+              {facturas.map(f => (
+                <div key={f.id}>
+                  <p>{f.numero}</p>
+                  <p>
+                    {emisores.find(e => e.id === f.emisorId)?.nombre} →
+                    {clientes.find(c => c.id === f.clienteId)?.nombre}
+                  </p>
+                  <button onClick={() => generarPDF(f)}>PDF</button>
+                </div>
+              ))}
 
-            <select value={emisorSel?.id || ""} onChange={e => setEmisorSel(emisores.find(x => x.id === e.target.value))}>
-              <option>Emisor</option>
-              {emisores.map(e => <option key={e.id} value={e.id}>{e.nombre}</option>)}
-            </select>
-
-            <select value={clienteSel?.id || ""} onChange={e => setClienteSel(clientes.find(x => x.id === e.target.value))}>
-              <option>Cliente</option>
-              {clientes.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
-            </select>
-
-            <input placeholder="Concepto" value={concepto} onChange={e => setConcepto(e.target.value)} />
-            <input type="number" value={base} onChange={e => setBase(Number(e.target.value))} />
-
-            <p>Total: {total.toFixed(2)} €</p>
-
-            <button onClick={crearFactura}>Crear factura</button>
-
-            <h3>Facturas</h3>
-
-            {facturas.map(f => (
-              <div key={f.id}>
-                <p>{f.numero}</p>
-
-                <p>
-                  {emisores.find(e => e.id === f.emisorId)?.nombre} →
-                  {clientes.find(c => c.id === f.clienteId)?.nombre}
-                </p>
-
-                <button onClick={() => generarPDF(f)}>PDF</button>
-              </div>
-            ))}
-   </div>
+            </div>
           </div>
         )}
 
       </div>
     </div>
   );
+  
 /* ================= ESTILOS (NO TOCADOS) ================= */ 
 const styles = { app:
 { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
