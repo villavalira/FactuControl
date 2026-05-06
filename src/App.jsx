@@ -595,7 +595,6 @@ const generarNumero = () => {
         )}
 
       </div>
-        </div>
     </div>
   );
 }
