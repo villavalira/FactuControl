@@ -60,14 +60,13 @@ const menuContainerStyle = {
   flexDirection: "row",
   flexWrap: "wrap",
   gap: 8,
-  justifyContent: isMobile ? "center" : "flex-end",
-  width: "100%"
+  justifyContent: "flex-end",
+  flex: 1
 };
 const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 12 : 16,
   padding: isMobile ? "6px 10px" : "10px 14px",
-  flex: "0 0 auto",
   whiteSpace: "nowrap"
 };
 const mainStyle = {
