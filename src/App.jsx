@@ -57,17 +57,17 @@ const topBarStyle = {
 const menuContainerStyle = {
   display: "flex",
   flexDirection: "row",
+  flexWrap: "wrap",
   gap: 8,
-  width: isMobile ? "100%" : "auto",
-  justifyContent: isMobile ? "center" : "flex-end"
+  justifyContent: isMobile ? "center" : "flex-end",
+  width: "100%"
 };
 const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 12 : 16,
-  padding: isMobile ? "6px 8px" : "10px 14px",
-  flex: isMobile ? 1 : "unset",
-  textAlign: "center",
-  color: "black"
+  padding: isMobile ? "6px 10px" : "10px 14px",
+  flex: "0 0 auto",
+  whiteSpace: "nowrap"
 };
 const mainStyle = {
   ...styles.main,
