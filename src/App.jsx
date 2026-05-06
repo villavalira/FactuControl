@@ -116,7 +116,7 @@ const menuStyle = {
   padding: isMobile ? "6px 10px" : "10px 14px",
   whiteSpace: "nowrap",
   cursor: "pointer",
-  transition: "transform 0.15s ease, box-shadow 0.15s ease"
+  transition: "transform 0.15s ease, box-shadow 0.15s ease",
 };
 const mainStyle = {
   ...styles.main,
@@ -125,7 +125,10 @@ const mainStyle = {
   margin: "0 auto"
   animation: "fadeSlide 0.25s ease"
 };
-
+const cambiarSeccion = (s) => {
+  setSeccion(s);
+  setAnimKey(prev => prev + 1);
+};
 const titleStyle = {
   ...styles.sidebarTitle,
   fontSize: isMobile ? 14 : 30
@@ -379,7 +382,7 @@ const generarNumero = () => {
 
     <div style={menuContainerStyle}>
   <button
-    onClick={() => setSeccion("emisor")}
+    onClick={() => cambiarSeccion("emisor")}
     style={menuStyle}
     {...hoverEffect}
   >
@@ -387,7 +390,7 @@ const generarNumero = () => {
   </button>
 
   <button
-    onClick={() => setSeccion("clientes")}
+    onClick={() => cambiarSeccion("clientes")}
     style={menuStyle}
     {...hoverEffect}
   >
@@ -395,7 +398,7 @@ const generarNumero = () => {
   </button>
 
   <button
-    onClick={() => setSeccion("facturas")}
+    onClick={() => cambiarSeccion("facturas")}
     style={menuStyle}
     {...hoverEffect}
   >
