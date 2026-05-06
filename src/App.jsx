@@ -47,8 +47,7 @@ const topBarStyle = {
 };
   const topBarInnerStyle = {
   width: "100%",
-  maxWidth: 1000,
-  margin: "0 auto",
+  maxWidth: 900,
   display: "flex",
   flexDirection: isMobile ? "column" : "row",
   alignItems: "center",
