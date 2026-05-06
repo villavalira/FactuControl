@@ -72,16 +72,17 @@ const sidebarStyle = {
   flexDirection: "column",   // 👈 siempre columna
   boxSizing: "border-box"
 };
-const topBarStyle = {
-  display: "flex",
-  justifyContent: "center",
-  background: "#791f8f",
-  padding: isMobile ? 8 : "15px 20px",
-  position: "sticky",
-  top: 0,
-  zIndex: 1000,
-  maxHeight: isMobile ? "auto" : 80
-};
+   const topBarStyle = {
+    display: "flex",
+    justifyContent: "center",
+    background: "white",
+    padding: "12px 20px",
+    position: "sticky",
+    top: 0,
+    zIndex: 1000,
+    borderBottom: "1px solid #e6e8ec"
+  }; 
+  
 const topBarInnerStyle = {
   width: "100%",
   maxWidth: isMobile ? "100%" : 1200,
