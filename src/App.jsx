@@ -555,7 +555,8 @@ const generarNumero = () => {
 )}
         {/* FACTURAS */}
         {seccion === "facturas" && (
-  <div style={{ ...styles.card, maxWidth: 900, width: "100%" }}>
+ <div style={{ ...styles.card, maxWidth: 900, width: "100%", display: "flex", flexDirection: "column", gap: 12
+}}>
 
             <h3>Crear factura</h3>
 
