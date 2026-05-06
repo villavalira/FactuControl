@@ -99,6 +99,11 @@ export default function App() {
 
   const ADMIN_EMAIL = "andrea.garcia192@gmail.com";
   const isAdmin = user?.email === ADMIN_EMAIL;
+  const [allFacturas, setAllFacturas] = useState([]);
+  const loadAllFacturas = async () => {
+  const snap = await getDocs(collection(db, "facturas"));
+  setAllFacturas(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+};
   const [emisorForm, setEmisorForm] = useState({
     nombre: "",
     nif: "",
@@ -133,7 +138,13 @@ export default function App() {
     });
     return () => unsub();
   }, []);
-
+useEffect(() => {
+  const unsub = onAuthStateChanged(auth, (u) => {
+    setUser(u);
+    if (u?.uid) loadAll(u.uid);
+  });
+  return () => unsub();
+}, []);
   const login = () => signInWithPopup(auth, googleProvider);
   const logout = () => signOut(auth);
 
@@ -302,8 +313,24 @@ export default function App() {
       <div style={styles.container}>
          {/* ADMIN */}
 {seccion === "admin" && isAdmin && (
-  <div>
-    <h3>Panel Admin</h3>
+  <div style={styles.card}>
+    <h3>🔥 Panel Admin - Todas las facturas</h3>
+
+    {allFacturas.map(f => (
+      <div key={f.id} style={{ marginBottom: 10 }}>
+        <p>
+          <b>Nº:</b> {f.numero} | <b>Total:</b> {f.total} €
+        </p>
+
+        <p style={{ fontSize: 12, opacity: 0.6 }}>
+          UID: {f.uid}
+        </p>
+
+        <button onClick={() => generarPDF(f)}>
+          PDF
+        </button>
+      </div>
+    ))}
   </div>
 )}
         {/* EMISOR */}
