@@ -163,14 +163,10 @@ const menuStyle = {
 const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30,
-  maxWidth: 1100,
-  margin: "40px auto",
+  flex: 1,
   display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  animation: "fadeSlide 0.25s ease",
-  position: "relative",
-  zIndex: 1
+  justifyContent: "center",   // 🔥 CENTRADO HORIZONTAL GLOBAL
+  alignItems: "center",       // 🔥 CENTRADO VERTICAL GLOBAL
 };
 const cambiarSeccion = (s) => {
   setSeccion(s);
