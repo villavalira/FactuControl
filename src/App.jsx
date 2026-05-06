@@ -455,7 +455,7 @@ const generarNumero = () => {
           animation: "fadeSlide 0.25s ease"
         }}
       >
-</div>
+
       {/* ⬇️ CONTENIDO */}
       <div
         key={animKey}
@@ -595,6 +595,7 @@ const generarNumero = () => {
         )}
 
       </div>
+        </div>
     </div>
   );
 }
