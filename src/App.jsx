@@ -45,14 +45,15 @@ const topBarStyle = {
   background: "#791f8f",
   padding: isMobile ? 10 : "15px 20px"
 };
-  const topBarInnerStyle = {
+const topBarInnerStyle = {
   width: "100%",
   maxWidth: 900,
   display: "flex",
-  flexDirection: isMobile ? "column" : "row",
+  flexDirection: "row",   // 👈 SIEMPRE row
   alignItems: "center",
   justifyContent: "space-between",
-  gap: 10
+  gap: 10,
+  flexWrap: "wrap"        // 👈 clave para móvil
 };
 const menuContainerStyle = {
   display: "flex",
