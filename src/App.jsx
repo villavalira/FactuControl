@@ -210,12 +210,10 @@ export default function App() {
           <button onClick={saveCliente}>Guardar</button>
         </div>
         )}
-
-        {/* FACTURAS */}
-        {seccion === "facturas" && (
-          <div style={styles.card}>
-            <h3>Facturas</h3>
-
+  {/* FACTURAS */}
+      {seccion === "facturas" && (
+        <div>
+          <h3>Facturas</h3>
           <select onChange={e=>setEmisorSel(emisores.find(x=>x.id===e.target.value))}>
             <option>Emisor</option>
             {emisores.map(e=><option key={e.id} value={e.id}>{e.nombre}</option>)}
@@ -229,23 +227,20 @@ export default function App() {
           <input placeholder="Concepto" onChange={e=>setConcepto(e.target.value)} />
           <input type="number" onChange={e=>setBase(Number(e.target.value))} />
 
-            <p>Total: {total.toFixed(2)} €</p>
+          <p>Total: {total.toFixed(2)} €</p>
 
-            <button style={styles.button} onClick={crearFactura}>Crear</button>
+          <button onClick={crearFactura}>Crear factura</button>
 
-            <h3>Listado</h3>
+          {facturas.map(f=> (
+            <div key={f.id}>
+              {f.numero} - {f.total} €
+              <button onClick={()=>generarPDF(f)}>PDF</button>
+            </div>
+          ))}
 
-            {facturas.map(f => (
-              <div key={f.id} style={{ marginTop: 10 }}>
-                <p>{f.concepto} - {f.total} €</p>
-                <button style={styles.button} onClick={() => generarPDF(f)}>PDF</button>
-              </div>
-            ))}
+        </div>
+      )}
 
-          </div>
-        )}
-
-      </div>
     </div>
   );
 }
