@@ -485,49 +485,50 @@ const generarNumero = () => {
     </button>
   </div>
 )}
-        {seccion === "clientes" && (
+      {seccion === "clientes" && (
   <div style={centerPage}>
     <div style={styles.card}>
-    <h3>Clientes</h3>
+      <h3>Clientes</h3>
 
-    <input
-      style={styles.input}
-      placeholder="Nombre"
-      value={clienteForm.nombre}
-      onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
-    />
+      <input
+        style={styles.input}
+        placeholder="Nombre"
+        value={clienteForm.nombre}
+        onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
+      />
 
-    <input
-      style={styles.input}
-      placeholder="NIF"
-      value={clienteForm.nif}
-      onChange={e => setClienteForm({ ...clienteForm, nif: e.target.value })}
-    />
+      <input
+        style={styles.input}
+        placeholder="NIF"
+        value={clienteForm.nif}
+        onChange={e => setClienteForm({ ...clienteForm, nif: e.target.value })}
+      />
 
-    <input
-      style={styles.input}
-      placeholder="Dirección"
-      value={clienteForm.direccion}
-      onChange={e => setClienteForm({ ...clienteForm, direccion: e.target.value })}
-    />
+      <input
+        style={styles.input}
+        placeholder="Dirección"
+        value={clienteForm.direccion}
+        onChange={e => setClienteForm({ ...clienteForm, direccion: e.target.value })}
+      />
 
-    <input
-      style={styles.input}
-      placeholder="Email"
-      value={clienteForm.email}
-      onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
-    />
+      <input
+        style={styles.input}
+        placeholder="Email"
+        value={clienteForm.email}
+        onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
+      />
 
-    <input
-      style={styles.input}
-      placeholder="Teléfono"
-      value={clienteForm.telefono}
-      onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })}
-    />
+      <input
+        style={styles.input}
+        placeholder="Teléfono"
+        value={clienteForm.telefono}
+        onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })}
+      />
 
-    <button style={styles.button} onClick={saveCliente}>
-      Guardar cliente
-    </button>
+      <button style={styles.button} onClick={saveCliente}>
+        Guardar cliente
+      </button>
+    </div>
   </div>
 )}
         {/* FACTURAS */}
