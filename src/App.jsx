@@ -82,27 +82,27 @@ const sidebarStyle = {
     display: "flex",
     justifyContent: "center",
     background: "white",
-    padding: "12px 20px",
+    alignItems: "center",
+    padding: "12px 0px",
     position: "sticky",
+    width: "100%",
     top: 0,
     zIndex: 1000,
     borderBottom: "1px solid #e6e8ec"
   }; 
   
 const topBarInnerStyle = {
-  width: "100%",
-  maxWidth: isMobile ? "100%" : 1200,
-  margin: "0 auto",
+  width: "fit-content",
   display: "flex",
-  flexDirection: isMobile ? "column" : "row",
+  flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
-  gap: 10,
-  flexWrap: "nowrap",
+  gap: 12,
   background: "rgba(121, 31, 143, 0.85)",
+  padding: "10px 16px",
+  borderRadius: 999,
   backdropFilter: "blur(10px)",
-  WebkitBackdropFilter: "blur(10px)",
-  borderRadius: isMobile ? 12 : 0
+  WebkitBackdropFilter: "blur(10px)"
 };  
 const menuContainerStyle = {
   display: "flex",
@@ -161,12 +161,10 @@ const mainStyle = {
   padding: isMobile ? 10 : 30,
   width: "100%",
   minHeight: "80vh",
-
   display: "flex",
-  justifyContent: "center",   // centra horizontal
-  alignItems: "flex-start",   // 👈 importante: no vertical full center
-
-  animation: "fadeSlide 0.25s ease",
+  justifyContent: "center",
+  alignItems: "flex-start",
+  animation: "fadeSlide 0.25s ease"
 };
 const cambiarSeccion = (s) => {
   setSeccion(s);
