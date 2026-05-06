@@ -126,6 +126,11 @@ const mainStyle = {
   padding: isMobile ? 10 : 30,
   maxWidth: 1000,
   margin: "0 auto",
+
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+
   animation: "fadeSlide 0.25s ease",
   position: "relative",
   zIndex: 1
@@ -429,7 +434,8 @@ const generarNumero = () => {
   }}
 >
 {seccion === "emisor" && (
-  <div style={styles.card}>
+  <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+    <div style={styles.card}>
     <h3>Emisor</h3>
 
     <input
@@ -473,7 +479,8 @@ const generarNumero = () => {
   </div>
 )}
         {seccion === "clientes" && (
-  <div style={styles.card}>
+  <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+    <div style={styles.card}>
     <h3>Clientes</h3>
 
     <input
@@ -518,6 +525,7 @@ const generarNumero = () => {
 )}
         {/* FACTURAS */}
         {seccion === "facturas" && (
+    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
           <div style={styles.card}>
 
             <h3>Crear factura</h3>
@@ -560,7 +568,7 @@ const generarNumero = () => {
       </div>
     </div>
   );
-}
+)}
 
 /* ================= ESTILOS (NO TOCADOS) ================= */ 
 const styles = { app:
