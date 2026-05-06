@@ -484,6 +484,7 @@ const generarNumero = () => {
       Guardar emisor
     </button>
   </div>
+    </div>
 )}
       {seccion === "clientes" && (
   <div style={centerPage}>
