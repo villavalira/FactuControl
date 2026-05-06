@@ -39,13 +39,11 @@ const sidebarStyle = {
   flexDirection: "column",   // 👈 siempre columna
   boxSizing: "border-box"
 };
-  const topBarStyle = {
+const topBarStyle = {
   display: "flex",
-  flexDirection: isMobile ? "column" : "row",
-  alignItems: isMobile ? "center" : "center",
-  justifyContent: "space-between",
-  padding: "15px 20px",
+  justifyContent: "center",
   background: "#791f8f",
+  padding: isMobile ? 10 : "15px 20px"
 };
   const topBarInnerStyle = {
   width: "100%",
