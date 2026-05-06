@@ -116,25 +116,17 @@ const sidebarStyle = {
   flexDirection: "column",   // 👈 siempre columna
   boxSizing: "border-box"
 };
-const topBarStyle = {
-  display: "flex",
-  justifyContent: "center",
-  background: "#791f8f", // 🔥 tu color base
-  padding: "14px 20px",
-  position: "sticky",
-  top: 0,
-  zIndex: 1000,
-  borderBottom: "1px solid rgba(255,255,255,0.08)"
+const topBarInnerStyle = { 
+  width: "100%", 
+  maxWidth: 1000, 
+  margin: "0 auto", 
+  display: "flex", 
+  flexDirection: isMobile ? "column" : "row", 
+  alignItems: "center", 
+  justifyContent: "space-between", 
+  gap: 10 
 };
-const topBarInnerStyle = {
-  width: "100%",
-  maxWidth: 1200,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  gap: 12,
-};
-
+  
 const menuContainerStyle = {
   display: "flex",
   flexDirection: isMobile ? "column" : "row",
@@ -492,45 +484,141 @@ const generarNumero = () => {
         }}
       >
 
-        {seccion === "emisor" && (
-          <div style={centerPage}>
-            <div style={styles.card}>
-              <h3>Emisor</h3>
-              ...
-              <button style={styles.button} onClick={saveEmisor}>
-                Guardar emisor
-              </button>
-            </div>
-          </div>
-        )}
+      {seccion === "emisor" && (
+  <div style={centerPage}>
+    <div style={styles.card}>
+      <h3>Emisor</h3>
 
-        {seccion === "clientes" && (
-          <div style={centerPage}>
-            <div style={styles.card}>
-              <h3>Clientes</h3>
-              ...
-              <button style={styles.button} onClick={saveCliente}>
-                Guardar cliente
-              </button>
-            </div>
-          </div>
-        )}
+      <input
+        style={styles.input}
+        placeholder="Nombre"
+        value={emisorForm.nombre}
+        onChange={e => setEmisorForm({ ...emisorForm, nombre: e.target.value })}
+      />
 
-        {seccion === "facturas" && (
-          <div style={centerPage}>
-            <div style={styles.card}>
-              <h3>Crear factura</h3>
-              ...
-              <h3>Facturas</h3>
+      <input
+        style={styles.input}
+        placeholder="NIF"
+        value={emisorForm.nif}
+        onChange={e => setEmisorForm({ ...emisorForm, nif: e.target.value })}
+      />
 
-              {facturas.map(f => (
-                <div key={f.id}>
-                  <p>{f.numero}</p>
-                  <p>
-                    {emisores.find(e => e.id === f.emisorId)?.nombre} →
-                    {clientes.find(c => c.id === f.clienteId)?.nombre}
-                  </p>
-                  <button onClick={() => generarPDF(f)}>PDF</button>
+      <input
+        style={styles.input}
+        placeholder="Dirección"
+        value={emisorForm.direccion}
+        onChange={e => setEmisorForm({ ...emisorForm, direccion: e.target.value })}
+      />
+
+      <input
+        style={styles.input}
+        placeholder="Email"
+        value={emisorForm.email}
+        onChange={e => setEmisorForm({ ...emisorForm, email: e.target.value })}
+      />
+
+      <input
+        style={styles.input}
+        placeholder="Teléfono"
+        value={emisorForm.telefono}
+        onChange={e => setEmisorForm({ ...emisorForm, telefono: e.target.value })}
+      />
+
+      <button style={styles.button} onClick={saveEmisor}>
+        Guardar emisor
+      </button>
+    </div>
+  </div>
+)}
+{seccion === "clientes" && (
+  <div style={centerPage}>
+    <div style={styles.card}>
+      <h3>Clientes</h3>
+
+      <input
+        style={styles.input}
+        placeholder="Nombre"
+        value={clienteForm.nombre}
+        onChange={e => setClienteForm({ ...clienteForm, nombre: e.target.value })}
+      />
+
+      <input
+        style={styles.input}
+        placeholder="NIF"
+        value={clienteForm.nif}
+        onChange={e => setClienteForm({ ...clienteForm, nif: e.target.value })}
+      />
+
+      <input
+        style={styles.input}
+        placeholder="Dirección"
+        value={clienteForm.direccion}
+        onChange={e => setClienteForm({ ...clienteForm, direccion: e.target.value })}
+      />
+
+      <input
+        style={styles.input}
+        placeholder="Email"
+        value={clienteForm.email}
+        onChange={e => setClienteForm({ ...clienteForm, email: e.target.value })}
+      />
+
+      <input
+        style={styles.input}
+        placeholder="Teléfono"
+        value={clienteForm.telefono}
+        onChange={e => setClienteForm({ ...clienteForm, telefono: e.target.value })}
+      />
+
+      <button style={styles.button} onClick={saveCliente}>
+        Guardar cliente
+      </button>
+    </div>
+  </div>
+)}
+        <select
+  value={emisorSel?.id || ""}
+  onChange={e =>
+    setEmisorSel(emisores.find(x => x.id === e.target.value))
+  }
+>
+  <option>Emisor</option>
+  {emisores.map(e => (
+    <option key={e.id} value={e.id}>
+      {e.nombre}
+    </option>
+  ))}
+</select>
+
+<select
+  value={clienteSel?.id || ""}
+  onChange={e =>
+    setClienteSel(clientes.find(x => x.id === e.target.value))
+  }
+>
+  <option>Cliente</option>
+  {clientes.map(c => (
+    <option key={c.id} value={c.id}>
+      {c.nombre}
+    </option>
+  ))}
+</select>
+
+<input
+  placeholder="Concepto"
+  value={concepto}
+  onChange={e => setConcepto(e.target.value)}
+/>
+
+<input
+  type="number"
+  value={base}
+  onChange={e => setBase(Number(e.target.value))}
+/>
+
+<p>Total: {total.toFixed(2)} €</p>
+
+<button onClick={crearFactura}>Crear factura</button>
                 </div>
               ))}
 
