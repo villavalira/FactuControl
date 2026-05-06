@@ -28,28 +28,22 @@ useEffect(() => {
   window.addEventListener("resize", check);
   return () => window.removeEventListener("resize", check);
 }, []);
-
+  
 useEffect(() => {
   const style = document.createElement("style");
   style.innerHTML = `
-    * {
-      box-sizing: border-box;
-    }
+    select {
+      width: 100%;
+      height: 44px;
+      font-size: 16px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(121, 31, 143, 0.25);
+      background: white;
 
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, sans-serif;
-      background: #f6f8fb;
-      color: #0a2540;
-    }
-
-    button {
-      font-family: inherit;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    button:focus {
-      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
     }
   `;
 
@@ -161,9 +155,7 @@ const menuStyle = {
 };
 const selectStyle = {
   width: "100%",
-  minHeight: 44,
-  padding: "10px 14px",
-  fontSize: 16,   // 👈 CLAVE (esto es lo que te faltaba)
+  fontSize: 16,
   borderRadius: 10,
   border: "1px solid rgba(121, 31, 143, 0.25)",
   background: "white",
@@ -556,7 +548,11 @@ const generarNumero = () => {
 )}
         {/* FACTURAS */}
         {seccion === "facturas" && (
- <div style={{ ...styles.card, maxWidth: 900, width: "100%", display: "flex", flexDirection: "column", gap: 12
+<div style={{
+  ...styles.card,
+  maxWidth: 900,
+  width: "100%",
+  padding: 32
 }}>
 
             <h3>Crear factura</h3>
