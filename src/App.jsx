@@ -96,11 +96,9 @@ const topBarInnerStyle = {
   display: "flex",
   flexDirection: isMobile ? "column" : "row",
   alignItems: "center",
-  justifyContent: isMobile ? "center" : "space-between",
+  justifyContent: "center",
   gap: 10,
-
   flexWrap: "nowrap",
-
   background: "rgba(121, 31, 143, 0.85)",
   backdropFilter: "blur(10px)",
   WebkitBackdropFilter: "blur(10px)",
@@ -109,8 +107,8 @@ const topBarInnerStyle = {
 const menuContainerStyle = {
   display: "flex",
   flexDirection: isMobile ? "column" : "row",
-  flexWrap: "nowrap",
-  gap: 8,
+  flexWrap: "wrap",
+  gap: 12,
   justifyContent: "center",
   alignItems: "center",
   width: isMobile ? "100%" : "auto"
@@ -161,15 +159,14 @@ const menuStyle = {
 const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30,
-  maxWidth: 1100,
   width: "100%",
-  margin: "0 auto",
+  minHeight: "80vh",
+
   display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
+  justifyContent: "center",   // centra horizontal
+  alignItems: "flex-start",   // 👈 importante: no vertical full center
+
   animation: "fadeSlide 0.25s ease",
-  position: "relative",
-  zIndex: 1
 };
 const cambiarSeccion = (s) => {
   setSeccion(s);
