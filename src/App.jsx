@@ -324,7 +324,7 @@ export default function App() {
             </select>
 
             <input placeholder="Concepto" style={styles.input} onChange={e=>setConcepto(e.target.value)}/>
-            <input type="number" style={styles.input} onChange={e=>setBase(Number(e.target.value))}/>
+            <input type="number" style={styles.input} placeholder="Importe (€)" onChange={e => setBase(Number(e.target.value))}/>
 
             <p>Total: {total.toFixed(2)} €</p>
 
