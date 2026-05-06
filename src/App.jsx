@@ -122,7 +122,7 @@ const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30,
   maxWidth: 1000,
-  margin: "0 auto"
+  margin: "0 auto",
   animation: "fadeSlide 0.25s ease"
 };
 const cambiarSeccion = (s) => {
