@@ -52,22 +52,24 @@ useEffect(() => {
   useEffect(() => {
   const style = document.createElement("style");
   style.innerHTML = `
-    button {
+    button, button * {
       color: #0a0a0a !important;
+      -webkit-text-fill-color: #0a0a0a !important;
     }
 
-    button:visited,
-    button:active,
-    button:focus {
+    button {
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      background-image: none !important;
+    }
+
+    button:active, button:focus {
       color: #0a0a0a !important;
-      outline: none;
     }
   `;
   document.head.appendChild(style);
 
-  return () => {
-    document.head.removeChild(style);
-  };
+  return () => document.head.removeChild(style);
 }, []);
 
   
@@ -147,25 +149,30 @@ const menuContainerStyle = {
 };
 const menuStyle = {
   ...styles.menu,
+
   fontSize: isMobile ? 12 : 16,
   padding: isMobile ? "6px 10px" : "10px 14px",
+
   whiteSpace: "nowrap",
   cursor: "pointer",
   transition: "transform 0.15s ease, box-shadow 0.15s ease",
 
-  color: "#0a0a0a", // 🔥 más fuerte que "#000"
-  textDecoration: "none",
-
   background: "#e482da",
+  color: "#0a0a0a",
+
   border: "1px solid #e6e8ec",
   borderRadius: 999,
 
   outline: "none",
-  WebkitAppearance: "none",
   appearance: "none",
+  WebkitAppearance: "none",
 
   WebkitTapHighlightColor: "transparent",
-  color: "#0a0a0a"
+  textDecoration: "none",
+
+  // 🔥 CLAVE
+  WebkitTextFillColor: "#0a0a0a",
+  opacity: 1
 };
 const mainStyle = {
   ...styles.main,
