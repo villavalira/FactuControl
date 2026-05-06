@@ -73,8 +73,20 @@ const menuContainerStyle = {
   flex: 1
 };
   const hoverEffect = {
-  onMouseEnter: (e) => e.target.style.transform = "scale(1.05)",
-  onMouseLeave: (e) => e.target.style.transform = "scale(1)"
+  onMouseEnter: (e) => {
+    e.target.style.transform = "scale(1.05)";
+    e.target.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+  },
+  onMouseLeave: (e) => {
+    e.target.style.transform = "scale(1)";
+    e.target.style.boxShadow = "none";
+  },
+  onMouseDown: (e) => {
+    e.target.style.transform = "scale(0.98)";
+  },
+  onMouseUp: (e) => {
+    e.target.style.transform = "scale(1.05)";
+  }
 };
 const menuStyle = {
   ...styles.menu,
@@ -83,7 +95,7 @@ const menuStyle = {
   whiteSpace: "nowrap",
   transition: "all 0.2s ease",
   cursor: "pointer",
-  transition: "transform 0.2s ease",
+  transition: "transform 0.15s ease, box-shadow 0.15s ease"
 };
 const mainStyle = {
   ...styles.main,
@@ -344,23 +356,37 @@ const generarNumero = () => {
     <h2 style={titleStyle}>FactuControl</h2>
 
     <div style={menuContainerStyle}>
-
-  <button onClick={() => setSeccion("emisor")} style={menuStyle} {...hoverEffect}>
+  <button
+    onClick={() => setSeccion("emisor")}
+    style={menuStyle}
+    {...hoverEffect}
+  >
     Emisor
   </button>
 
-  <button onClick={() => setSeccion("clientes")} style={menuStyle} {...hoverEffect}>
+  <button
+    onClick={() => setSeccion("clientes")}
+    style={menuStyle}
+    {...hoverEffect}
+  >
     Clientes
   </button>
 
-  <button onClick={() => setSeccion("facturas")} style={menuStyle} {...hoverEffect}>
+  <button
+    onClick={() => setSeccion("facturas")}
+    style={menuStyle}
+    {...hoverEffect}
+  >
     Facturas
   </button>
 
-  <button onClick={logout} style={{ ...menuStyle, background: "red" }} {...hoverEffect}>
+  <button
+    onClick={logout}
+    style={{ ...menuStyle, background: "red" }}
+    {...hoverEffect}
+  >
     Logout
   </button>
-
 </div>
   </div>
  </div>
