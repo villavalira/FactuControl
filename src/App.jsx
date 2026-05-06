@@ -78,32 +78,34 @@ const sidebarStyle = {
   flexDirection: "column",   // 👈 siempre columna
   boxSizing: "border-box"
 };
-   const topBarStyle = {
-    display: "flex",
-    justifyContent: "center",
-    background: "white",
-    alignItems: "center",
-    padding: "12px 0px",
-    position: "sticky",
-    width: "100%",
-    top: 0,
-    zIndex: 1000,
-    borderBottom: "1px solid #e6e8ec"
-  }; 
-  
-const topBarInnerStyle = {
-  width: "fit-content",
+ const topBarStyle = {
   display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
   justifyContent: "center",
+  width: "100%",
+  padding: "12px 0",
+  background: "white",
+  borderBottom: "1px solid #e6e8ec",
+  position: "sticky",
+  top: 0,
+  zIndex: 1000
+};
+const topBarInnerStyle = {
+  maxWidth: 1100,
+  width: "100%",
+  margin: "0 auto",
+
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
   gap: 12,
+
   background: "rgba(121, 31, 143, 0.85)",
   padding: "10px 16px",
   borderRadius: 999,
+
   backdropFilter: "blur(10px)",
   WebkitBackdropFilter: "blur(10px)"
-};  
+};
 const menuContainerStyle = {
   display: "flex",
   flexDirection: isMobile ? "column" : "row",
