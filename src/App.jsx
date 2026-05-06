@@ -83,7 +83,9 @@ const sidebarStyle = {
   top: 0,
   zIndex: 1000,
   display: "flex",
-  justifyContent: "center"
+  justifyContent: "center",
+  borderRadius: 0,
+  overflow: "hidden"
 };
 
 const topBarInnerStyle = {
