@@ -66,10 +66,12 @@ useEffect(() => {
   background: "linear-gradient(to bottom, #f6f8fb, #ffffff)"
 }; 
 const appStyle = {
-  ...styles.app,
+  display: "flex",
+  flexDirection: "column",   // 👈 CLAVE
+  minHeight: "100vh",
+  fontFamily: "'Inter', system-ui, sans-serif",
   background: "#f6f8fb",
-  color: "#0a2540",
-  fontFamily: "'Inter', system-ui, sans-serif"
+  color: "#0a2540"
 };
 const sidebarStyle = {
   ...styles.sidebar,
@@ -79,21 +81,20 @@ const sidebarStyle = {
   boxSizing: "border-box"
 };
  const topBarStyle = {
-  display: "flex",
-  justifyContent: "center",
   width: "100%",
-  padding: "12px 0",
   background: "white",
   borderBottom: "1px solid #e6e8ec",
+  padding: "12px 0",
   position: "sticky",
   top: 0,
-  zIndex: 1000
+  zIndex: 1000,
+  display: "flex",
+  justifyContent: "center"
 };
-const topBarInnerStyle = {
-  maxWidth: 1100,
-  width: "100%",
-  margin: "0 auto",
 
+const topBarInnerStyle = {
+  width: "100%",
+  maxWidth: 1100,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
