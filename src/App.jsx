@@ -78,7 +78,7 @@ const styles = {
 
   input: {
     width: "100%",
-    padding: 8,
+    padding: 6,
     marginTop: 8,
     borderRadius: 8,
     border: "1px solid #ccc",
