@@ -541,7 +541,7 @@ const generarNumero = () => {
       </div>
     </div>
   );
-  
+ } 
 /* ================= ESTILOS (NO TOCADOS) ================= */ 
 const styles = { app:
 { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
