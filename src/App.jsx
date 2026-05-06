@@ -130,8 +130,11 @@ const menuStyle = {
   whiteSpace: "nowrap",
   cursor: "pointer",
   transition: "transform 0.15s ease, box-shadow 0.15s ease",
-  color: "#000",          // 👈 esto es lo importante
-  WebkitTapHighlightColor: "transparent" // 👈 quita azul móvil
+  color: "#000",
+  outline: "none",
+  appearance: "none",
+  WebkitAppearance: "none",
+  WebkitTapHighlightColor: "transparent"
 };
 const mainStyle = {
   ...styles.main,
