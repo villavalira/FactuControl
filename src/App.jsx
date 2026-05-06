@@ -154,12 +154,9 @@ const menuStyle = {
   opacity: 1
 };
 const selectStyle = {
-  width: "100%",
-  fontSize: 16,
-  borderRadius: 10,
-  border: "1px solid rgba(121, 31, 143, 0.25)",
-  background: "white",
-  boxSizing: "border-box"
+  ...styles.input,
+  height: 44,
+  fontSize: 16
 };
 const mainStyle = {
   ...styles.main,
@@ -548,12 +545,7 @@ const generarNumero = () => {
 )}
         {/* FACTURAS */}
         {seccion === "facturas" && (
-<div style={{
-  ...styles.card,
-  maxWidth: 900,
-  width: "100%",
-  padding: 32
-}}>
+<div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
 
             <h3>Crear factura</h3>
 
@@ -578,8 +570,19 @@ const generarNumero = () => {
     <option key={c.id} value={c.id}>{c.nombre}</option>
   ))}
 </select>
-            <input placeholder="Concepto" value={concepto} onChange={e => setConcepto(e.target.value)} />
-            <input type="number" value={base} onChange={e => setBase(Number(e.target.value))} />
+           <input
+  style={styles.input}
+  placeholder="Concepto"
+  value={concepto}
+  onChange={e => setConcepto(e.target.value)}
+/>
+
+<input
+  style={styles.input}
+  type="number"
+  value={base}
+  onChange={e => setBase(Number(e.target.value))}
+/>
 
             <p>Total: {total.toFixed(2)} €</p>
 
