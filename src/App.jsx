@@ -43,8 +43,11 @@ const topBarStyle = {
   display: "flex",
   justifyContent: "center",
   background: "#791f8f",
-  padding: isMobile ? 10 : "15px 40px"
-  };
+  padding: isMobile ? 10 : "15px 20px",
+  position: "sticky",
+  top: 0,
+  zIndex: 1000
+};
 const topBarInnerStyle = {
   width: "100%",
   maxWidth: isMobile ? "100%" : 1200,
@@ -54,7 +57,12 @@ const topBarInnerStyle = {
   alignItems: "center",
   justifyContent: "space-between",
   gap: 10,
-  flexWrap: "wrap"
+  flexWrap: "wrap",
+
+  background: "rgba(121, 31, 143, 0.85)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+  borderRadius: isMobile ? 12 : 0
 };
 const menuContainerStyle = {
   display: "flex",
@@ -64,11 +72,18 @@ const menuContainerStyle = {
   justifyContent: "flex-end",
   flex: 1
 };
+  const hoverEffect = {
+  onMouseEnter: (e) => e.target.style.transform = "scale(1.05)",
+  onMouseLeave: (e) => e.target.style.transform = "scale(1)"
+};
 const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 12 : 16,
   padding: isMobile ? "6px 10px" : "10px 14px",
-  whiteSpace: "nowrap"
+  whiteSpace: "nowrap",
+  transition: "all 0.2s ease",
+  cursor: "pointer",
+  transition: "transform 0.2s ease",
 };
 const mainStyle = {
   ...styles.main,
@@ -329,11 +344,24 @@ const generarNumero = () => {
     <h2 style={titleStyle}>FactuControl</h2>
 
     <div style={menuContainerStyle}>
-      <button onClick={() => setSeccion("emisor")} style={menuStyle}>Emisor</button>
-      <button onClick={() => setSeccion("clientes")} style={menuStyle}>Clientes</button>
-      <button onClick={() => setSeccion("facturas")} style={menuStyle}>Facturas</button>
-      <button onClick={logout} style={{ ...menuStyle, background: "red" }}>Logout</button>
-    </div>
+
+  <button onClick={() => setSeccion("emisor")} style={menuStyle} {...hoverEffect}>
+    Emisor
+  </button>
+
+  <button onClick={() => setSeccion("clientes")} style={menuStyle} {...hoverEffect}>
+    Clientes
+  </button>
+
+  <button onClick={() => setSeccion("facturas")} style={menuStyle} {...hoverEffect}>
+    Facturas
+  </button>
+
+  <button onClick={logout} style={{ ...menuStyle, background: "red" }} {...hoverEffect}>
+    Logout
+  </button>
+
+</div>
   </div>
  </div>
   {/* ⬇️ CONTENIDO */}
