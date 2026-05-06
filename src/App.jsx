@@ -37,7 +37,7 @@ useEffect(() => {
       height: 44px;
       font-size: 16px;
       padding: 10px 14px;
-      border-radius: 10px;
+      border-radius: 0px;
       border: 1px solid rgba(121, 31, 143, 0.25);
       background: white;
 
@@ -98,8 +98,8 @@ const topBarInnerStyle = {
   background: "rgba(121, 31, 143, 0.85)",
   padding: "10px 16px",
   borderRadius: 0,
-  backdropFilter: "blur(10px)",
-  WebkitBackdropFilter: "blur(10px)"
+  overflow: "visible",
+  boxShadow: "none"
 };
 const menuContainerStyle = {
   display: "flex",
