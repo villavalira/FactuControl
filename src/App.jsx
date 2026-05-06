@@ -28,49 +28,28 @@ useEffect(() => {
   window.addEventListener("resize", check);
   return () => window.removeEventListener("resize", check);
 }, []);
-  useEffect(() => {
-  const style = document.createElement("style");
 
-  style.innerHTML = `
-    button {
-      color: #0a0a0a !important;
-      -webkit-text-fill-color: #0a0a0a !important;
-    }
-
-    button:focus,
-    button:active,
-    button:visited {
-      color: #0a0a0a !important;
-      -webkit-text-fill-color: #0a0a0a !important;
-    }
-  `;
-
-  document.head.appendChild(style);
-
-  return () => document.head.removeChild(style);
-}, []);
-  
 useEffect(() => {
   const style = document.createElement("style");
   style.innerHTML = `
     * {
       box-sizing: border-box;
     }
+
     body {
       margin: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-family: Inter, system-ui, sans-serif;
       background: #f6f8fb;
       color: #0a2540;
     }
+
     button {
       font-family: inherit;
       -webkit-tap-highlight-color: transparent;
     }
+
     button:focus {
       outline: none;
-    }
-    input, select {
-      font-family: inherit;
     }
   `;
 
@@ -79,29 +58,6 @@ useEffect(() => {
   return () => document.head.removeChild(style);
 }, []);
   
-  useEffect(() => {
-  const style = document.createElement("style");
-  style.innerHTML = `
-    button, button * {
-      color: #0a0a0a !important;
-      -webkit-text-fill-color: #0a0a0a !important;
-    }
-
-    button {
-      -webkit-appearance: none !important;
-      appearance: none !important;
-      background-image: none !important;
-    }
-
-    button:active, button:focus {
-      color: #0a0a0a !important;
-    }
-  `;
-  document.head.appendChild(style);
-
-  return () => document.head.removeChild(style);
-}, []);
-
   
 const appStyle = {
   ...styles.app,
