@@ -28,27 +28,57 @@ useEffect(() => {
   window.addEventListener("resize", check);
   return () => window.removeEventListener("resize", check);
 }, []);
-useEffect(() => {
-  const animationStyle = document.createElement("style");
-  animationStyle.innerHTML = `
-    @keyframes fadeSlide {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+  useEffect(() => {
+  const style = document.createElement("style");
+
+  style.innerHTML = `
+    button {
+      color: #0a0a0a !important;
+      -webkit-text-fill-color: #0a0a0a !important;
+    }
+
+    button:focus,
+    button:active,
+    button:visited {
+      color: #0a0a0a !important;
+      -webkit-text-fill-color: #0a0a0a !important;
     }
   `;
 
-  document.head.appendChild(animationStyle);
+  document.head.appendChild(style);
 
-  return () => {
-    document.head.removeChild(animationStyle);
-  };
+  return () => document.head.removeChild(style);
 }, []);
+  
+useEffect(() => {
+  const style = document.createElement("style");
+  style.innerHTML = `
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #f6f8fb;
+      color: #0a2540;
+    }
+    button {
+      font-family: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button:focus {
+      outline: none;
+    }
+    input, select {
+      font-family: inherit;
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  return () => document.head.removeChild(style);
+}, []);
+  
   useEffect(() => {
   const style = document.createElement("style");
   style.innerHTML = `
@@ -89,29 +119,20 @@ const sidebarStyle = {
 const topBarStyle = {
   display: "flex",
   justifyContent: "center",
-  background: "white",
-  padding: "12px 20px",
+  background: "#791f8f", // 🔥 tu color base
+  padding: "14px 20px",
   position: "sticky",
   top: 0,
   zIndex: 1000,
-  borderBottom: "1px solid #e6e8ec"
+  borderBottom: "1px solid rgba(255,255,255,0.08)"
 };
 const topBarInnerStyle = {
   width: "100%",
-  maxWidth: isMobile ? "100%" : 1200,
-  margin: "0 auto",
+  maxWidth: 1200,
   display: "flex",
-  flexDirection: isMobile ? "column" : "row",
   alignItems: "center",
-  justifyContent: isMobile ? "center" : "space-between",
-  gap: 10,
-
-  flexWrap: "nowrap",
-
-  background: "rgba(121, 31, 143, 0.85)",
-  backdropFilter: "blur(10px)",
-  WebkitBackdropFilter: "blur(10px)",
-  borderRadius: isMobile ? 12 : 0
+  justifyContent: "space-between",
+  gap: 12,
 };
 
 const menuContainerStyle = {
