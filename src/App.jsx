@@ -337,7 +337,7 @@ const generarNumero = () => {
       <button onClick={logout} style={{ ...menuStyle, background: "red" }}>Logout</button>
     </div>
   </div>
-
+ </div>
   {/* ⬇️ CONTENIDO */}
   <div style={mainStyle}>
 {seccion === "emisor" && (
