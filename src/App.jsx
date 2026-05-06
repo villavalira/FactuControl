@@ -159,6 +159,15 @@ const menuStyle = {
   WebkitTextFillColor: "#0a0a0a",
   opacity: 1
 };
+  const selectStyle = {
+  width: "100%",
+  padding: 12,
+  margin: "8px 0",
+  borderRadius: 10,
+  border: "1px solid rgba(121, 31, 143, 0.25)",
+  fontSize: 14,
+  background: "white"
+};
 const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30,
@@ -550,16 +559,27 @@ const generarNumero = () => {
 
             <h3>Crear factura</h3>
 
-            <select value={emisorSel?.id || ""} onChange={e => setEmisorSel(emisores.find(x => x.id === e.target.value))}>
-              <option>Emisor</option>
-              {emisores.map(e => <option key={e.id} value={e.id}>{e.nombre}</option>)}
-            </select>
+            <select
+  style={selectStyle}
+  value={emisorSel?.id || ""}
+  onChange={e => setEmisorSel(emisores.find(x => x.id === e.target.value))}
+>
+  <option>Emisor</option>
+  {emisores.map(e => (
+    <option key={e.id} value={e.id}>{e.nombre}</option>
+  ))}
+</select>
 
-            <select value={clienteSel?.id || ""} onChange={e => setClienteSel(clientes.find(x => x.id === e.target.value))}>
-              <option>Cliente</option>
-              {clientes.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
-            </select>
-
+           <select
+  style={selectStyle}
+  value={clienteSel?.id || ""}
+  onChange={e => setClienteSel(clientes.find(x => x.id === e.target.value))}
+>
+  <option>Cliente</option>
+  {clientes.map(c => (
+    <option key={c.id} value={c.id}>{c.nombre}</option>
+  ))}
+</select>
             <input placeholder="Concepto" value={concepto} onChange={e => setConcepto(e.target.value)} />
             <input type="number" value={base} onChange={e => setBase(Number(e.target.value))} />
 
