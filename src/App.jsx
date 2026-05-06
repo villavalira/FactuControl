@@ -82,6 +82,16 @@ const topBarInnerStyle = {
   justifyContent: "space-between", 
   gap: 10 
 };
+   const topBarStyle = {
+    display: "flex",
+    justifyContent: "center",
+    background: "white",
+    padding: "12px 20px",
+    position: "sticky",
+    top: 0,
+    zIndex: 1000,
+    borderBottom: "1px solid #e6e8ec"
+  }; 
   
 const menuContainerStyle = {
   display: "flex",
