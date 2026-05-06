@@ -141,28 +141,20 @@ const menuContainerStyle = {
 };
 const menuStyle = {
   ...styles.menu,
-
   fontSize: isMobile ? 12 : 16,
   padding: isMobile ? "6px 10px" : "10px 14px",
-
   whiteSpace: "nowrap",
   cursor: "pointer",
   transition: "transform 0.15s ease, box-shadow 0.15s ease",
-
   background: "#e482da",
   color: "#0a0a0a",
-
   border: "1px solid #e6e8ec",
   borderRadius: 999,
-
   outline: "none",
   appearance: "none",
   WebkitAppearance: "none",
-
   WebkitTapHighlightColor: "transparent",
   textDecoration: "none",
-
-  // 🔥 CLAVE
   WebkitTextFillColor: "#0a0a0a",
   opacity: 1
 };
@@ -428,7 +420,7 @@ const generarNumero = () => {
   /* ================= UI ================= */
     return (
     <div style={appStyle}>
-<div style={centerWrapper}>
+
       {/* 🔝 MENU SUPERIOR */}
       <div style={topBarStyle}>
         <div style={topBarInnerStyle}>
@@ -454,7 +446,7 @@ const generarNumero = () => {
         </div>
       </div>
 
-      
+    <div style={centerWrapper}>  
       {/* ⬇️ CONTENIDO */}
       <div
         key={animKey}
