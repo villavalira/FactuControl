@@ -570,12 +570,13 @@ const generarNumero = () => {
                 <button onClick={() => generarPDF(f)}>PDF</button>
               </div>
             ))}
-
+   </div>
           </div>
-       </div>
+        )}
+
+      </div>
     </div>
   );
-
 /* ================= ESTILOS (NO TOCADOS) ================= */ 
 const styles = { app:
 { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
