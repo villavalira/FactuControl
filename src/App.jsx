@@ -50,9 +50,11 @@ useEffect(() => {
   };
 }, []);
 const appStyle = {
-  ...styles.app
+  ...styles.app,
+  background: "#f6f8fb",
+  color: "#0a2540",
+  fontFamily: "'Inter', system-ui, sans-serif"
 };
-
 const sidebarStyle = {
   ...styles.sidebar,
   width: isMobile ? "100%" : 200,
@@ -63,12 +65,12 @@ const sidebarStyle = {
 const topBarStyle = {
   display: "flex",
   justifyContent: "center",
-  background: "#791f8f",
-  padding: isMobile ? 8 : "15px 20px",
+  background: "white",
+  padding: "12px 20px",
   position: "sticky",
   top: 0,
   zIndex: 1000,
-  maxHeight: isMobile ? "auto" : 80
+  borderBottom: "1px solid #e6e8ec"
 };
 const topBarInnerStyle = {
   width: "100%",
@@ -97,12 +99,13 @@ const menuContainerStyle = {
   alignItems: "center",
   width: isMobile ? "100%" : "auto"
 };
-  const centerPage = {
+ const centerPage = {
   display: "flex",
   justifyContent: "center",
-  alignItems: "flex-start",
-  minHeight: "70vh",
-  paddingTop: 20
+  alignItems: "center",
+  minHeight: "75vh",
+  width: "100%",
+  padding: 20
 };
   const hoverEffect = {
   onMouseEnter: (e) => {
@@ -131,13 +134,11 @@ const menuStyle = {
 const mainStyle = {
   ...styles.main,
   padding: isMobile ? 10 : 30,
-  maxWidth: 1000,
-  margin: "0 auto",
-
+  maxWidth: 1100,
+  margin: "40px auto",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-
   animation: "fadeSlide 0.25s ease",
   position: "relative",
   zIndex: 1
@@ -483,11 +484,12 @@ const styles = { app:
  sidebar: { overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
  main: { flex: 1, padding: 20, width: "100%" }, 
  body: { margin: 0, padding: 0},
- card: { background: "#e2a9f1", color: "#000", padding: 20, borderRadius: 14, width: "100%", maxWidth: 500 },  
- input: { width: "85%", padding: 10, margin: "6px 0", borderRadius: 8 }, 
- button: { padding: 10, background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer" }, 
- menu: { padding: 10, background: "#e482da", border: 0, borderRadius: 8, fontWeight: "bold" }, 
+ card: { background: "#e2a9f1", color: "#000", padding: 28, borderRadius: 16, width: "100%", maxWidth: 520,  boxShadow: "0 10px 30px rgba(0,0,0,0.08)", border: "1px solid rgba(121, 31, 143, 0.2)" },  
+ input: { width: "100%", padding: 12, margin: "8px 0", borderRadius: 10, border: "1px solid rgba(121, 31, 143, 0.25)", outline: "none", fontSize: 14, background: "white" }, 
+ button: { padding: "10px 14px" , background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 500 }, 
+ menu: { padding: "8px 14px", background: "#e482da", border: "1px solid #e6e8ec", borderRadius: 999, fontWeight: "bold" }, 
  row: {display: "flex", alignItems: "center", justifyContent: "flex-start", padding: 8, gap: 12 }, 
  sidebarTitle: { color: 'white', fontSize: '30px', fontWeight: 'bold' }, 
  login: { height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }, 
 };
+
