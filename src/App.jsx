@@ -64,21 +64,23 @@ const topBarStyle = {
   display: "flex",
   justifyContent: "center",
   background: "#791f8f",
-  padding: isMobile ? 10 : "15px 20px",
+  padding: isMobile ? 8 : "15px 20px",
   position: "sticky",
   top: 0,
-  zIndex: 1000
+  zIndex: 1000,
+  maxHeight: isMobile ? "auto" : 80
 };
 const topBarInnerStyle = {
   width: "100%",
   maxWidth: isMobile ? "100%" : 1200,
   margin: "0 auto",
   display: "flex",
-  flexDirection: "row",
+  flexDirection: isMobile ? "column" : "row",
   alignItems: "center",
-  justifyContent: "space-between",
+  justifyContent: isMobile ? "center" : "space-between",
   gap: 10,
-  flexWrap: "wrap",
+
+  flexWrap: "nowrap",
 
   background: "rgba(121, 31, 143, 0.85)",
   backdropFilter: "blur(10px)",
@@ -88,11 +90,12 @@ const topBarInnerStyle = {
 
 const menuContainerStyle = {
   display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
+  flexDirection: isMobile ? "column" : "row",
+  flexWrap: "nowrap",
   gap: 8,
-  justifyContent: "flex-end",
-  flex: 1
+  justifyContent: "center",
+  alignItems: "center",
+  width: isMobile ? "100%" : "auto"
 };
   const hoverEffect = {
   onMouseEnter: (e) => {
@@ -123,7 +126,9 @@ const mainStyle = {
   padding: isMobile ? 10 : 30,
   maxWidth: 1000,
   margin: "0 auto",
-  animation: "fadeSlide 0.25s ease"
+  animation: "fadeSlide 0.25s ease",
+  position: "relative",
+  zIndex: 1
 };
 const cambiarSeccion = (s) => {
   setSeccion(s);
