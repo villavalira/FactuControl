@@ -572,10 +572,9 @@ const generarNumero = () => {
             ))}
 
           </div>
-            </div>
+       </div>
     </div>
   );
-)}
 
 /* ================= ESTILOS (NO TOCADOS) ================= */ 
 const styles = { app:
