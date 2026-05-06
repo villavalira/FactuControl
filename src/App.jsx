@@ -82,7 +82,7 @@ const styles = {
   fontSize: 13,
   borderRadius: 6,
   border: "1px solid #ccc",
- 
+}, 
 };
 
 export default function App() {
