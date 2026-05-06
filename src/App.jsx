@@ -638,7 +638,7 @@ const generarNumero = () => {
 /* ================= ESTILOS (NO TOCADOS) ================= */ 
 const styles = { app:
 { display: "flex", minHeight: "100vh", fontFamily: "Arial", background: "#834fcd", color: "#fff", flexDirection: "row" },
- sidebar: { width: 180, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10, borderRadius: 16, height: "fit-content", overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
+ sidebar: { width: 180, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10, borderRadius: 0, height: "fit-content", overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
  main: { flex: 1, padding: 20, width: "100%" }, 
  body: { margin: 0, padding: 0},
  card: { background: "#e2a9f1", color: "#000", padding: 28, borderRadius: 16, width: "100%", maxWidth: 900, margin: "0 auto", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", border: "1px solid rgba(121, 31, 143, 0.2)" },  
