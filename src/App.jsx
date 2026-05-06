@@ -152,44 +152,32 @@ export default function App() {
     loadAll(user.uid);
   };
 
-  const generarPDF = (f) => {
+   const generarPDF = (f) => {
     const doc = new jsPDF();
-    doc.text(`Factura ${f.concepto}`, 10, 10);
-    doc.text(`Total: ${f.total}`, 10, 20);
-    doc.save("factura.pdf");
+    doc.text(`Factura ${f.numero}`, 20, 20);
+    doc.text(`Total: ${f.total} €`, 20, 30);
+    doc.save(`factura-${f.numero}.pdf`);
   };
 
-  /* ================= UI ================= */
   if (!user) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: 100 }}>
-        <button style={styles.button} onClick={login}>Login</button>
-      </div>
-    );
+    return <button onClick={login}>Login</button>;
   }
 
   return (
-    <div style={styles.app}>
+    <div style={{ padding: 20 }}>
 
-      {/* TOP BAR */}
-      <div style={styles.topBar}>
-        <div style={styles.topBarInner}>
-          <h3>FactuControl</h3>
-          <div style={styles.menu}>
-            <button style={styles.button} onClick={() => setSeccion("emisor")}>Emisor</button>
-            <button style={styles.button} onClick={() => setSeccion("clientes")}>Clientes</button>
-            <button style={styles.button} onClick={() => setSeccion("facturas")}>Facturas</button>
-            <button style={{ ...styles.button, ...styles.danger }} onClick={logout}>Logout</button>
-          </div>
-        </div>
+      {/* MENU */}
+      <div style={{ display: "flex", gap: 10 }}>
+        <button onClick={() => setSeccion("emisor")}>Emisor</button>
+        <button onClick={() => setSeccion("clientes")}>Clientes</button>
+        <button onClick={() => setSeccion("facturas")}>Facturas</button>
+        <button onClick={logout}>Logout</button>
       </div>
 
-      <div style={styles.container}>
-
-        {/* EMISOR */}
-        {seccion === "emisor" && (
-          <div style={styles.card}>
-            <h3>Emisor</h3>
+      {/* EMISOR */}
+      {seccion === "emisor" && (
+        <div>
+          <h3>Emisor</h3>
           <input placeholder="Nombre" onChange={e=>setEmisorForm({...emisorForm,nombre:e.target.value})}/>
           <input placeholder="NIF" onChange={e=>setEmisorForm({...emisorForm,nif:e.target.value})}/>
           <input placeholder="Dirección" onChange={e=>setEmisorForm({...emisorForm,direccion:e.target.value})}/>
@@ -197,10 +185,11 @@ export default function App() {
           <input placeholder="Teléfono" onChange={e=>setEmisorForm({...emisorForm,telefono:e.target.value})}/>
           <button onClick={saveEmisor}>Guardar</button>
         </div>
-        )}
+      )}
 
-        {/* CLIENTES */}
-        {seccion === "clientes" && (
+      {/* CLIENTES */}
+      {seccion === "clientes" && (
+        <div>
           <h3>Clientes</h3>
           <input placeholder="Nombre" onChange={e=>setClienteForm({...clienteForm,nombre:e.target.value})}/>
           <input placeholder="NIF" onChange={e=>setClienteForm({...clienteForm,nif:e.target.value})}/>
@@ -209,38 +198,5 @@ export default function App() {
           <input placeholder="Teléfono" onChange={e=>setClienteForm({...clienteForm,telefono:e.target.value})}/>
           <button onClick={saveCliente}>Guardar</button>
         </div>
-        )}
-  {/* FACTURAS */}
-      {seccion === "facturas" && (
-        <div>
-          <h3>Facturas</h3>
-          <select onChange={e=>setEmisorSel(emisores.find(x=>x.id===e.target.value))}>
-            <option>Emisor</option>
-            {emisores.map(e=><option key={e.id} value={e.id}>{e.nombre}</option>)}
-          </select>
-
-          <select onChange={e=>setClienteSel(clientes.find(x=>x.id===e.target.value))}>
-            <option>Cliente</option>
-            {clientes.map(c=><option key={c.id} value={c.id}>{c.nombre}</option>)}
-          </select>
-
-          <input placeholder="Concepto" onChange={e=>setConcepto(e.target.value)} />
-          <input type="number" onChange={e=>setBase(Number(e.target.value))} />
-
-          <p>Total: {total.toFixed(2)} €</p>
-
-          <button onClick={crearFactura}>Crear factura</button>
-
-          {facturas.map(f=> (
-            <div key={f.id}>
-              {f.numero} - {f.total} €
-              <button onClick={()=>generarPDF(f)}>PDF</button>
-            </div>
-          ))}
-
-        </div>
       )}
 
-    </div>
-  );
-}
