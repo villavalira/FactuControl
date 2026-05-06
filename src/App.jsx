@@ -546,7 +546,7 @@ const generarNumero = () => {
 )}
         {/* FACTURAS */}
         {seccion === "facturas" && (
-          <div style={styles.card}>
+  <div style={{ ...styles.card, maxWidth: 900, width: "100%" }}>
 
             <h3>Crear factura</h3>
 
@@ -570,20 +570,37 @@ const generarNumero = () => {
             <h3>Facturas</h3>
 
             {facturas.map(f => (
-              <div key={f.id}>
-                <p>{f.numero}</p>
+  <div
+    key={f.id}
+    style={{
+      background: "#fff",
+      padding: 16,
+      borderRadius: 12,
+      marginTop: 10,
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      border: "1px solid #eee"
+    }}
+  >
+    <div>
+      <p style={{ margin: 0, fontWeight: "bold" }}>{f.numero}</p>
 
-                <p>
-                  {emisores.find(e => e.id === f.emisorId)?.nombre} →
-                  {clientes.find(c => c.id === f.clienteId)?.nombre}
-                </p>
+      <p style={{ margin: 0, fontSize: 13, opacity: 0.7 }}>
+        {emisores.find(e => e.id === f.emisorId)?.nombre} →{" "}
+        {clientes.find(c => c.id === f.clienteId)?.nombre}
+      </p>
+    </div>
 
-                <button onClick={() => generarPDF(f)}>PDF</button>
-              </div>
-            ))}
+    <div style={{ display: "flex", gap: 10 }}>
+      <span style={{ fontWeight: "bold" }}>{f.total.toFixed(2)} €</span>
 
-          </div>
-        )}
+      <button onClick={() => generarPDF(f)} style={styles.button}>
+        PDF
+      </button>
+    </div>
+  </div>
+))}
 
       </div>
     </div>
