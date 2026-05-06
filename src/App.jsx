@@ -93,11 +93,9 @@ const topBarInnerStyle = {
   justifyContent: "center",
   alignItems: "center",
   gap: 12,
-
   background: "rgba(121, 31, 143, 0.85)",
   padding: "10px 16px",
-  borderRadius: 999,
-
+  borderRadius: 0,
   backdropFilter: "blur(10px)",
   WebkitBackdropFilter: "blur(10px)"
 };
