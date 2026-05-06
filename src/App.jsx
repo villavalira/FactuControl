@@ -41,31 +41,36 @@ const sidebarStyle = {
 };
   const topBarStyle = {
   display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: isMobile ? 10 : 20,
-  background: "#791f8f",
   flexDirection: isMobile ? "column" : "row",
-  gap: isMobile ? 10 : 0
+  alignItems: isMobile ? "flex-start" : "center",
+  justifyContent: "space-between",
+  padding: isMobile ? "10px" : "20px 40px",
+  background: "#791f8f",
+  width: "100%",
+  boxSizing: "border-box"
 };
-
 const menuContainerStyle = {
   display: "flex",
-  flexDirection: isMobile ? "column" : "row",
+  flexDirection: isMobile ? "row" : "row",
+  flexWrap: "wrap",
   gap: 10,
+  marginTop: isMobile ? 10 : 0,
   width: isMobile ? "100%" : "auto"
 };
 const menuStyle = {
   ...styles.menu,
-  fontSize: isMobile ? 11 : 16,
-  padding: isMobile ? "6px 10px" : 10,
-  flex: "0 0 auto",
+  fontSize: isMobile ? 13 : 16,
+  padding: isMobile ? "8px" : "10px 14px",
+  flex: isMobile ? "1" : "0 0 auto",
+  textAlign: "center",
   whiteSpace: "nowrap",
   color: "black"
 };
 const mainStyle = {
   ...styles.main,
-  padding: isMobile ? 10 : 30
+  padding: isMobile ? 10 : 30,
+  maxWidth: 1000,
+  margin: "0 auto"
 };
 
 const titleStyle = {
