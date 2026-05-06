@@ -166,7 +166,7 @@ const mainStyle = {
   padding: isMobile ? 10 : 30,
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
+  alignItems: "stretch",
   gap: 20
 };
 const cambiarSeccion = (s) => {
@@ -641,7 +641,7 @@ const styles = { app:
  sidebar: { width: 180, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10, borderRadius: 16, height: "fit-content", overflow: "hidden", width: "100%", maxWidth: 200, background: "#791f8f", padding: 20, display: "flex", flexDirection: "column", gap: 10 }, 
  main: { flex: 1, padding: 20, width: "100%" }, 
  body: { margin: 0, padding: 0},
- card: { background: "#e2a9f1", color: "#000", padding: 28, borderRadius: 16, width: "100%",  boxShadow: "0 10px 30px rgba(0,0,0,0.08)", border: "1px solid rgba(121, 31, 143, 0.2)" },  
+ card: { background: "#e2a9f1", color: "#000", padding: 28, borderRadius: 16, width: "100%", maxWidth: 900, margin: "0 auto", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", border: "1px solid rgba(121, 31, 143, 0.2)" },  
  input: { width: "100%", padding: 12, margin: "8px 0", borderRadius: 10, border: "1px solid rgba(121, 31, 143, 0.25)", outline: "none", fontSize: 14, background: "white" }, 
  button: { padding: "10px 14px" , background: "#3b82f6", color: "#fff", border: 0, borderRadius: 8, cursor: "pointer", fontWeight: 500 }, 
  menu: { padding: "8px 14px", background: "#e482da", border: "1px solid #e6e8ec", borderRadius: 999, fontWeight: "bold" }, 
