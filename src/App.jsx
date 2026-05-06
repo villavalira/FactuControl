@@ -446,7 +446,16 @@ const generarNumero = () => {
         </div>
       </div>
 
-    <div style={centerWrapper}>  
+ <div style={centerWrapper}>
+
+      <div
+        key={animKey}
+        style={{
+          ...mainStyle,
+          animation: "fadeSlide 0.25s ease"
+        }}
+      >
+
       {/* ⬇️ CONTENIDO */}
       <div
         key={animKey}
