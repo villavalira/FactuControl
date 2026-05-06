@@ -199,3 +199,39 @@ export default function App() {
         </div>
       )}
 
+
+      {/* FACTURAS */}
+      {seccion === "facturas" && (
+        <div>
+          <h3>Facturas</h3>
+
+          <select onChange={e=>setEmisorSel(emisores.find(x=>x.id===e.target.value))}>
+            <option>Emisor</option>
+            {emisores.map(e=><option key={e.id} value={e.id}>{e.nombre}</option>)}
+          </select>
+
+          <select onChange={e=>setClienteSel(clientes.find(x=>x.id===e.target.value))}>
+            <option>Cliente</option>
+            {clientes.map(c=><option key={c.id} value={c.id}>{c.nombre}</option>)}
+          </select>
+
+          <input placeholder="Concepto" onChange={e=>setConcepto(e.target.value)} />
+          <input type="number" onChange={e=>setBase(Number(e.target.value))} />
+
+          <p>Total: {total.toFixed(2)} €</p>
+
+          <button onClick={crearFactura}>Crear factura</button>
+
+          {facturas.map(f=> (
+            <div key={f.id}>
+              {f.numero} - {f.total} €
+              <button onClick={()=>generarPDF(f)}>PDF</button>
+            </div>
+          ))}
+
+        </div>
+      )}
+
+    </div>
+  );
+}
