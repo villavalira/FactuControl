@@ -39,7 +39,22 @@ const sidebarStyle = {
   flexDirection: "column",   // 👈 siempre columna
   boxSizing: "border-box"
 };
-  
+  const topBarStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: isMobile ? 10 : 20,
+  background: "#791f8f",
+  flexDirection: isMobile ? "column" : "row",
+  gap: isMobile ? 10 : 0
+};
+
+const menuContainerStyle = {
+  display: "flex",
+  flexDirection: isMobile ? "column" : "row",
+  gap: 10,
+  width: isMobile ? "100%" : "auto"
+};
 const menuStyle = {
   ...styles.menu,
   fontSize: isMobile ? 11 : 16,
