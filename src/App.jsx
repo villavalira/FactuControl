@@ -25,7 +25,7 @@ const styles = {
     width: "100%",
     background: "white",
     borderBottom: "1px solid #e6e8ec",
-    padding: "12px 0",
+    padding: "6px 0",
     display: "flex",
     justifyContent: "center",
     position: "sticky",
