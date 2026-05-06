@@ -166,7 +166,7 @@ const mainStyle = {
   padding: isMobile ? 10 : 30,
   display: "flex",
   flexDirection: "column",
-  alignItems: "stretch",
+  alignItems: "stretch", // 👈 
   gap: 20
 };
 const cambiarSeccion = (s) => {
@@ -545,12 +545,12 @@ const generarNumero = () => {
         {/* FACTURAS */}
         {seccion === "facturas" && (
 <div style={{
-  display: "flex",
-  flexDirection: "column",
-  gap: 12,
   width: "100%",
   maxWidth: 900,
-  margin: "0 auto"
+  margin: "0 auto",
+  display: "flex",
+  flexDirection: "column",
+  gap: 12
 }}>
 
             <h3>Crear factura</h3>
