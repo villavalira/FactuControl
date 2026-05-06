@@ -259,35 +259,12 @@ export default function App() {
             <button style={styles.button} onClick={crearFactura}>Crear factura</button>
 
             {facturas.map(f=> (
-              <div    key={f.id}
-    style={{
-      background: "#fff",
-      padding: 16,
-      borderRadius: 12,
-      marginTop: 10,
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      border: "1px solid #eee"
-    }}
-  >
-    <div>
-      <p style={{ margin: 0, fontWeight: "bold" }}>{f.numero}</p>
-
-      <p style={{ margin: 0, fontSize: 13, opacity: 0.7 }}>
-        {emisores.find(e => e.id === f.emisorId)?.nombre} →{" "}
-        {clientes.find(c => c.id === f.clienteId)?.nombre}
-      </p>
-    </div>
-
-    <div style={{ display: "flex", gap: 10 }}>
-      <span style={{ fontWeight: "bold" }}>{f.total.toFixed(2)} €</span>
-
-      <button onClick={() => generarPDF(f)} style={styles.button}>
-        PDF
-      </button>
+              <div key={f.id} style={{ marginTop: 10 }}>
+                <p>{f.concepto} - {f.total} €</p>
+                <button style={styles.button} onClick={() => generarPDF(f)}>PDF</button>
               </div>
             ))}
+
           </div>
         )}
 
