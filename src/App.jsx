@@ -159,14 +159,15 @@ const menuStyle = {
   WebkitTextFillColor: "#0a0a0a",
   opacity: 1
 };
-  const selectStyle = {
+const selectStyle = {
   width: "100%",
-  padding: 12,
-  margin: "8px 0",
+  minHeight: 44,
+  padding: "10px 14px",
+  fontSize: 16,   // 👈 CLAVE (esto es lo que te faltaba)
   borderRadius: 10,
   border: "1px solid rgba(121, 31, 143, 0.25)",
-  fontSize: 14,
-  background: "white"
+  background: "white",
+  boxSizing: "border-box"
 };
 const mainStyle = {
   ...styles.main,
