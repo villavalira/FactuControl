@@ -156,7 +156,9 @@ useEffect(() => {
   });
   return () => unsub();
 }, []);
-  const login = () => signInWithPopup(auth, googleProvider);
+  import { loginGoogle } from "./firebase";
+
+const login = () => loginGoogle();
   const logout = () => signOut(auth);
 
   /* ================= LOAD ================= */
