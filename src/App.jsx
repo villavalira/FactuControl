@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
-import { auth, googleProvider, db } from "./firebase";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+
+import { auth, db, loginGoogle } from "./firebase";
+
+import {
+  signOut,
+  onAuthStateChanged
+} from "firebase/auth";
+
 import {
   collection,
   addDoc,
