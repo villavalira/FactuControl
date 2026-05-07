@@ -55,6 +55,17 @@ const styles = {
     cursor: "pointer",
     fontWeight: 600,
   },
+  loginButton: {
+  padding: "16px 34px",
+  borderRadius: 999,
+  border: "none",
+  background: "#791f8f",
+  color: "white",
+  cursor: "pointer",
+  fontWeight: 700,
+  fontSize: 20,
+  boxShadow: "0 6px 18px rgba(121,31,143,0.25)",
+},
 
   danger: {
     background: "red",
@@ -271,7 +282,7 @@ useEffect(() => {
   if (!user) {
     return (
       <div style={styles.container}>
-        <button style={styles.button} onClick={login}>Login</button>
+        <button style={styles.loginButton} onClick={login}>Login</button>
       </div>
     );
   }
