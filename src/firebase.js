@@ -1,7 +1,17 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
+  signInWithRedirect,
+  getRedirectResult
+} from "firebase/auth";
+
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+
+/* ================= FIREBASE CONFIG ================= */
 
 const firebaseConfig = {
   apiKey: "AIzaSyAu8dDhIK8JOL43pCSXjDaHkd24GWXioHA",
@@ -13,14 +23,40 @@ const firebaseConfig = {
   measurementId: "G-2M6XQ6BZJX"
 };
 
+/* ================= INIT ================= */
+
 const app = initializeApp(firebaseConfig);
 
-// 🔥 AUTH
+/* ================= AUTH ================= */
+
 export const auth = getAuth(app);
+
+setPersistence(auth, browserLocalPersistence);
+
 export const googleProvider = new GoogleAuthProvider();
 
-// 🔥 FIRESTORE
+/* ================= FIRESTORE ================= */
+
 export const db = getFirestore(app);
 
-// 🔥 ANALYTICS (opcional)
-export const analytics = getAnalytics(app);
+/* ================= LOGIN FUNCTION ================= */
+
+export const loginGoogle = async () => {
+  try {
+    await signInWithRedirect(auth, googleProvider);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+/* ================= REDIRECT RESULT ================= */
+
+getRedirectResult(auth)
+  .then((result) => {
+    if (result?.user) {
+      console.log("LOGIN OK:", result.user.email);
+    }
+  })
+  .catch((err) => {
+    console.error("ERROR LOGIN:", err);
+  });
