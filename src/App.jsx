@@ -290,15 +290,19 @@ useEffect(() => {
   return (
     <div style={styles.app}>
 
-      {/* TOP BAR */}
-      <div style={styles.topBar}>
-        <div style={styles.topBarInner}>
-          <h3>FactuControl</h3>
+   {/* TOP BAR */}
+<div style={styles.topBar}>
+  <div style={styles.topBarInner}>
 
-          <div style={styles.menu}>
-  <button style={styles.button} onClick={() => setSeccion("emisor")}>
-    Emisor
-  </button>
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <img src="/logo192.png" style={{ width: 32, height: 32 }} />
+      <h3 style={{ margin: 0 }}>FactuControl</h3>
+    </div>
+
+    <div style={styles.menu}>
+      <button style={styles.button} onClick={() => setSeccion("emisor")}>
+        Emisor
+      </button>
 
   <button style={styles.button} onClick={() => setSeccion("clientes")}>
     Clientes
