@@ -257,102 +257,112 @@ const saveCliente = async () => {
     showToast("📄 Factura creada correctamente");
   };
 
-  const generarPDF = (f) => {
+ const generarPDF = (f) => {
   const doc = new jsPDF();
 
   const emisor = emisores.find(e => e.id === f.emisorId);
   const cliente = clientes.find(c => c.id === f.clienteId);
 
-  /* ================= HEADER ================= */
-  doc.setFillColor(121, 31, 143);
-  doc.rect(0, 0, 210, 35, "F");
+  const pageW = doc.internal.pageSize.getWidth();
+
+  /* ================= HEADER MINIMALISTA ================= */
+  doc.setFillColor(17, 24, 39); // casi negro estilo Stripe
+  doc.rect(0, 0, pageW, 40, "F");
 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.text("FACTURA", 15, 20);
+  doc.setFontSize(20);
+  doc.text("Factura", 15, 25);
 
   doc.setFontSize(10);
-  doc.text(`Nº: ${f.numero}`, 150, 15);
-  doc.text(`Fecha: ${new Date(f.fecha).toLocaleDateString()}`, 150, 22);
+  doc.setFont("helvetica", "normal");
+  doc.text(`Nº ${f.numero}`, pageW - 50, 18);
+  doc.text(new Date(f.fecha).toLocaleDateString(), pageW - 50, 28);
 
-  /* ================= BLOQUES ================= */
-  doc.setTextColor(0, 0, 0);
-
-  // CLIENTE BOX
-  doc.setDrawColor(220);
-  doc.setFillColor(245, 245, 250);
-  doc.roundedRect(10, 45, 90, 45, 3, 3, "FD");
-
+  /* ================= SECCIÓN CLIENTE / EMISOR (GRID) ================= */
+  doc.setTextColor(17, 24, 39);
+  doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
-  doc.text("CLIENTE", 15, 52);
+
+  doc.text("FACTURAR A", 15, 60);
+  doc.text("EMITIDA POR", 110, 60);
 
   doc.setFont("helvetica", "normal");
-  doc.text(cliente?.nombre || "", 15, 60);
-  doc.text(cliente?.nif || "", 15, 66);
-  doc.text(cliente?.email || "", 15, 72);
 
-  // EMISOR BOX
-  doc.setDrawColor(220);
-  doc.setFillColor(245, 245, 250);
-  doc.roundedRect(110, 45, 90, 45, 3, 3, "FD");
+  doc.text(cliente?.nombre || "", 15, 70);
+  doc.text(cliente?.email || "", 15, 77);
 
-  doc.setFont("helvetica", "bold");
-  doc.text("EMISOR", 115, 52);
+  doc.text(emisor?.nombre || "", 110, 70);
+  doc.text(emisor?.email || "", 110, 77);
 
-  doc.setFont("helvetica", "normal");
-  doc.text(emisor?.nombre || "", 115, 60);
-  doc.text(emisor?.nif || "", 115, 66);
-  doc.text(emisor?.email || "", 115, 72);
+  /* línea suave separadora */
+  doc.setDrawColor(230);
+  doc.line(15, 90, pageW - 15, 90);
 
-  /* ================= TABLA ================= */
+  /* ================= TABLA LIMPIA ================= */
   let y = 110;
 
-  doc.setFillColor(121, 31, 143);
-  doc.rect(10, y, 190, 10, "F");
-
-  doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.text("Concepto", 15, y + 7);
-  doc.text("Base", 120, y + 7);
-  doc.text("IVA", 150, y + 7);
-  doc.text("Total", 175, y + 7);
+  doc.setFontSize(10);
+  doc.text("Descripción", 15, y);
+  doc.text("Base", 120, y, { align: "right" });
+  doc.text("IVA", 150, y, { align: "right" });
+  doc.text("Total", 190, y, { align: "right" });
+
+  doc.setDrawColor(230);
+  doc.line(15, y + 3, pageW - 15, y + 3);
 
   y += 15;
 
-  doc.setTextColor(0, 0, 0);
   doc.setFont("helvetica", "normal");
 
   doc.text(f.concepto || "-", 15, y);
-  doc.text(`${f.base.toFixed(2)} €`, 120, y);
-  doc.text(`${f.iva.toFixed(2)} €`, 150, y);
-  doc.text(`${f.total.toFixed(2)} €`, 175, y);
+  doc.text(`${f.base.toFixed(2)} €`, 120, y, { align: "right" });
+  doc.text(`${f.iva.toFixed(2)} €`, 150, y, { align: "right" });
+  doc.text(`${f.total.toFixed(2)} €`, 190, y, { align: "right" });
 
-  /* ================= TOTAL ================= */
-  y += 30;
+  /* ================= TOTAL BLOCK (TIPO STRIPE) ================= */
+  y += 40;
 
-  doc.setDrawColor(200);
-  doc.line(120, y, 200, y);
+  doc.setDrawColor(230);
+  doc.line(110, y, pageW - 15, y);
 
   y += 10;
 
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+
+  doc.text("Subtotal", 120, y);
+  doc.text(`${f.base.toFixed(2)} €`, 190, y, { align: "right" });
+
+  doc.text("IVA", 120, y + 8);
+  doc.text(`${f.iva.toFixed(2)} €`, 190, y + 8, { align: "right" });
+
+  doc.text("IRPF", 120, y + 16);
+  doc.text(`-${f.irpf.toFixed(2)} €`, 190, y + 16, { align: "right" });
+
+  /* TOTAL GRANDE */
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(12);
-
-  doc.text(`Subtotal: ${f.base.toFixed(2)} €`, 120, y);
-  doc.text(`IVA: ${f.iva.toFixed(2)} €`, 120, y + 7);
-  doc.text(`IRPF: -${f.irpf.toFixed(2)} €`, 120, y + 14);
-
   doc.setFontSize(14);
-  doc.text(`TOTAL: ${f.total.toFixed(2)} €`, 120, y + 25);
+
+  doc.text("Total", 120, y + 30);
+  doc.text(`${f.total.toFixed(2)} €`, 190, y + 30, { align: "right" });
 
   /* ================= FOOTER ================= */
-  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
   doc.setTextColor(120);
-  doc.text("Gracias por confiar en nosotros", 105, 285, { align: "center" });
+
+  doc.text(
+    "Gracias por tu confianza",
+    pageW / 2,
+    285,
+    { align: "center" }
+  );
 
   doc.save(`factura-${f.numero}.pdf`);
 };
+  
   if (!user) {
     return (
       <div style={styles.container}>
