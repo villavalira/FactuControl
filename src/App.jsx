@@ -232,8 +232,8 @@ const saveCliente = async () => {
     setTimeout(() => setToast(null), 2500);
 
   } catch (error) {
-    console.error(error);
-    setToast("❌ Error al guardar cliente");
+    console.error("🔥 ERROR COMPLETO:", error);
+    showToast("❌ Error al guardar cliente");
   }
 };
 
