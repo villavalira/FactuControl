@@ -350,7 +350,7 @@ const cambiarSeccion = (s) => {
     </div>
 
     <div style={styles.menu}>
-      <button style={styles.button} onClick={() => onClick={() => showToast("FUNCIONA")}>
+      <button style={styles.button} onClick={() => onClick={() => setSeccion("emisor")}>
         Emisor
       </button>
 
