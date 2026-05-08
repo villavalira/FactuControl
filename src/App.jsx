@@ -22,6 +22,20 @@ const styles = {
     background: "#f6f8fb",
     color: "#0a2540",
   },
+  toast: {
+  position: "fixed",
+  bottom: 30,
+  left: "50%",
+  transform: "translateX(-50%)",
+  background: "#0a2540",
+  color: "white",
+  padding: "12px 18px",
+  borderRadius: 999,
+  fontWeight: 600,
+  boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+  zIndex: 9999,
+  animation: "fadeIn 0.2s ease",
+},
 
   topBar: {
     width: "100%",
@@ -106,7 +120,14 @@ export default function App() {
   const [emisores, setEmisores] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [facturas, setFacturas] = useState([]);
+const [toast, setToast] = useState(null);
+  const showToast = (message) => {
+  setToast(message);
 
+  setTimeout(() => {
+    setToast(null);
+  }, 2500);
+};
   const [emisorSel, setEmisorSel] = useState(null);
   const [clienteSel, setClienteSel] = useState(null);
 
@@ -181,6 +202,7 @@ const saveEmisor = async () => {
   });
 
   loadAll(user.uid);
+  showToast("✅ Emisor guardado correctamente");
 };
 
 const saveCliente = async () => {
@@ -196,6 +218,7 @@ const saveCliente = async () => {
   });
 
   loadAll(user.uid);
+  showToast("✅ Cliente guardado correctamente");
 };
 
   const crearFactura = async () => {
@@ -215,6 +238,7 @@ const saveCliente = async () => {
     });
 
     loadAll(user.uid);
+    showToast("📄 Factura creada correctamente");
   };
 
   const generarPDF = (f) => {
@@ -425,7 +449,11 @@ const cambiarSeccion = (s) => {
                 <button style={styles.button} onClick={() => generarPDF(f)}>PDF</button>
               </div>
             ))}
-
+{toast && (
+  <div style={styles.toast}>
+    {toast}
+  </div>
+)}
           </div>
         )}
 
