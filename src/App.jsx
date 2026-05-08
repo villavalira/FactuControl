@@ -449,15 +449,16 @@ const cambiarSeccion = (s) => {
                 <button style={styles.button} onClick={() => generarPDF(f)}>PDF</button>
               </div>
             ))}
-{toast && (
-  <div style={styles.toast}>
-    {toast}
-  </div>
-)}
+
           </div>
         )}
 
       </div>
-    </div>
+
+    {toast && (
+  <div style={styles.toast}>
+    {toast}
+  </div>
+)}</div>
   );
 }
