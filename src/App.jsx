@@ -211,17 +211,28 @@ const saveEmisor = async () => {
 const saveCliente = async () => {
   if (!user?.uid) return;
 
-  await addDoc(collection(db, "clientes"), {
-    uid: user.uid,
-    nombre: clienteForm.nombre,
-    nif: clienteForm.nif,
-    direccion: clienteForm.direccion,
-    email: clienteForm.email,
-    telefono: clienteForm.telefono,
-  });
+  try {
+    console.log("1 - intentando guardar");
 
-  loadAll(user.uid);
-  showToast("✅ Cliente guardado correctamente");
+    await addDoc(collection(db, "clientes"), {
+      uid: user.uid,
+      nombre: clienteForm.nombre,
+      nif: clienteForm.nif,
+      direccion: clienteForm.direccion,
+      email: clienteForm.email,
+      telefono: clienteForm.telefono,
+    });
+
+    console.log("2 - guardado OK");
+
+    await loadAll(user.uid);
+
+    showToast("✅ Cliente guardado correctamente");
+
+  } catch (error) {
+    console.error("❌ ERROR FIRESTORE:", error);
+    showToast("❌ Error al guardar cliente");
+  }
 };
 
   const crearFactura = async () => {
