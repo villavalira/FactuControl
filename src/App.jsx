@@ -266,13 +266,13 @@ const saveCliente = async () => {
   const pageW = doc.internal.pageSize.getWidth();
 
   /* ================= HEADER MINIMALISTA ================= */
-  doc.setFillColor(17, 24, 39); // casi negro estilo Stripe
+  doc.setFillColor(121, 31, 143); // 
   doc.rect(0, 0, pageW, 40, "F");
 
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
-  doc.text("Factura", 15, 25);
+doc.setTextColor(255, 255, 255);
+doc.setFont("helvetica", "bold");
+doc.setFontSize(20);
+doc.text("Factura", 15, 25);
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
