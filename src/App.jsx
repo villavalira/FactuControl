@@ -226,11 +226,14 @@ const saveCliente = async () => {
     console.log("2 - guardado OK");
 
     await loadAll(user.uid);
-    showToast("✅ Cliente guardado correctamente");
+
+    setToast("✅ Cliente guardado correctamente");
+
+    setTimeout(() => setToast(null), 2500);
 
   } catch (error) {
-    console.error("❌ ERROR FIRESTORE:", error);
-    showToast("❌ Error al guardar cliente");
+    console.error(error);
+    setToast("❌ Error al guardar cliente");
   }
 };
 
@@ -360,7 +363,7 @@ const cambiarSeccion = (s) => {
     </div>
 
     <div style={styles.menu}>
-      <button style={styles.button} onClick={() => onClick={() => setSeccion("emisor")}>
+    <button style={styles.button} onClick={() => setSeccion("emisor")}>
         Emisor
       </button>
 
@@ -373,13 +376,15 @@ const cambiarSeccion = (s) => {
   </button>
 
   {isAdmin && (
-    <button style={styles.button} onClick={() => {
-  setSeccion("admin");
-  loadAllFacturas();
-}}
-    }}>
-      Admin
-    </button>
+    <button
+  style={styles.button}
+  onClick={() => {
+    setSeccion("admin");
+    loadAllFacturas();
+  }}
+>
+  Admin
+</button>
   )}
 
   <button style={{ ...styles.button, ...styles.danger }} onClick={logout}>
