@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
-
-import { auth, db, loginGoogle } from "./firebase";
-
 import {
   signOut,
   onAuthStateChanged
 } from "firebase/auth";
-
 import {
   collection,
   addDoc,
@@ -149,13 +145,6 @@ export default function App() {
 
   /* ================= AUTH ================= */
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      if (u?.uid) loadAll(u.uid);
-    });
-    return () => unsub();
-  }, []);
-useEffect(() => {
   const unsub = onAuthStateChanged(auth, (u) => {
     setUser(u);
     if (u?.uid) loadAll(u.uid);
@@ -179,15 +168,35 @@ const login = () => loginGoogle();
   };
 
   /* ================= SAVE ================= */
-  const saveEmisor = async () => {
-    await addDoc(collection(db, "emisores"), { uid: user.uid, ...emisorForm });
-    loadAll(user.uid);
-  };
+const saveEmisor = async () => {
+  if (!user?.uid) return;
 
-  const saveCliente = async () => {
-    await addDoc(collection(db, "clientes"), { uid: user.uid, ...clienteForm });
-    loadAll(user.uid);
-  };
+  await addDoc(collection(db, "emisores"), {
+    uid: user.uid,
+    nombre: emisorForm.nombre,
+    nif: emisorForm.nif,
+    direccion: emisorForm.direccion,
+    email: emisorForm.email,
+    telefono: emisorForm.telefono,
+  });
+
+  loadAll(user.uid);
+};
+
+const saveCliente = async () => {
+  if (!user?.uid) return;
+
+  await addDoc(collection(db, "clientes"), {
+    uid: user.uid,
+    nombre: clienteForm.nombre,
+    nif: clienteForm.nif,
+    direccion: clienteForm.direccion,
+    email: clienteForm.email,
+    telefono: clienteForm.telefono,
+  });
+
+  loadAll(user.uid);
+};
 
   const crearFactura = async () => {
     if (!emisorSel || !clienteSel) return;
@@ -210,7 +219,13 @@ const login = () => loginGoogle();
 
   const generarPDF = (f) => {
   const doc = new jsPDF();
+const cambiarSeccion = (s) => {
+  setSeccion(s);
 
+  if (s === "admin" && isAdmin) {
+    loadAllFacturas();
+  }
+};
   const emisor = emisores.find(e => e.id === f.emisorId);
   const cliente = clientes.find(c => c.id === f.clienteId);
 
@@ -321,7 +336,7 @@ const login = () => loginGoogle();
   </button>
 
   {isAdmin && (
-    <button style={styles.button} onClick={() => setSeccion("admin")}>
+    <button style={styles.button} onClick={() => setSeccion("admin"); loadAllFacturas();}}>
       Admin
     </button>
   )}
