@@ -11,6 +11,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+  import { loginGoogle } from "./firebase";
 
 /* ================= STYLES ================= */
 const styles = {
@@ -172,7 +173,7 @@ const [toast, setToast] = useState(null);
   });
   return () => unsub();
 }, []);
-  import { loginGoogle } from "./firebase";
+
 
 const login = () => loginGoogle();
   const logout = () => signOut(auth);
@@ -360,7 +361,8 @@ const cambiarSeccion = (s) => {
   </button>
 
   {isAdmin && (
-    <button style={styles.button} onClick={() => setSeccion("admin"); loadAllFacturas();}}>
+    <button style={styles.button} onClick={() => setSeccion("admin"); loadAllFacturas();
+    }}>
       Admin
     </button>
   )}
@@ -459,6 +461,7 @@ const cambiarSeccion = (s) => {
   <div style={styles.toast}>
     {toast}
   </div>
-)}</div>
+)}
+    </div>
   );
 }
