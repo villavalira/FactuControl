@@ -12,6 +12,7 @@ import {
   where,
 } from "firebase/firestore";
   import { loginGoogle } from "./firebase";
+import { db, auth } from "./firebase";
 
 /* ================= STYLES ================= */
 const styles = {
@@ -34,7 +35,8 @@ const styles = {
   borderRadius: 999,
   fontWeight: 600,
   boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-  zIndex: 9999,
+  zIndex: 999999,
+  pointerEvents: "none",
   animation: "fadeIn 0.2s ease",
 },
 
@@ -361,7 +363,10 @@ const cambiarSeccion = (s) => {
   </button>
 
   {isAdmin && (
-    <button style={styles.button} onClick={() => setSeccion("admin"); loadAllFacturas();
+    <button style={styles.button} onClick={() => {
+  setSeccion("admin");
+  loadAllFacturas();
+}}
     }}>
       Admin
     </button>
