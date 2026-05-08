@@ -434,9 +434,7 @@ const cambiarSeccion = (s) => {
         {seccion === "clientes" && (
           <div style={styles.card}>
             <h3>Clientes</h3>
-            <p style={{ color: "red", fontWeight: "bold" }}>
-  SECCION ACTUAL: {seccion}
-</p>
+            
             <input placeholder="Nombre" style={styles.input} onChange={e=>setClienteForm({...clienteForm,nombre:e.target.value})}/>
             <input placeholder="NIF" style={styles.input} onChange={e=>setClienteForm({...clienteForm,nif:e.target.value})}/>
             <input placeholder="Dirección" style={styles.input} onChange={e=>setClienteForm({...clienteForm,direccion:e.target.value})}/>
