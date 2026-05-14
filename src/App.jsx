@@ -17,101 +17,44 @@ import { db, auth } from "./firebase";
 /* ================= STYLES ================= */
 const styles = {
   app: {
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh",
-    fontFamily: "Inter, system-ui, sans-serif",
-    background: "#f6f8fb",
-    color: "#0a2540",
+    display: "flex", flexDirection: "column", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif", background: "#f6f8fb", color: "#0a2540",
   },
   toast: {
-  position: "fixed",
-  bottom: 30,
-  left: "50%",
-  transform: "translateX(-50%)",
-  background: "#0a2540",
-  color: "white",
-  padding: "12px 18px",
-  borderRadius: 999,
-  fontWeight: 600,
-  boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-  zIndex: 999999,
-  pointerEvents: "none",
-  animation: "fadeIn 0.2s ease",
+  position: "fixed", bottom: 30, left: "50%", transform: "translateX(-50%)", background: "#0a2540", color: "white", padding: "12px 18px", borderRadius: 999, fontWeight: 600, boxShadow: "0 10px 30px rgba(0,0,0,0.2)", zIndex: 999999, pointerEvents: "none", animation: "fadeIn 0.2s ease",
 },
 
   topBar: {
-    width: "100%",
-    background: "white",
-    borderBottom: "1px solid #e6e8ec",
-    padding: "6px 0",
-    display: "flex",
-    justifyContent: "center",
-    position: "sticky",
-    top: 0,
-    zIndex: 1000,
+    width: "100%", background: "white", borderBottom: "1px solid #e6e8ec", padding: "6px 0", display: "flex", justifyContent: "center", position: "sticky", top: 0, zIndex: 1000,
   },
 
   topBarInner: {
-    width: "100%",
-    maxWidth: 1100,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "0 10px",
+    width: "100%", maxWidth: 1100, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 10px", 
   },
 
   menu: {
-    display: "flex",
-    gap: 10,
+    display: "flex", gap: 10,
   },
 
   button: {
-    padding: "8px 14px",
-    borderRadius: 999,
-    border: "1px solid #e6e8ec",
-    background: "#e482da",
-    cursor: "pointer",
-    fontWeight: 600,
+    padding: "8px 14px", borderRadius: 999, border: "1px solid #e6e8ec", background: "#e482da", cursor: "pointer", fontWeight: 600,
   },
   loginButton: {
-  padding: "16px 34px",
-  borderRadius: 999,
-  border: "none",
-  background: "#791f8f",
-  color: "white",
-  cursor: "pointer",
-  fontWeight: 700,
-  fontSize: 20,
-  boxShadow: "0 6px 18px rgba(121,31,143,0.25)",
+  padding: "16px 34px", borderRadius: 999, border: "none", background: "#791f8f", color: "white", cursor: "pointer", fontWeight: 700, fontSize: 20, boxShadow: "0 6px 18px rgba(121,31,143,0.25)",
 },
 
   danger: {
-    background: "red",
-    color: "white",
+    background: "red", color: "white",
   },
 
   container: {
-    width: "100%",
-    maxWidth: 1100,
-    margin: "0 auto",
-    padding: 20,
+    width: "100%", maxWidth: 1100, margin: "0 auto", padding: "16px", boxSizing: "border-box",
   },
 
   card: {
-    background: "#e2a9f1",
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
-    color: "#000",
+    background: "#e2a9f1", padding: 20, borderRadius: 12, marginBottom: 20, color: "#000",
   },
   input: {
-  width: "100%",
-  padding: "6px 8px",
-  marginTop: 6,
-  fontSize: 13,
-  borderRadius: 6,
-  border: "1px solid #ccc",
+  width: "100%", padding: "6px 8px", marginTop: 6, fontSize: 13, borderRadius: 6, border: "1px solid #ccc",
 }, 
 };
 
@@ -362,7 +305,9 @@ doc.text("Factura", 15, 25);
 
   doc.save(`factura-${f.numero}.pdf`);
 };
-  
+  if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+}
   if (!user) {
     return (
       <div style={styles.container}>
