@@ -19,7 +19,6 @@ const styles = {
   app: {
     display: "flex", flexDirection: "column", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif", background: "#f6f8fb", color: "#0a2540", backgroundRepeat: "no-repeat", backgroundPosition: "center", backgroundSize: "600px", backgroundColor: "#f6f8fb",
   },
-  
   container: {
     width: "100%", maxWidth: 1100, margin: "0 auto", padding: "16px", boxSizing: "border-box",
   },
@@ -32,11 +31,9 @@ bottomBackground: {
   topBar: {
     width: "100%", background: "white", borderBottom: "1px solid #e6e8ec", padding: "6px 0", display: "flex", justifyContent: "center", position: "sticky", top: 0, zIndex: 1000,
   },
-
   topBarInner: {
     width: "100%", maxWidth: 1100, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 10px", flexWrap: "wrap", gap: 10,
   },
-
   menu: {
     display: "flex", gap: 10,
   },
@@ -54,9 +51,6 @@ bottomBackground: {
   danger: {
     background: "red", color: "white",
   },
-
-  
-
   card: {
     background: "#e2a9f1", padding: 20, borderRadius: 12, marginBottom: 20, color: "#000",
   },
