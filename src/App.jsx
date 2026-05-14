@@ -247,7 +247,7 @@ const generarPDF = async (f) => {
   const emisor = emisores.find(e => e.id === f.emisorId);
   const cliente = clientes.find(c => c.id === f.clienteId);
   const pageW = doc.internal.pageSize.getWidth();
-
+const StartY = headerHeight + 25;
 
   // LOGO CENTRADO
 const headerHeight = 65;
@@ -257,7 +257,7 @@ const marginLeft = 10;
 const logoX = marginLeft;
 const logoY = (headerHeight - logoHeight) / 2;
 const rightColX = pageW - 50;
-const StartY = headerHeight + 25;
+
 // ================= HEADER ================= 
 doc.setFillColor(0, 0, 0);
 doc.rect(0, 0, pageW, headerHeight, "F");
