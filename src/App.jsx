@@ -239,6 +239,7 @@ const generarPDF = async (f) => {
       };
     });
   };
+ const logo = await getBase64Image("/logo.jpg");
 
   const doc = new jsPDF();
 
