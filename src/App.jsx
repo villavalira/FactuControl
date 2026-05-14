@@ -225,17 +225,10 @@ const saveCliente = async () => {
     loadAll(user.uid);
     showToast("📄 Factura creada correctamente");
   };
+const generarPDF = async (f) => {
 
- const generarPDF = async (f) => {
-  const doc = new jsPDF();
-  const logo = await getBase64Image("/logo.png");
-  const emisor = emisores.find(e => e.id === f.emisorId);
-  const cliente = clientes.find(c => c.id === f.clienteId);
-
-  const pageW = doc.internal.pageSize.getWidth();
-  /* ================= LOGO ================= */
-
-   const getBase64Image = (imgUrl) => {
+  // ================= LOGO FUNCTION PRIMERO =================
+  const getBase64Image = (imgUrl) => {
     return new Promise((resolve) => {
       const img = new Image();
       img.setAttribute("crossOrigin", "anonymous");
@@ -255,59 +248,66 @@ const saveCliente = async () => {
   };
 
   const logo = await getBase64Image("/logo.png");
-  /* ================= HEADER MINIMALISTA ================= */
-  doc.setFillColor(121, 31, 143); // 
-  doc.rect(0, 0, pageW, 40, "F");
-  /* ================= LOGO CENTRADO ================= */
-   const logoWidth = 30;
+
+  const doc = new jsPDF();
+
+  const emisor = emisores.find(e => e.id === f.emisorId);
+  const cliente = clientes.find(c => c.id === f.clienteId);
+
+  const pageW = doc.internal.pageSize.getWidth();
+
+  // ================= HEADER =================
+  doc.setFillColor(121, 31, 143);
+  doc.rect(0, 0, pageW, 55, "F");
+
+  // LOGO CENTRADO
+  const logoWidth = 30;
   const logoHeight = 30;
   const logoX = (pageW - logoWidth) / 2;
 
   doc.addImage(logo, "PNG", logoX, 5, logoWidth, logoHeight);
-/* ================= HEADER ================= */
-doc.setTextColor(255, 255, 255);
-doc.setFont("helvetica", "bold");
-doc.setFontSize(20);
-doc.text("Factura", pageW / 2, 45, { align: "center" });
 
+  // TITULO
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.text("Factura", pageW / 2, 45, { align: "center" });
+
+  // ================= INFO =================
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
   doc.text(`Nº ${f.numero}`, pageW - 50, 18);
   doc.text(new Date(f.fecha).toLocaleDateString(), pageW - 50, 28);
 
-   
-   
-  /* ================= SECCIÓN CLIENTE / EMISOR (GRID) ================= */
+  // ================= CLIENTE / EMISOR =================
   doc.setTextColor(17, 24, 39);
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
 
-  doc.text("FACTURAR A", 15, 60);
-  doc.text("EMITIDA POR", 110, 60);
+  doc.text("FACTURAR A", 15, 70);
+  doc.text("EMITIDA POR", 110, 70);
 
   doc.setFont("helvetica", "normal");
 
-  doc.text(cliente?.nombre || "", 15, 70);
-  doc.text(cliente?.email || "", 15, 77);
+  doc.text(cliente?.nombre || "", 15, 80);
+  doc.text(cliente?.email || "", 15, 87);
 
-  doc.text(emisor?.nombre || "", 110, 70);
-  doc.text(emisor?.email || "", 110, 77);
+  doc.text(emisor?.nombre || "", 110, 80);
+  doc.text(emisor?.email || "", 110, 87);
 
-  /* línea suave separadora */
+  // línea separadora
   doc.setDrawColor(230);
-  doc.line(15, 90, pageW - 15, 90);
+  doc.line(15, 100, pageW - 15, 100);
 
-  /* ================= TABLA LIMPIA ================= */
-  let y = 110;
+  // ================= TABLA =================
+  let y = 120;
 
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
   doc.text("Descripción", 15, y);
   doc.text("Base", 120, y, { align: "right" });
   doc.text("IVA", 150, y, { align: "right" });
   doc.text("Total", 190, y, { align: "right" });
 
-  doc.setDrawColor(230);
   doc.line(15, y + 3, pageW - 15, y + 3);
 
   y += 15;
@@ -319,16 +319,12 @@ doc.text("Factura", pageW / 2, 45, { align: "center" });
   doc.text(`${f.iva.toFixed(2)} €`, 150, y, { align: "right" });
   doc.text(`${f.total.toFixed(2)} €`, 190, y, { align: "right" });
 
-  /* ================= TOTAL BLOCK (TIPO STRIPE) ================= */
+  // ================= TOTAL =================
   y += 40;
 
-  doc.setDrawColor(230);
   doc.line(110, y, pageW - 15, y);
 
   y += 10;
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
 
   doc.text("Subtotal", 120, y);
   doc.text(`${f.base.toFixed(2)} €`, 190, y, { align: "right" });
@@ -339,24 +335,20 @@ doc.text("Factura", pageW / 2, 45, { align: "center" });
   doc.text("IRPF", 120, y + 16);
   doc.text(`-${f.irpf.toFixed(2)} €`, 190, y + 16, { align: "right" });
 
-  /* TOTAL GRANDE */
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
 
   doc.text("Total", 120, y + 30);
   doc.text(`${f.total.toFixed(2)} €`, 190, y + 30, { align: "right" });
 
-  /* ================= FOOTER ================= */
+  // ================= FOOTER =================
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.setTextColor(120);
 
-  doc.text(
-    "Gracias por tu confianza",
-    pageW / 2,
-    285,
-    { align: "center" }
-  );
+  doc.text("Gracias por tu confianza", pageW / 2, 285, {
+    align: "center",
+  });
 
   doc.save(`factura-${f.numero}.pdf`);
 };
