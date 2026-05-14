@@ -247,7 +247,7 @@ const generarPDF = async (f) => {
 
   const emisor = emisores.find(e => e.id === f.emisorId);
   const cliente = clientes.find(c => c.id === f.clienteId);
-  const startY = headerHeight + 25;
+  const contentStartY = headerHeight + 25;
   const pageW = doc.internal.pageSize.getWidth();
 
 
