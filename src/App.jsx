@@ -20,9 +20,7 @@ const styles = {
     display: "flex", flexDirection: "column", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif", background: "#f6f8fb", color: "#0a2540",
     backgroundImage: "url('/fondomarcadeagua.png')", backgroundRepeat: "no-repeat", backgroundPosition: "center", backgroundSize: "600px", backgroundColor: "#f6f8fb",
   },
-  bottomBackground: {
-  position: "fixed", bottom: 0, left: 0, width: "100%", height: 300, backgroundImage: "url('/fondomarcadeagua.png')", backgroundRepeat: "no-repeat", backgroundPosition: "bottom center", backgroundSize: "contain", opacity: 0.08, zIndex: 0, pointerEvents: "none",
-},
+  
   container: {
     width: "100%", maxWidth: 1100, margin: "0 auto", padding: "16px", boxSizing: "border-box",
   },
@@ -327,9 +325,7 @@ doc.text("Factura", 15, 25);
   return (
     <div style={styles.app}>
 <img src="/fondomarcadeagua.png" style={styles.watermark} />
-     <div style={styles.app}>
-       <img src="/fondomarcadeagua.png"
-  style={styles.bottomBackground}
+<img src="/fondomarcadeagua.png" style={styles.bottomBackground}
 />
    {/* TOP BAR */}
 <div style={styles.topBar}>
