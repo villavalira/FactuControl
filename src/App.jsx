@@ -28,7 +28,7 @@ const styles = {
   },
 
   topBarInner: {
-    width: "100%", maxWidth: 1100, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 10px", 
+    width: "100%", maxWidth: 1100, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 10px", flexWrap: "wrap", gap: 10,
   },
 
   menu: {
