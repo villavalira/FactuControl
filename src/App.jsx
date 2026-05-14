@@ -27,7 +27,9 @@ const styles = {
   toast: {
   position: "fixed", bottom: 30, left: "50%", transform: "translateX(-50%)", background: "#0a2540", color: "white", padding: "12px 18px", borderRadius: 999, fontWeight: 600, boxShadow: "0 10px 30px rgba(0,0,0,0.2)", zIndex: 999999, pointerEvents: "none", animation: "fadeIn 0.2s ease",
 },
-
+bottomBackground: {
+  position: "fixed", bottom: 0, left: 0, width: "100%", height: 300, backgroundImage: "url('/fondomarcadeagua.png')", backgroundRepeat: "no-repeat", backgroundPosition: "bottom center", backgroundSize: "contain", opacity: 0.08, zIndex: 0, pointerEvents: "none",
+},
   topBar: {
     width: "100%", background: "white", borderBottom: "1px solid #e6e8ec", padding: "6px 0", display: "flex", justifyContent: "center", position: "sticky", top: 0, zIndex: 1000,
   },
