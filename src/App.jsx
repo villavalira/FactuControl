@@ -233,22 +233,50 @@ const saveCliente = async () => {
   const cliente = clientes.find(c => c.id === f.clienteId);
 
   const pageW = doc.internal.pageSize.getWidth();
+  /* ================= LOGO ================= */
 
+   const getBase64Image = (imgUrl) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.src = imgUrl;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        resolve(canvas.toDataURL("image/png"));
+      };
+    });
+  };
+
+  const logo = await getBase64Image("/logo.png");
   /* ================= HEADER MINIMALISTA ================= */
   doc.setFillColor(121, 31, 143); // 
   doc.rect(0, 0, pageW, 40, "F");
+  /* ================= LOGO CENTRADO ================= */
+   const logoWidth = 30;
+  const logoHeight = 30;
+  const logoX = (pageW - logoWidth) / 2;
 
+  doc.addImage(logo, "PNG", logoX, 5, logoWidth, logoHeight);
+/* ================= HEADER ================= */
 doc.setTextColor(255, 255, 255);
 doc.setFont("helvetica", "bold");
 doc.setFontSize(20);
-doc.text("Factura", 15, 25);
+doc.text("Factura", pageW / 2, 45, { align: "center" });
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
   doc.text(`Nº ${f.numero}`, pageW - 50, 18);
   doc.text(new Date(f.fecha).toLocaleDateString(), pageW - 50, 28);
-  /* ================= LOGO ================= */
-  doc.addImage(logo, "PNG", 15, 8, 25, 25); 
+
+   
+   
   /* ================= SECCIÓN CLIENTE / EMISOR (GRID) ================= */
   doc.setTextColor(17, 24, 39);
   doc.setFontSize(11);
