@@ -247,7 +247,7 @@ const generarPDF = async (f) => {
     });
   };
 
-  const logo = await getBase64Image("/logo.png");
+  const logo = await getBase64Image("/logo.jpg");
 
   const doc = new jsPDF();
 
@@ -265,7 +265,7 @@ const generarPDF = async (f) => {
   const logoHeight = 60;
   const logoX = (pageW - logoWidth) / 2;
 
-  doc.addImage(logo, "PNG", logoX, 5, logoWidth, logoHeight);
+  doc.addImage(logo, "JPG", logoX, 5, logoWidth, logoHeight);
 
   // TITULO
   doc.setTextColor(255, 255, 255);
