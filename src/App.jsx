@@ -17,8 +17,7 @@ import { db, auth } from "./firebase";
 /* ================= STYLES ================= */
 const styles = {
   app: {
-    display: "flex", flexDirection: "column", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif", background: "#f6f8fb", color: "#0a2540",
-    backgroundImage: "url('/fondomarcadeagua.png')", backgroundRepeat: "no-repeat", backgroundPosition: "center", backgroundSize: "600px", backgroundColor: "#f6f8fb",
+    display: "flex", flexDirection: "column", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif", background: "#f6f8fb", color: "#0a2540", backgroundRepeat: "no-repeat", backgroundPosition: "center", backgroundSize: "600px", backgroundColor: "#f6f8fb",
   },
   
   container: {
