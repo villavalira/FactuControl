@@ -255,8 +255,8 @@ const generarPDF = async (f) => {
   doc.rect(0, 0, pageW, 55, "F");
 
   // LOGO CENTRADO
-  const logoWidth = 60;
-  const logoHeight = 60;
+  const logoWidth = 30;
+  const logoHeight = 30;
   const logoX = (pageW - logoWidth) / 2;
 
   doc.addImage(logo, "JPG", logoX, 5, logoWidth, logoHeight);
