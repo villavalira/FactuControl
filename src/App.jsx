@@ -326,8 +326,7 @@ doc.text("Factura", 15, 25);
   return (
     <div style={styles.app}>
 <img src="/fondomarcadeagua.png" style={styles.watermark} />
-<img src="/fondomarcadeagua.png" style={styles.bottomBackground}
-/>
+
    {/* TOP BAR */}
 <div style={styles.topBar}>
   <div style={styles.topBarInner}>
