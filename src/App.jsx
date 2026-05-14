@@ -18,6 +18,10 @@ import { db, auth } from "./firebase";
 const styles = {
   app: {
     display: "flex", flexDirection: "column", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif", background: "#f6f8fb", color: "#0a2540",
+    backgroundImage: "url('/logo192.png')", backgroundRepeat: "no-repeat", backgroundPosition: "center", backgroundSize: "300px", backgroundColor: "#f6f8fb",
+  },
+  container: {
+    width: "100%", maxWidth: 1100, margin: "0 auto", padding: "16px", boxSizing: "border-box",
   },
   toast: {
   position: "fixed", bottom: 30, left: "50%", transform: "translateX(-50%)", background: "#0a2540", color: "white", padding: "12px 18px", borderRadius: 999, fontWeight: 600, boxShadow: "0 10px 30px rgba(0,0,0,0.2)", zIndex: 999999, pointerEvents: "none", animation: "fadeIn 0.2s ease",
@@ -41,14 +45,15 @@ const styles = {
   loginButton: {
   padding: "16px 34px", borderRadius: 999, border: "none", background: "#791f8f", color: "white", cursor: "pointer", fontWeight: 700, fontSize: 20, boxShadow: "0 6px 18px rgba(121,31,143,0.25)",
 },
-
+  
+  watermark: {
+  position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 300, opacity: 0.06, zIndex: 0, pointerEvents: "none",
+},
   danger: {
     background: "red", color: "white",
   },
 
-  container: {
-    width: "100%", maxWidth: 1100, margin: "0 auto", padding: "16px", boxSizing: "border-box",
-  },
+  
 
   card: {
     background: "#e2a9f1", padding: 20, borderRadius: 12, marginBottom: 20, color: "#000",
@@ -318,7 +323,7 @@ doc.text("Factura", 15, 25);
 
   return (
     <div style={styles.app}>
-
+<img src="/logo192.png" style={styles.watermark} />
    {/* TOP BAR */}
 <div style={styles.topBar}>
   <div style={styles.topBarInner}>
