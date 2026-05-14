@@ -255,18 +255,19 @@ const generarPDF = async (f) => {
   doc.rect(0, 0, pageW, 55, "F");
 
   // LOGO CENTRADO
+const headerHeight = 55;
 const logoWidth = 60;
 const logoHeight = (65 / 140) * logoWidth;
+const marginLeft = 10;
+const logoX = marginLeft;
+const logoY = (headerHeight - logoHeight) / 2;
 
-const logoX = (pageW - logoWidth) / 2;
-
-  doc.addImage(logo, "JPG", logoX, 5, logoWidth, logoHeight);
-
+doc.addImage(logo, "JPG", logoX, logoY, logoWidth, logoHeight);
   // TITULO
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(20);
-  doc.text("Factura", pageW / 2, 45, { align: "center" });
+  doc.text("Factura", pageW / 2 + 10, 45, { align: "center" });
 
   // ================= INFO =================
   doc.setFontSize(10);
