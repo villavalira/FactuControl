@@ -252,29 +252,29 @@ const generarPDF = async (f) => {
 
 
   // LOGO CENTRADO
-const headerHeight = 55;
-const logoWidth = 60;
+const headerHeight = 45;
+const logoWidth = 55;
 const logoHeight = (65 / 140) * logoWidth;
 const marginLeft = 10;
 const logoX = marginLeft;
 const logoY = (headerHeight - logoHeight) / 2;
 const rightColX = pageW - 50;
 // ================= HEADER ================= 
-doc.setFillColor(121, 31, 143);
-doc.rect(0, 0, pageW, 65, "F");
+doc.setFillColor(0, 0, 0);
+doc.rect(0, 0, pageW, headerHeight, "F");
   
 doc.addImage(logo, "JPG", logoX, logoY, logoWidth, logoHeight);
   // TITULO
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.text("Factura", rightColX, 30);
+  doc.setFontSize(16);
+  doc.text("Factura", rightColX, 18);
 
   // ================= INFO =================
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
-  doc.text(`Nº ${f.numero}`, rightColX, 42);
-doc.text(new Date(f.fecha).toLocaleDateString(), rightColX, 50);
+  doc.text(`Nº ${f.numero}`, rightColX, 28);
+doc.text(new Date(f.fecha).toLocaleDateString(), rightColX, 36);
 
   // ================= CLIENTE / EMISOR =================
   doc.setTextColor(17, 24, 39);
