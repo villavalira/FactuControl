@@ -220,7 +220,6 @@ const saveCliente = async () => {
     showToast("📄 Factura creada correctamente");
   };
 const generarPDF = async (f) => {
-console.log("generarPDF ejecutado", f);
   // ================= LOGO FUNCTION PRIMERO =================
   const getBase64Image = (imgUrl) => {
     return new Promise((resolve) => {
@@ -258,7 +257,7 @@ const marginLeft = 10;
 const logoX = marginLeft;
 const logoY = (headerHeight - logoHeight) / 2;
 const rightColX = pageW - 50;
-const contentStartY = headerHeight + 50;
+const StartY = headerHeight + 25;
 // ================= HEADER ================= 
 doc.setFillColor(0, 0, 0);
 doc.rect(0, 0, pageW, headerHeight, "F");
@@ -275,9 +274,7 @@ doc.addImage(logo, "JPG", logoX, logoY, logoWidth, logoHeight);
   doc.setFont("helvetica", "normal");
   doc.text(`Nº ${f.numero}`, rightColX, 20);
 doc.text(new Date(f.fecha).toLocaleDateString(), rightColX, 52);
-  // ================= PRUEBA =================
-  doc.setDrawColor(255, 0, 0);
-doc.line(0, headerHeight, pageW, headerHeight);
+
   // ================= CLIENTE / EMISOR =================
   doc.setTextColor(17, 24, 39);
   doc.setFontSize(11);
