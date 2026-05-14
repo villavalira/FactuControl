@@ -91,6 +91,25 @@ const [toast, setToast] = useState(null);
   const snap = await getDocs(collection(db, "facturas"));
   setAllFacturas(snap.docs.map(d => ({ id: d.id, ...d.data() })));
 };
+  const getBase64Image = (imgUrl) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.setAttribute("crossOrigin", "anonymous");
+    img.src = imgUrl;
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      const dataURL = canvas.toDataURL("image/png");
+      resolve(dataURL);
+    };
+  });
+};
   const [emisorForm, setEmisorForm] = useState({
     nombre: "",
     nif: "",
@@ -207,9 +226,9 @@ const saveCliente = async () => {
     showToast("📄 Factura creada correctamente");
   };
 
- const generarPDF = (f) => {
+ const generarPDF = async (f) => {
   const doc = new jsPDF();
-
+  const logo = await getBase64Image("/logo.png");
   const emisor = emisores.find(e => e.id === f.emisorId);
   const cliente = clientes.find(c => c.id === f.clienteId);
 
@@ -228,7 +247,8 @@ doc.text("Factura", 15, 25);
   doc.setFont("helvetica", "normal");
   doc.text(`Nº ${f.numero}`, pageW - 50, 18);
   doc.text(new Date(f.fecha).toLocaleDateString(), pageW - 50, 28);
-
+  /* ================= LOGO ================= */
+  doc.addImage(logo, "PNG", 15, 8, 25, 25); 
   /* ================= SECCIÓN CLIENTE / EMISOR (GRID) ================= */
   doc.setTextColor(17, 24, 39);
   doc.setFontSize(11);
