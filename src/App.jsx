@@ -252,7 +252,7 @@ const generarPDF = async (f) => {
 
 
   // LOGO CENTRADO
-const headerHeight = 32;
+const headerHeight = 45;
 const logoWidth = 45;
 const logoHeight = (65 / 140) * logoWidth;
 const marginLeft = 10;
