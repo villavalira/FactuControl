@@ -247,7 +247,7 @@ const emisor = emisores.find(e => e.id === f.emisorId);
 const cliente = clientes.find(c => c.id === f.clienteId);
 
 const pageW = doc.internal.pageSize.getWidth();
-
+const rightColX = pageW - 15;
 // 🔥 SIEMPRE PRIMERO
 const headerHeight = 65;
 const startY = headerHeight + 35;
