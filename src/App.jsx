@@ -242,22 +242,20 @@ const generarPDF = async (f) => {
 
   const logo = await getBase64Image("/logo.jpg");
 
-  const doc = new jsPDF();
+    const doc = new jsPDF();
 
-  const emisor = emisores.find(e => e.id === f.emisorId);
-  const cliente = clientes.find(c => c.id === f.clienteId);
-  const pageW = doc.internal.pageSize.getWidth();
+const emisor = emisores.find(e => e.id === f.emisorId);
+const cliente = clientes.find(c => c.id === f.clienteId);
 
+const pageW = doc.internal.pageSize.getWidth();
 
-  // LOGO CENTRADO
+const headerHeight = 65;
+const startY = headerHeight + 35;
 
 const logoWidth = 85;
 const logoHeight = (1181 / 1772) * logoWidth;
-const marginLeft = 10;
-const logoX = marginLeft;
+const logoX = 10;
 const logoY = (headerHeight - logoHeight) / 2;
-const rightColX = pageW - 50;
-
 // ================= HEADER ================= 
 doc.setFillColor(0, 0, 0);
 doc.rect(0, 0, pageW, headerHeight, "F");
