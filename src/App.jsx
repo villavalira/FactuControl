@@ -240,18 +240,18 @@ const generarPDF = async (f) => {
     });
   };
 
-  const logo = await getBase64Image("/logo.jpg");
-
-    const doc = new jsPDF();
+  const doc = new jsPDF();
 
 const emisor = emisores.find(e => e.id === f.emisorId);
 const cliente = clientes.find(c => c.id === f.clienteId);
 
 const pageW = doc.internal.pageSize.getWidth();
 
+// 🔥 SIEMPRE PRIMERO
 const headerHeight = 65;
 const startY = headerHeight + 35;
 
+// luego ya puedes usarlo
 const logoWidth = 85;
 const logoHeight = (1181 / 1772) * logoWidth;
 const logoX = 10;
