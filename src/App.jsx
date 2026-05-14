@@ -266,7 +266,7 @@ doc.addImage(logo, "JPG", logoX, logoY, logoWidth, logoHeight);
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
-  doc.text("Factura", rightColX, 38);
+  doc.text("Factura", rightColX, 30);
 
   // ================= INFO =================
   doc.setFontSize(11);
