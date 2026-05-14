@@ -31,15 +31,3 @@ export const loginGoogle = async () => {
   const result = await signInWithPopup(auth, googleProvider);
   return result.user;
 };
-
-/* ================= REDIRECT RESULT ================= */
-
-getRedirectResult(auth)
-  .then((result) => {
-    if (result?.user) {
-      console.log("LOGIN OK:", result.user.email);
-    }
-  })
-  .catch((err) => {
-    console.error("ERROR LOGIN:", err);
-  });
