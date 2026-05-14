@@ -18,7 +18,7 @@ import { db, auth } from "./firebase";
 const styles = {
   app: {
     display: "flex", flexDirection: "column", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif", background: "#f6f8fb", color: "#0a2540",
-    backgroundImage: "url('/logo192.png')", backgroundRepeat: "no-repeat", backgroundPosition: "center", backgroundSize: "300px", backgroundColor: "#f6f8fb",
+    backgroundImage: "url('/fondomarcadeagua.png')", backgroundRepeat: "no-repeat", backgroundPosition: "center", backgroundSize: "600px", backgroundColor: "#f6f8fb",
   },
   container: {
     width: "100%", maxWidth: 1100, margin: "0 auto", padding: "16px", boxSizing: "border-box",
@@ -47,7 +47,7 @@ const styles = {
 },
   
   watermark: {
-  position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 300, opacity: 0.06, zIndex: 0, pointerEvents: "none",
+  position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 400, opacity: 0.06, zIndex: 0, pointerEvents: "none",
 },
   danger: {
     background: "red", color: "white",
@@ -323,7 +323,7 @@ doc.text("Factura", 15, 25);
 
   return (
     <div style={styles.app}>
-<img src="/logo192.png" style={styles.watermark} />
+<img src="/fondomarcadeagua.png" style={styles.watermark} />
    {/* TOP BAR */}
 <div style={styles.topBar}>
   <div style={styles.topBarInner}>
