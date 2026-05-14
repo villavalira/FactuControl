@@ -247,7 +247,7 @@ const generarPDF = async (f) => {
 
   const emisor = emisores.find(e => e.id === f.emisorId);
   const cliente = clientes.find(c => c.id === f.clienteId);
-
+  const startY = headerHeight + 25;
   const pageW = doc.internal.pageSize.getWidth();
 
 
@@ -280,17 +280,17 @@ doc.text(new Date(f.fecha).toLocaleDateString(), rightColX, 52);
   doc.setTextColor(17, 24, 39);
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
+  
 
-  doc.text("FACTURAR A", 15, 70);
-  doc.text("EMITIDA POR", 110, 70);
+  doc.text("FACTURAR A", 15, startY);
+doc.text("EMITIDA POR", 110, startY);
 
   doc.setFont("helvetica", "normal");
+doc.text(cliente?.nombre || "", 15, startY + 10);
+doc.text(cliente?.email || "", 15, startY + 17);
 
-  doc.text(cliente?.nombre || "", 15, 80);
-  doc.text(cliente?.email || "", 15, 87);
-
-  doc.text(emisor?.nombre || "", 110, 80);
-  doc.text(emisor?.email || "", 110, 87);
+doc.text(emisor?.nombre || "", 110, startY + 10);
+doc.text(emisor?.email || "", 110, startY + 17);
 
   // línea separadora
   doc.setDrawColor(230);
