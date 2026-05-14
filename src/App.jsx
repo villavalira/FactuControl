@@ -220,7 +220,7 @@ const saveCliente = async () => {
     showToast("📄 Factura creada correctamente");
   };
 const generarPDF = async (f) => {
-
+console.log("generarPDF ejecutado", f);
   // ================= LOGO FUNCTION PRIMERO =================
   const getBase64Image = (imgUrl) => {
     return new Promise((resolve) => {
