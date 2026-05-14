@@ -277,9 +277,6 @@ doc.text(new Date(f.fecha).toLocaleDateString(), rightColX, 52);
   doc.setTextColor(17, 24, 39);
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
-  
-const headerHeight = 65;
-const startY = headerHeight + 35;
 
 doc.text("FACTURAR A", 15, startY);
 doc.text("EMITIDA POR", 110, startY);
