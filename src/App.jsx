@@ -261,7 +261,7 @@ const logoY = (headerHeight - logoHeight) / 2;
 const rightColX = pageW - 50;
 // ================= HEADER ================= 
 doc.setFillColor(121, 31, 143);
-doc.rect(0, 0, pageW, headerHeight, "F");
+doc.rect(0, 0, pageW, 65, "F");
   
 doc.addImage(logo, "JPG", logoX, logoY, logoWidth, logoHeight);
   // TITULO
