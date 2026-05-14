@@ -1,7 +1,7 @@
 {
   "short_name": "FactuControl",
-  "name": "FactuControl - Facturación",
-  "start_url": ".",
+  "name": "FactuControl",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f6f8fb",
   "theme_color": "#791f8f",
