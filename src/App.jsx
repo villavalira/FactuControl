@@ -282,8 +282,8 @@ doc.text(new Date(f.fecha).toLocaleDateString(), rightColX, 52);
   doc.setFont("helvetica", "bold");
   
 
-  doc.text("FACTURAR A", 15, startY);
-doc.text("EMITIDA POR", 110, startY);
+ doc.text("FACTURAR A", 15, 100);
+doc.text("EMITIDA POR", 110, 110);
 
   doc.setFont("helvetica", "normal");
 doc.text(cliente?.nombre || "", 15, startY + 10);
