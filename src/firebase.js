@@ -5,8 +5,7 @@ import {
   GoogleAuthProvider,
   setPersistence,
   browserLocalPersistence,
-  signInWithRedirect,
-  getRedirectResult
+  signInWithPopup
 } from "firebase/auth";
 
 import { getFirestore } from "firebase/firestore";
